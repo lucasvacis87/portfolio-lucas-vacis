@@ -28,22 +28,26 @@ body,
 
 body {
   font-family: Manrope, sans-serif;
+  text-rendering: geometricPrecision;
   background:
-    radial-gradient(circle at 10% 0%, rgba(91, 140, 255, 0.11), transparent 34%),
-    radial-gradient(circle at 90% 20%, rgba(55, 208, 201, 0.1), transparent 32%),
+    radial-gradient(circle at 8% -10%, rgba(91, 140, 255, 0.16), transparent 28%),
+    radial-gradient(circle at 100% 5%, rgba(55, 208, 201, 0.12), transparent 32%),
+    radial-gradient(circle at 50% 110%, rgba(91, 140, 255, 0.1), transparent 36%),
     var(--color-bg);
   color: var(--color-text);
 }
 
 .section-card {
-  border: 1px solid var(--color-border);
-  background: linear-gradient(140deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.01));
+  border: 1px solid rgba(155, 167, 180, 0.23);
+  background:
+    linear-gradient(140deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.012)),
+    rgba(18, 22, 27, 0.72);
   border-radius: 1.25rem;
 }
 
 .section-title {
   font-family: "Space Grotesk", sans-serif;
-  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-size: clamp(1.55rem, 2vw, 2rem);
   font-weight: 600;
   letter-spacing: -0.02em;
 }
@@ -52,3 +56,11 @@ body {
   color: var(--color-muted);
 }
 
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

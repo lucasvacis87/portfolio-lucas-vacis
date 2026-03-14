@@ -1,21 +1,23 @@
-import { experience } from "../../content/experience";
+import { experience, experienceIntro } from "../../content/experience";
 import { Section } from "../layout/Section";
 
 export function ExperienceSection(): JSX.Element {
   return (
-    <Section id="experience" title="Experience" subtitle="Quality leadership and delivery impact.">
+    <Section id="experience" title="Experience" subtitle={experienceIntro.subtitle}>
       <div className="space-y-4">
-        {experience.map((role) => (
-          <article key={role.role + role.company} className="rounded-2xl border border-border bg-surface/70 p-4">
-            <p className="font-heading">
-              {role.role} · <span className="text-accent">{role.company}</span>
-            </p>
-            <p className="muted mt-1 text-sm">{role.period}</p>
-            <p className="muted mt-2 text-sm">{role.summary}</p>
+        {experienceIntro.paragraphs.map((paragraph) => (
+          <p key={paragraph} className="muted leading-7">
+            {paragraph}
+          </p>
+        ))}
+      </div>
+      <div className="mt-6 grid gap-3 md:grid-cols-2">
+        {experience.map((item) => (
+          <article key={item.title} className="rounded-xl border border-border/80 bg-surface/70 px-4 py-3">
+            <p className="text-sm text-text">{item.title}</p>
           </article>
         ))}
       </div>
     </Section>
   );
 }
-
