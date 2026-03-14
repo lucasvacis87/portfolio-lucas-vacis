@@ -11,16 +11,15 @@ export const navigationItems: NavigationItem[] = [
 ];
 
 export const hero: HeroContent = {
-  kicker: "QA Automation Engineer · AI-Oriented",
-  title: "I build reliable test automation systems for fast, confident releases.",
+  kicker: "Senior QA Automation Engineer | SDET | AI-Assisted Quality Engineering",
+  title: "I build scalable quality engineering systems for fast, confident product delivery.",
   subtitle:
-    "Quality strategy, automation architecture, and intelligent QA practices that improve delivery speed without sacrificing confidence.",
-  primaryCta: { label: "View Projects", href: "#projects" },
+    "7+ years driving automation strategy across web, API, and integrated systems with Cypress, TypeScript, Jest, GraphQL, and CI/CD quality gates.",
+  primaryCta: { label: "View Experience", href: "#experience" },
   secondaryCta: { label: "Contact Me", href: "#contact" }
 };
 
 export const siteMeta = {
-  tagline: "Testing Intelligence Layer",
+  tagline: "Quality Engineering at Scale",
   copyright: `© ${new Date().getFullYear()} Lucas Vacis`
 };
-

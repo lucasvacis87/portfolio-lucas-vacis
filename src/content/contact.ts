@@ -1,7 +1,8 @@
 export const contact = {
-  subtitle: "Let us build quality systems that scale with your product ambitions.",
-  email: "lucas@example.com",
-  linkedin: "https://www.linkedin.com",
-  github: "https://github.com"
+  subtitle: "Open to remote and international opportunities in QA Automation and SDET roles.",
+  email: "lucasvacis@gmail.com",
+  phone: "+54 9 11 3195 1392",
+  location: "Buenos Aires, Argentina",
+  linkedin: "https://linkedin.com/in/lucas-vacis",
+  github: "https://github.com/lucasvacis87"
 };
-

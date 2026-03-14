@@ -1,5 +1,4 @@
 export const qaVision = {
-  subtitle: "A strategic quality model where AI augments human judgment.",
-  body: "My approach combines robust automation with AI-enhanced heuristics to identify risk sooner, improve signal quality, and keep teams shipping with confidence."
+  subtitle: "AI-assisted quality engineering with production-level standards.",
+  body: "I use AI tools like GitHub Copilot and CodeX to accelerate test design, refactoring, debugging, and documentation while preserving maintainability, traceability, and engineering discipline."
 };
-

@@ -8,6 +8,10 @@ export function ContactSection(): JSX.Element {
         <a className="text-accent transition hover:text-accent-2" href={`mailto:${contact.email}`}>
           {contact.email}
         </a>
+        <a className="muted transition hover:text-text" href={`tel:${contact.phone.replace(/\s+/g, "")}`}>
+          {contact.phone}
+        </a>
+        <p className="muted">{contact.location}</p>
         <a className="muted transition hover:text-text" href={contact.linkedin} target="_blank" rel="noreferrer">
           LinkedIn
         </a>
@@ -18,4 +22,3 @@ export function ContactSection(): JSX.Element {
     </Section>
   );
 }
-

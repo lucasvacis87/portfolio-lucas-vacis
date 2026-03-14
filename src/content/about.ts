@@ -1,5 +1,4 @@
 export const about = {
-  subtitle: "Engineer focused on product confidence through automation.",
-  body: "I help teams scale quality with maintainable automation frameworks, pragmatic risk-based testing, and CI-aligned quality gates."
+  subtitle: "Senior QA Automation Engineer with 7+ years in quality engineering.",
+  body: "I specialize in scalable automation for web, API, and integrated systems, combining strong test architecture, CI/CD quality gates, and AI-assisted engineering workflows to accelerate delivery without sacrificing rigor."
 };
-
