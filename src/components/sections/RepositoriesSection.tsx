@@ -1,6 +1,7 @@
 import { ExternalLink } from "lucide-react";
 import { repositories } from "../../content/repositories";
 import { Section } from "../layout/Section";
+import repoGraph from "../../assets/visuals/repo-graph.svg";
 
 export function RepositoriesSection(): JSX.Element {
   return (
@@ -9,11 +10,14 @@ export function RepositoriesSection(): JSX.Element {
       title="Featured Repositories"
       subtitle="Selected repositories that reflect how I build, structure, and scale engineering work."
     >
+      <div className="mb-5 overflow-hidden rounded-2xl border border-border/80 bg-surface/70">
+        <img src={repoGraph} alt="Abstract repository and CI flow graph" className="h-40 w-full object-cover opacity-90 md:h-48" loading="lazy" />
+      </div>
       <div className="grid gap-4 lg:grid-cols-3">
         {repositories.map((repo) => (
           <article
             key={repo.name}
-            className="rounded-2xl border border-border/80 bg-surface/75 p-5 transition duration-300 hover:-translate-y-0.5 hover:border-accent-2/45"
+            className="rounded-2xl border border-border/80 bg-surface/75 p-5 transition duration-300 hover:-translate-y-0.5 hover:border-accent-2/45 hover:shadow-glow"
           >
             <div className="flex items-start justify-between gap-4">
               <h3 className="font-mono text-sm text-text">{repo.name}</h3>
@@ -32,7 +36,7 @@ export function RepositoriesSection(): JSX.Element {
             </div>
             <div className="mt-5 flex flex-wrap gap-2">
               <a
-                className="inline-flex items-center gap-1 rounded-full border border-accent/50 bg-accent/15 px-3 py-1.5 text-xs font-semibold text-text transition hover:shadow-glow"
+                className="inline-flex items-center gap-1 rounded-full border border-accent/50 bg-accent/15 px-3 py-1.5 text-xs font-semibold text-text transition duration-300 hover:-translate-y-0.5 hover:shadow-glow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
                 href={repo.links.primary.href}
                 target="_blank"
                 rel="noreferrer"
@@ -41,7 +45,7 @@ export function RepositoriesSection(): JSX.Element {
                 <ExternalLink size={13} />
               </a>
               <a
-                className="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1.5 text-xs font-semibold text-muted transition hover:text-text"
+                className="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1.5 text-xs font-semibold text-muted transition duration-300 hover:-translate-y-0.5 hover:border-accent/35 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
                 href={repo.links.secondary.href}
                 target="_blank"
                 rel="noreferrer"

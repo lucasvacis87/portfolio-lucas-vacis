@@ -1,19 +1,35 @@
 import { contact } from "../../content/contact";
 import { Section } from "../layout/Section";
+import contactSignal from "../../assets/visuals/contact-signal.svg";
+import { toMailtoLink, withBaseUrl } from "../../utils/url";
 
 export function ContactSection(): JSX.Element {
+  const resumeHref = withBaseUrl(contact.resumeFileName);
+  const emailHref = toMailtoLink(contact.email, contact.emailSubject);
+
   return (
     <Section id="contact" title={contact.title} subtitle={contact.subtitle}>
-      <p className="muted max-w-3xl leading-7">{contact.body}</p>
+      <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+        <p className="muted max-w-3xl leading-7">{contact.body}</p>
+        <div className="overflow-hidden rounded-2xl border border-border/80 bg-surface/70">
+          <img
+            src={contactSignal}
+            alt="Abstract QA collaboration signal map"
+            className="h-full w-full object-cover opacity-90"
+            loading="lazy"
+          />
+        </div>
+      </div>
       <div className="mt-6 flex flex-wrap gap-2.5">
         <a
-          className="inline-flex items-center rounded-full border border-accent/55 bg-accent/15 px-4 py-2 text-sm font-semibold text-text transition hover:shadow-glow"
-          href={`mailto:${contact.email}`}
+          className="inline-flex items-center rounded-full border border-accent/55 bg-accent/15 px-4 py-2 text-sm font-semibold text-text transition duration-300 hover:-translate-y-0.5 hover:shadow-glow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+          href={emailHref}
+          aria-label="Email Lucas Vacis"
         >
           Email Me
         </a>
         <a
-          className="inline-flex items-center rounded-full border border-border bg-surface-2/55 px-4 py-2 text-sm font-semibold text-muted transition hover:text-text"
+          className="inline-flex items-center rounded-full border border-border bg-surface-2/55 px-4 py-2 text-sm font-semibold text-muted transition duration-300 hover:-translate-y-0.5 hover:border-accent/35 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
           href={contact.linkedin}
           target="_blank"
           rel="noreferrer"
@@ -21,7 +37,7 @@ export function ContactSection(): JSX.Element {
           LinkedIn
         </a>
         <a
-          className="inline-flex items-center rounded-full border border-border bg-surface-2/55 px-4 py-2 text-sm font-semibold text-muted transition hover:text-text"
+          className="inline-flex items-center rounded-full border border-border bg-surface-2/55 px-4 py-2 text-sm font-semibold text-muted transition duration-300 hover:-translate-y-0.5 hover:border-accent/35 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
           href={contact.github}
           target="_blank"
           rel="noreferrer"
@@ -29,10 +45,10 @@ export function ContactSection(): JSX.Element {
           GitHub
         </a>
         <a
-          className="inline-flex items-center rounded-full border border-border bg-surface-2/55 px-4 py-2 text-sm font-semibold text-muted transition hover:text-text"
-          href={contact.resume}
-          target="_blank"
-          rel="noreferrer"
+          className="inline-flex items-center rounded-full border border-border bg-surface-2/55 px-4 py-2 text-sm font-semibold text-muted transition duration-300 hover:-translate-y-0.5 hover:border-accent/35 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+          href={resumeHref}
+          download="Lucas-Vacis-Resume.pdf"
+          aria-label="Download Lucas Vacis resume PDF"
         >
           Download Resume
         </a>

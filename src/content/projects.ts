@@ -38,15 +38,21 @@ export const projects: Project[] = [
     }
   },
   {
-    title: "Cata Vinos",
-    subtitle: "Product-oriented frontend project",
+    title: "Sweetly",
+    subtitle: "Real-world e-commerce monorepo (backend + frontend)",
     description:
-      "A web product project that demonstrates frontend implementation, UI structure, and product-focused delivery beyond QA-specific work, adding breadth to my engineering profile.",
-    highlights: ["Frontend implementation", "Product UI thinking", "Responsive design", "Structured component approach"],
-    stack: ["Frontend", "Responsive UI", "Component Architecture"],
+      "A real e-commerce project built for my mother's venture, delivered as a full-stack monorepo with integrated checkout and end-to-end product flow. The store later migrated to Tiendanube as a business platform decision.",
+    highlights: [
+      "Monorepo structure (back + front)",
+      "Checkout-enabled e-commerce flow",
+      "API and UI integration",
+      "Production usage in a real business context",
+      "Scalable project organization"
+    ],
+    stack: ["Monorepo", "Backend", "Frontend", "API Integration"],
     links: {
-      primary: { label: "View Repository", href: "https://github.com/lucasvacis87/cata-vinos" },
-      secondary: { label: "Live Demo", href: "https://github.com/lucasvacis87/cata-vinos" }
+      primary: { label: "View Repository", href: "https://github.com/lucasvacis87/sweetly" },
+      secondary: { label: "Live Demo", href: "https://lucasvacis87.github.io/sweetly-website/" }
     }
   }
 ];

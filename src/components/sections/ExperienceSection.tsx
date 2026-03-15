@@ -13,7 +13,10 @@ export function ExperienceSection(): JSX.Element {
       </div>
       <div className="mt-6 grid gap-3 md:grid-cols-2">
         {experience.map((item) => (
-          <article key={item.title} className="rounded-xl border border-border/80 bg-surface/70 px-4 py-3">
+          <article
+            key={item.title}
+            className="rounded-xl border border-border/80 bg-surface/70 px-4 py-3 transition duration-300 hover:-translate-y-0.5 hover:border-accent/35 hover:shadow-glow"
+          >
             <p className="text-sm text-text">{item.title}</p>
           </article>
         ))}

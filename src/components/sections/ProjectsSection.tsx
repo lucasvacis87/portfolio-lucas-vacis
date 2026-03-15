@@ -1,6 +1,7 @@
 import { ExternalLink } from "lucide-react";
 import { projects } from "../../content/projects";
 import { Section } from "../layout/Section";
+import repoGraph from "../../assets/visuals/repo-graph.svg";
 
 export function ProjectsSection(): JSX.Element {
   return (
@@ -9,11 +10,14 @@ export function ProjectsSection(): JSX.Element {
       title="Featured Work"
       subtitle="Selected work focused on automation, engineering quality, and modern technical execution."
     >
+      <div className="mb-5 overflow-hidden rounded-2xl border border-border/80 bg-surface/70">
+        <img src={repoGraph} alt="Abstract project topology and system flow map" className="h-44 w-full object-cover opacity-90 md:h-52" loading="lazy" />
+      </div>
       <div className="grid gap-4 xl:grid-cols-3">
         {projects.map((project) => (
           <article
             key={project.title}
-            className="group relative overflow-hidden rounded-2xl border border-border/80 bg-surface/75 p-5 transition duration-300 hover:-translate-y-1 hover:border-accent/40"
+            className="group relative overflow-hidden rounded-2xl border border-border/80 bg-surface/75 p-5 transition duration-300 hover:-translate-y-1 hover:border-accent/40 hover:shadow-glow"
           >
             <div className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-[radial-gradient(circle_at_top_right,rgba(55,208,201,0.17),transparent_40%)]" />
             <div className="relative">
@@ -36,7 +40,7 @@ export function ProjectsSection(): JSX.Element {
               </div>
               <div className="mt-5 flex flex-wrap gap-2">
                 <a
-                  className="inline-flex items-center gap-1 rounded-full border border-accent/50 bg-accent/15 px-3 py-1.5 text-xs font-semibold text-text transition hover:shadow-glow"
+                  className="inline-flex items-center gap-1 rounded-full border border-accent/50 bg-accent/15 px-3 py-1.5 text-xs font-semibold text-text transition duration-300 hover:-translate-y-0.5 hover:shadow-glow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
                   href={project.links.primary.href}
                   target="_blank"
                   rel="noreferrer"
@@ -45,7 +49,7 @@ export function ProjectsSection(): JSX.Element {
                   <ExternalLink size={13} />
                 </a>
                 <a
-                  className="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1.5 text-xs font-semibold text-muted transition hover:text-text"
+                  className="inline-flex items-center gap-1 rounded-full border border-border px-3 py-1.5 text-xs font-semibold text-muted transition duration-300 hover:-translate-y-0.5 hover:border-accent/35 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
                   href={project.links.secondary.href}
                   target="_blank"
                   rel="noreferrer"

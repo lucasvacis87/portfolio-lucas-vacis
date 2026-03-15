@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { hero } from "../../content/site";
+import heroCommandGrid from "../../assets/visuals/hero-command-grid.svg";
 
 export function HeroSection(): JSX.Element {
   return (
@@ -15,14 +16,14 @@ export function HeroSection(): JSX.Element {
           <div className="mt-8 flex flex-wrap gap-3">
             <a
               href={hero.primaryCta.href}
-              className="inline-flex items-center gap-2 rounded-full border border-accent/60 bg-accent/20 px-5 py-2.5 text-sm font-semibold text-text transition duration-300 hover:-translate-y-0.5 hover:shadow-glow"
+              className="inline-flex items-center gap-2 rounded-full border border-accent/60 bg-accent/20 px-5 py-2.5 text-sm font-semibold text-text transition duration-300 hover:-translate-y-0.5 hover:shadow-glow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
             >
               {hero.primaryCta.label}
               <ArrowRight size={16} />
             </a>
             <a
               href={hero.secondaryCta.href}
-              className="inline-flex items-center rounded-full border border-border bg-surface-2/50 px-5 py-2.5 text-sm font-semibold text-muted transition duration-300 hover:border-accent/40 hover:text-text"
+              className="inline-flex items-center rounded-full border border-border bg-surface-2/50 px-5 py-2.5 text-sm font-semibold text-muted transition duration-300 hover:-translate-y-0.5 hover:border-accent/40 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
             >
               {hero.secondaryCta.label}
             </a>
@@ -33,7 +34,7 @@ export function HeroSection(): JSX.Element {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="rounded-2xl border border-border/80 bg-bg/55 p-5"
+          className="overflow-hidden rounded-2xl border border-border/80 bg-bg/55 p-5"
         >
           <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent-2">Core Stack</p>
           <div className="mt-4 flex flex-wrap gap-2.5">
@@ -45,6 +46,14 @@ export function HeroSection(): JSX.Element {
                 {chip}
               </span>
             ))}
+          </div>
+          <div className="mt-5 overflow-hidden rounded-xl border border-border/70 bg-surface/40">
+            <img
+              src={heroCommandGrid}
+              alt="Abstract command-and-signal grid representing QA automation systems"
+              className="h-44 w-full object-cover opacity-90"
+              loading="eager"
+            />
           </div>
         </motion.div>
       </div>

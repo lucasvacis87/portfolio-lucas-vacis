@@ -12,7 +12,7 @@ export function SkillsSection(): JSX.Element {
         {skills.map((group) => (
           <article
             key={group.name}
-            className="rounded-2xl border border-border/80 bg-surface/70 p-4 transition duration-300 hover:-translate-y-0.5 hover:border-accent/35"
+            className="rounded-2xl border border-border/80 bg-surface/70 p-4 transition duration-300 hover:-translate-y-0.5 hover:border-accent/35 hover:shadow-glow"
           >
             <h3 className="font-heading text-lg">{group.name}</h3>
             <ul className="mt-3 space-y-2">

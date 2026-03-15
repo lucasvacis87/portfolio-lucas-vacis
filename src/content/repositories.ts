@@ -26,15 +26,16 @@ export const repositories: RepositoryItem[] = [
     }
   },
   {
-    name: "cata-vinos",
-    label: "Product Implementation",
+    name: "sweetly",
+    label: "Full-Stack Monorepo",
     description:
-      "A product-oriented frontend project that demonstrates UI execution, structure, and delivery beyond QA-focused repositories.",
-    stack: ["Frontend", "UI", "Responsive Design"],
-    demonstrates: "Breadth in product implementation and interface quality beyond automation work.",
+      "A real e-commerce project for my mother's venture, built as a backend + frontend monorepo with checkout and complete purchase flow.",
+    stack: ["Monorepo", "Backend", "Frontend", "API Integration"],
+    demonstrates:
+      "How I deliver production-ready commerce flows end-to-end, from architecture to execution; later migrated to Tiendanube for platform operations.",
     links: {
-      primary: { label: "View Repository", href: "https://github.com/lucasvacis87/cata-vinos" },
-      secondary: { label: "Live Demo", href: "https://github.com/lucasvacis87/cata-vinos" }
+      primary: { label: "View Repository", href: "https://github.com/lucasvacis87/sweetly" },
+      secondary: { label: "Live Demo", href: "https://lucasvacis87.github.io/sweetly-website/" }
     }
   }
 ];

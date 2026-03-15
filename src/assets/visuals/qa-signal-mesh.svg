@@ -1,0 +1,37 @@
+<svg width="900" height="560" viewBox="0 0 900 560" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="meshBg" x1="30" y1="20" x2="860" y2="550" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#11161F" />
+      <stop offset="1" stop-color="#0A0E13" />
+    </linearGradient>
+    <radialGradient id="meshGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(450 278) rotate(90) scale(230 390)">
+      <stop stop-color="#37D0C9" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#37D0C9" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="900" height="560" rx="24" fill="url(#meshBg)"/>
+  <rect width="900" height="560" rx="24" fill="url(#meshGlow)"/>
+  <g stroke="#9BA7B4" stroke-opacity="0.2">
+    <path d="M0 80H900"/>
+    <path d="M0 160H900"/>
+    <path d="M0 240H900"/>
+    <path d="M0 320H900"/>
+    <path d="M0 400H900"/>
+    <path d="M0 480H900"/>
+    <path d="M120 0V560"/>
+    <path d="M240 0V560"/>
+    <path d="M360 0V560"/>
+    <path d="M480 0V560"/>
+    <path d="M600 0V560"/>
+    <path d="M720 0V560"/>
+  </g>
+  <path d="M92 438L202 372L296 390L398 290L512 314L616 214L756 246L828 178" stroke="#37D0C9" stroke-width="3" stroke-linecap="round"/>
+  <path d="M92 176L212 208L312 158L424 220L548 170L670 226L806 136" stroke="#5B8CFF" stroke-opacity="0.72" stroke-width="2.5" stroke-linecap="round"/>
+  <g fill="#E8EDF2">
+    <circle cx="92" cy="438" r="4.5"/>
+    <circle cx="202" cy="372" r="4.5"/>
+    <circle cx="398" cy="290" r="4.5"/>
+    <circle cx="616" cy="214" r="4.5"/>
+    <circle cx="828" cy="178" r="4.5"/>
+  </g>
+</svg>

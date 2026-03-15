@@ -1,0 +1,33 @@
+<svg width="900" height="540" viewBox="0 0 900 540" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="repoBg" x1="120" y1="16" x2="760" y2="520" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#141A24" />
+      <stop offset="1" stop-color="#090D12" />
+    </linearGradient>
+    <radialGradient id="repoGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(706 160) rotate(140) scale(260 210)">
+      <stop stop-color="#5B8CFF" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#5B8CFF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="900" height="540" rx="24" fill="url(#repoBg)"/>
+  <rect width="900" height="540" rx="24" fill="url(#repoGlow)"/>
+  <g stroke="#9BA7B4" stroke-opacity="0.18" stroke-dasharray="4 8">
+    <path d="M84 92H812"/>
+    <path d="M84 178H812"/>
+    <path d="M84 264H812"/>
+    <path d="M84 350H812"/>
+    <path d="M84 436H812"/>
+  </g>
+  <g stroke="#37D0C9" stroke-opacity="0.62" stroke-width="2.5" stroke-linecap="round">
+    <path d="M146 430L288 318L406 346L522 240L664 280L770 198"/>
+    <path d="M146 186L274 244L404 194L550 252L696 206" stroke="#5B8CFF" stroke-opacity="0.68"/>
+  </g>
+  <g fill="#E8EDF2">
+    <rect x="134" y="418" width="24" height="24" rx="6"/>
+    <rect x="276" y="306" width="24" height="24" rx="6"/>
+    <rect x="394" y="334" width="24" height="24" rx="6"/>
+    <rect x="510" y="228" width="24" height="24" rx="6"/>
+    <rect x="652" y="268" width="24" height="24" rx="6"/>
+    <rect x="758" y="186" width="24" height="24" rx="6"/>
+  </g>
+</svg>
