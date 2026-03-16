@@ -12,13 +12,15 @@ export const navigationItems: NavigationItem[] = [
 ];
 
 export const hero: HeroContent = {
-  kicker: "Senior QA Automation Engineer | AI-Assisted Quality Engineering",
-  title: "Building scalable test automation, quality systems, and modern QA workflows powered by AI.",
+  kicker: "Senior QA Automation Engineer \u00B7 AI-Assisted Quality Engineering",
+  title: "Building scalable test automation, quality systems, and AI-assisted engineering workflows.",
   subtitle:
-    "I design and implement automation frameworks, E2E and API testing strategies, CI-integrated quality workflows, and AI-assisted engineering practices that help teams ship faster with more confidence.",
-  chips: ["Playwright", "Cypress", "TypeScript", "API Testing", "CI/CD", "Test Architecture", "AI Workflows"],
-  primaryCta: { label: "View Projects", href: "#projects" },
-  secondaryCta: { label: "Contact Me", href: "#contact" }
+    "I design and implement maintainable UI and API automation frameworks, CI-integrated quality workflows, and modern testing strategies that help teams deliver faster with stronger engineering confidence.",
+  chips: ["Playwright", "Cypress", "TypeScript", "Jest", "API Testing", "CI/CD", "GitHub Actions", "AI Workflows"],
+  primaryCta: { label: "View Work", href: "#projects" },
+  secondaryCta: { label: "Contact Me", href: "#contact" },
+  tertiaryCta: { label: "Download Resume", href: "resume.pdf", download: "Lucas-Vacis-Resume.pdf" },
+  microLine: "Focused on test architecture, reporting strategy, parallel execution, and modern QA systems."
 };
 
 export const siteMeta = {

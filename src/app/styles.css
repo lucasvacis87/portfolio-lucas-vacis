@@ -26,6 +26,14 @@ body,
   min-height: 100%;
 }
 
+html {
+  scroll-padding-top: 4.4rem;
+}
+
+section[id] {
+  scroll-margin-top: 4rem;
+}
+
 body {
   font-family: Manrope, sans-serif;
   text-rendering: geometricPrecision;

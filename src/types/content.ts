@@ -10,6 +10,8 @@ export type HeroContent = {
   chips: string[];
   primaryCta: { label: string; href: string };
   secondaryCta: { label: string; href: string };
+  tertiaryCta?: { label: string; href: string; download?: string };
+  microLine?: string;
 };
 
 export type SkillGroup = {
