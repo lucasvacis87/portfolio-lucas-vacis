@@ -8,4 +8,3 @@ export default defineConfig({
   plugins: [react()],
   base: isActions && repoName ? `/${repoName}/` : "/"
 });
-

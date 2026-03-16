@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { hero } from "../../content/site";
-import heroCommandGrid from "../../assets/visuals/hero-command-grid.svg";
 import { withBaseUrl } from "../../utils/url";
+import { InteractiveQASandbox } from "./InteractiveQASandbox";
 
 export function HeroSection(): JSX.Element {
   const staggerContainer = {
@@ -98,27 +98,7 @@ export function HeroSection(): JSX.Element {
             {hero.microLine && <p className="muted mt-4 text-sm leading-6">{hero.microLine}</p>}
           </motion.div>
         </motion.div>
-        <motion.div
-          initial={{ opacity: 0, y: 18 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, ease: "easeOut" }}
-          className="overflow-hidden rounded-2xl border border-border/80 bg-bg/55 p-5"
-        >
-          <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent-2">Interactive QA Sandbox</p>
-          <p className="muted mt-3 text-sm leading-6">
-            Signal-style visual panel representing quality command flows, test execution telemetry, and release
-            confidence tracking.
-          </p>
-          <div className="mt-5 overflow-hidden rounded-xl border border-border/70 bg-surface/40">
-            <img
-              src={heroCommandGrid}
-              alt="Abstract command and signal grid representing QA automation and AI-assisted engineering systems"
-              className="h-44 w-full object-cover opacity-90"
-              loading="eager"
-            />
-          </div>
-        </motion.div>
+        <InteractiveQASandbox />
       </div>
     </section>
   );

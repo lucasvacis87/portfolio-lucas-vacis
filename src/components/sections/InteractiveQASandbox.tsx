@@ -1,0 +1,278 @@
+import { useEffect, useMemo, useReducer, useRef } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Bot, RotateCcw, Search } from "lucide-react";
+import { sandbox } from "../../content/sandbox";
+import { createInitialSandboxState, sandboxReducer } from "./interactiveSandboxMachine";
+
+function PixelBugIcon({ emphasized = false }: { emphasized?: boolean }): JSX.Element {
+  return (
+    <svg viewBox="0 0 14 14" className={`h-5 w-5 ${emphasized ? "text-accent" : "text-accent-2/90"}`} aria-hidden="true">
+      <g shapeRendering="crispEdges" fill="currentColor">
+        <rect x="6" y="2" width="2" height="2" />
+        <rect x="4" y="4" width="6" height="6" />
+        <rect x="5" y="5" width="1" height="1" />
+        <rect x="8" y="5" width="1" height="1" />
+        <rect x="3" y="5" width="1" height="1" />
+        <rect x="10" y="5" width="1" height="1" />
+        <rect x="2" y="6" width="2" height="1" />
+        <rect x="10" y="6" width="2" height="1" />
+        <rect x="2" y="8" width="2" height="1" />
+        <rect x="10" y="8" width="2" height="1" />
+        <rect x="4" y="10" width="1" height="2" />
+        <rect x="9" y="10" width="1" height="2" />
+        <rect x="6" y="10" width="2" height="2" />
+      </g>
+    </svg>
+  );
+}
+
+export function InteractiveQASandbox(): JSX.Element {
+  const [state, dispatch] = useReducer(sandboxReducer, undefined, createInitialSandboxState);
+  const automationTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const messageTimersRef = useRef<Map<number, ReturnType<typeof setTimeout>>>(new Map());
+
+  const foundCount = useMemo(() => state.bugs.filter((bug) => bug.found).length, [state.bugs]);
+  const isComplete = foundCount === state.bugs.length;
+  const statusText = sandbox.statusLabels[state.statusKey];
+  const targetBug = state.targetBugId !== null ? state.bugs.find((bug) => bug.id === state.targetBugId) : null;
+
+  useEffect(() => {
+    if (state.mode !== "automation") {
+      return;
+    }
+
+    if (isComplete) {
+      if (state.statusKey !== "complete" || state.automationPhase !== "idle") {
+        dispatch({ type: "SET_AUTOMATION_PHASE", phase: "idle", statusKey: "complete" });
+      }
+      return;
+    }
+
+    if (state.automationPhase === "idle") {
+      dispatch({ type: "SET_AUTOMATION_PHASE", phase: "scanning", statusKey: "scanning" });
+      return;
+    }
+
+    if (state.automationPhase === "scanning") {
+      automationTimerRef.current = setTimeout(() => {
+        const target = state.bugs.find((bug) => !bug.found);
+        if (target) {
+          dispatch({ type: "AUTOMATION_DETECTED", bugId: target.id });
+        }
+      }, sandbox.timings.scanMs);
+    }
+
+    if (state.automationPhase === "detected") {
+      automationTimerRef.current = setTimeout(() => {
+        dispatch({ type: "SET_AUTOMATION_PHASE", phase: "reporting", statusKey: "reporting" });
+      }, sandbox.timings.detectMs);
+    }
+
+    if (state.automationPhase === "reporting") {
+      automationTimerRef.current = setTimeout(() => {
+        if (state.targetBugId !== null) {
+          dispatch({ type: "REPORT_BUG", bugId: state.targetBugId, source: "automation" });
+        }
+      }, sandbox.timings.reportMs);
+    }
+
+    return () => {
+      if (automationTimerRef.current) {
+        clearTimeout(automationTimerRef.current);
+        automationTimerRef.current = null;
+      }
+    };
+  }, [isComplete, state.automationPhase, state.bugs, state.mode, state.statusKey, state.targetBugId]);
+
+  useEffect(() => {
+    const activeMessageIds = new Set(state.messages.map((message) => message.id));
+
+    state.messages.forEach((message) => {
+      if (messageTimersRef.current.has(message.id)) {
+        return;
+      }
+
+      const timer = setTimeout(() => {
+        dispatch({ type: "REMOVE_MESSAGE", messageId: message.id });
+        const handle = messageTimersRef.current.get(message.id);
+        if (handle) {
+          clearTimeout(handle);
+        }
+        messageTimersRef.current.delete(message.id);
+      }, sandbox.timings.toastMs);
+
+      messageTimersRef.current.set(message.id, timer);
+    });
+
+    Array.from(messageTimersRef.current.keys()).forEach((id) => {
+      if (activeMessageIds.has(id)) {
+        return;
+      }
+      const handle = messageTimersRef.current.get(id);
+      if (handle) {
+        clearTimeout(handle);
+      }
+      messageTimersRef.current.delete(id);
+    });
+  }, [state.messages]);
+
+  useEffect(() => {
+    return () => {
+      if (automationTimerRef.current) {
+        clearTimeout(automationTimerRef.current);
+      }
+
+      messageTimersRef.current.forEach((timer) => clearTimeout(timer));
+      messageTimersRef.current.clear();
+    };
+  }, []);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 18 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="overflow-hidden rounded-2xl border border-border/85 bg-[#10151d] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_18px_48px_rgba(0,0,0,0.35)]"
+    >
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent-2">{sandbox.title}</p>
+          <p className="muted mt-2 max-w-sm text-sm leading-6">
+            {state.mode === "manual" ? sandbox.helperText.manual : sandbox.helperText.automation}
+          </p>
+        </div>
+        <span className="inline-flex items-center gap-1 rounded-full border border-border bg-bg/70 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted">
+          <Bot size={12} aria-hidden="true" />
+          {sandbox.badge}
+        </span>
+      </div>
+
+      <div role="group" aria-label="Sandbox mode selector" className="mt-4 inline-flex rounded-full border border-border bg-bg/65 p-1">
+        <button
+          type="button"
+          aria-pressed={state.mode === "manual"}
+          onClick={() => dispatch({ type: "SET_MODE", mode: "manual" })}
+          className={`rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] transition ${
+            state.mode === "manual" ? "bg-surface-2 text-text" : "text-muted hover:text-text"
+          }`}
+        >
+          {sandbox.modes.manual}
+        </button>
+        <button
+          type="button"
+          aria-pressed={state.mode === "automation"}
+          onClick={() => dispatch({ type: "SET_MODE", mode: "automation" })}
+          className={`rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] transition ${
+            state.mode === "automation" ? "bg-surface-2 text-text" : "text-muted hover:text-text"
+          }`}
+        >
+          {sandbox.modes.automation}
+        </button>
+      </div>
+
+      <div className="relative mt-4 h-[18.5rem] rounded-xl border border-border/75 bg-[radial-gradient(circle_at_70%_12%,rgba(91,140,255,0.22),transparent_35%),radial-gradient(circle_at_8%_92%,rgba(55,208,201,0.18),transparent_40%),linear-gradient(transparent_95%,rgba(155,167,180,0.08)_95%),linear-gradient(90deg,transparent_95%,rgba(155,167,180,0.08)_95%)] bg-[length:100%_100%,100%_100%,22px_22px,22px_22px] sm:h-[19.5rem]">
+        {state.mode === "automation" && !isComplete && (
+          <motion.div
+            className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-accent-2/22 to-transparent"
+            animate={{ y: [0, 210, 0] }}
+            transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
+          />
+        )}
+
+        {state.mode === "automation" && targetBug && (
+          <motion.div
+            className="pointer-events-none absolute z-10 h-11 w-11 rounded-full border border-accent/70"
+            style={{ left: `${targetBug.x}%`, top: `${targetBug.y}%`, transform: "translate(-50%, -50%)" }}
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: [0.9, 1.08, 1], opacity: 1 }}
+            transition={{ duration: 0.35, ease: "easeOut" }}
+          />
+        )}
+
+        <AnimatePresence>
+          {state.bugs
+            .filter((bug) => !bug.found)
+            .map((bug) => {
+              const isActive = state.activeBugId === bug.id || state.targetBugId === bug.id;
+
+              return (
+                <motion.button
+                  key={bug.id}
+                  type="button"
+                  onClick={() => state.mode === "manual" && dispatch({ type: "REPORT_BUG", bugId: bug.id, source: "manual" })}
+                  onPointerEnter={() => dispatch({ type: "SET_ACTIVE_BUG", bugId: bug.id })}
+                  onPointerLeave={() => dispatch({ type: "SET_ACTIVE_BUG", bugId: null })}
+                  onPointerDown={() => dispatch({ type: "SET_ACTIVE_BUG", bugId: bug.id })}
+                  onFocus={() => dispatch({ type: "SET_ACTIVE_BUG", bugId: bug.id })}
+                  onBlur={() => dispatch({ type: "SET_ACTIVE_BUG", bugId: null })}
+                  disabled={state.mode === "automation"}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.4, rotate: 10 }}
+                  transition={{ duration: 0.25, ease: "easeOut" }}
+                  className={`absolute z-20 inline-flex h-9 w-9 items-center justify-center rounded-md border transition ${
+                    isActive
+                      ? "border-accent/70 bg-accent/18 shadow-[0_0_18px_rgba(55,208,201,0.24)]"
+                      : "border-border/70 bg-bg/70 hover:border-accent/45 hover:bg-surface-2/75"
+                  } ${state.mode === "automation" ? "cursor-default" : "cursor-pointer"} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent`}
+                  style={{ left: `${bug.x}%`, top: `${bug.y}%`, transform: "translate(-50%, -50%)" }}
+                  aria-label={state.mode === "manual" ? "Report bug" : "Bug target"}
+                >
+                  <PixelBugIcon emphasized={isActive} />
+                  {state.mode === "manual" && isActive && (
+                    <span className="pointer-events-none absolute -right-2 -top-2 rounded-full border border-border/80 bg-bg p-1 text-accent">
+                      <Search size={10} aria-hidden="true" />
+                    </span>
+                  )}
+                </motion.button>
+              );
+            })}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {state.messages.map((message) => (
+            <motion.span
+              key={message.id}
+              initial={{ opacity: 0, y: 0 }}
+              animate={{ opacity: 1, y: -14 }}
+              exit={{ opacity: 0, y: -22 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+              className="pointer-events-none absolute z-30 rounded-full border border-accent/50 bg-bg/90 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-accent"
+              style={{ left: `${message.x}%`, top: `${message.y}%`, transform: "translate(-50%, -50%)" }}
+            >
+              {message.label}
+            </motion.span>
+          ))}
+        </AnimatePresence>
+      </div>
+
+      <div className="mt-4 rounded-lg border border-border/80 bg-bg/60 px-3 py-2.5 text-xs">
+        <div className="flex flex-wrap items-center justify-between gap-2 text-muted">
+          <span>
+            {sandbox.footerLabels.mode}: <span className="text-text">{state.mode === "manual" ? "Manual" : "Automation"}</span>
+          </span>
+          <span>
+            {sandbox.footerLabels.bugsFound}:{" "}
+            <span className="text-text">
+              {foundCount} / {state.bugs.length}
+            </span>
+          </span>
+        </div>
+        <div className="mt-2 flex items-center justify-between gap-2">
+          <span className="text-muted" aria-live="polite">
+            {sandbox.footerLabels.status}: <span className="text-text">{statusText}</span>
+          </span>
+          <button
+            type="button"
+            onClick={() => dispatch({ type: "RESET" })}
+            className="inline-flex items-center gap-1 rounded-full border border-border bg-surface-2/65 px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted transition hover:border-accent/45 hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+          >
+            <RotateCcw size={12} aria-hidden="true" />
+            {sandbox.footerLabels.reset}
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  );
+}

@@ -14,6 +14,45 @@ export type HeroContent = {
   microLine?: string;
 };
 
+export type SandboxContent = {
+  title: string;
+  badge: string;
+  helperText: {
+    manual: string;
+    automation: string;
+  };
+  modes: {
+    manual: string;
+    automation: string;
+  };
+  statusLabels: {
+    ready: string;
+    scanning: string;
+    detected: string;
+    reporting: string;
+    complete: string;
+    bugReported: string;
+  };
+  footerLabels: {
+    mode: string;
+    bugsFound: string;
+    status: string;
+    reset: string;
+  };
+  messageLabels: {
+    bugReported: string;
+  };
+  metrics: {
+    totalBugs: number;
+  };
+  timings: {
+    scanMs: number;
+    detectMs: number;
+    reportMs: number;
+    toastMs: number;
+  };
+};
+
 export type SkillGroup = {
   name: string;
   items: string[];
