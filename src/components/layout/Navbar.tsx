@@ -13,7 +13,7 @@ export function Navbar(): JSX.Element {
       <div className="relative mx-auto w-full max-w-6xl px-5 md:px-8 lg:max-w-[84rem] xl:max-w-[88rem] 2xl:max-w-[96rem]">
         <div className="flex h-16 items-center gap-5">
           <a href="#hero" className="shrink-0 font-heading text-sm tracking-[0.18em] text-accent">
-            LUCAS VACIS
+            Lucas Vacis | QA Automation Engineer
           </a>
           <nav className="ml-auto hidden items-center gap-4 text-sm text-muted md:flex">
             {navigationItems.map((item) => (

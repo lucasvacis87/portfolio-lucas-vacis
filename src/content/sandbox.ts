@@ -1,27 +1,27 @@
 import type { SandboxContent } from "../types/content";
 
 export const sandbox: SandboxContent = {
-  title: "Interactive QA Sandbox",
-  badge: "QA",
+  title: "QA Detection Sandbox",
+  badge: "Live Tool",
   helperText: {
-    manual: "Find and report the bugs yourself.",
-    automation: "Watch the system detect and report issues automatically."
+    manual: "Find and report the bugs manually.",
+    automation: "Watch the system detect and report them automatically."
   },
   modes: {
     manual: "Manual Mode",
     automation: "Automation Mode"
   },
   statusLabels: {
-    ready: "Ready",
-    scanning: "Scanning...",
+    ready: "Awaiting input",
+    scanning: "Scanning",
     detected: "Issue detected",
-    reporting: "Reporting issues",
+    reporting: "Reporting",
     complete: "Complete",
     bugReported: "Bug reported"
   },
   footerLabels: {
     mode: "Mode",
-    bugsFound: "Bugs found",
+    bugsFound: "Bugs reported",
     status: "Status",
     reset: "Reset"
   },

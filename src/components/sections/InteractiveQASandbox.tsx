@@ -35,6 +35,7 @@ export function InteractiveQASandbox(): JSX.Element {
   const isComplete = foundCount === state.bugs.length;
   const statusText = sandbox.statusLabels[state.statusKey];
   const targetBug = state.targetBugId !== null ? state.bugs.find((bug) => bug.id === state.targetBugId) : null;
+  const modeLabel = state.mode === "manual" ? "Manual Inspection" : "Automation Mode";
 
   useEffect(() => {
     if (state.mode !== "automation") {
@@ -133,28 +134,31 @@ export function InteractiveQASandbox(): JSX.Element {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="overflow-hidden rounded-2xl border border-border/85 bg-[#10151d] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.05),0_18px_48px_rgba(0,0,0,0.35)]"
+      className="overflow-hidden rounded-2xl border border-border/85 bg-[#0e131b] p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.06),0_22px_50px_rgba(0,0,0,0.38)]"
     >
       <div className="flex items-start justify-between gap-3">
         <div>
           <p className="font-mono text-xs uppercase tracking-[0.18em] text-accent-2">{sandbox.title}</p>
+          <p className="mt-2 text-sm font-medium text-text/90">Manual inspection vs Automated reporting</p>
           <p className="muted mt-2 max-w-sm text-sm leading-6">
             {state.mode === "manual" ? sandbox.helperText.manual : sandbox.helperText.automation}
           </p>
         </div>
-        <span className="inline-flex items-center gap-1 rounded-full border border-border bg-bg/70 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-muted">
+        <span className="inline-flex items-center gap-1 rounded-full border border-accent-2/35 bg-accent-2/12 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-accent-2">
           <Bot size={12} aria-hidden="true" />
           {sandbox.badge}
         </span>
       </div>
 
-      <div role="group" aria-label="Sandbox mode selector" className="mt-4 inline-flex rounded-full border border-border bg-bg/65 p-1">
+      <div role="group" aria-label="Sandbox mode selector" className="mt-4 inline-flex rounded-full border border-border/90 bg-bg/65 p-1">
         <button
           type="button"
           aria-pressed={state.mode === "manual"}
           onClick={() => dispatch({ type: "SET_MODE", mode: "manual" })}
           className={`rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] transition ${
-            state.mode === "manual" ? "bg-surface-2 text-text" : "text-muted hover:text-text"
+            state.mode === "manual"
+              ? "bg-surface-2 text-text shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
+              : "text-muted hover:text-text"
           }`}
         >
           {sandbox.modes.manual}
@@ -164,30 +168,56 @@ export function InteractiveQASandbox(): JSX.Element {
           aria-pressed={state.mode === "automation"}
           onClick={() => dispatch({ type: "SET_MODE", mode: "automation" })}
           className={`rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] transition ${
-            state.mode === "automation" ? "bg-surface-2 text-text" : "text-muted hover:text-text"
+            state.mode === "automation"
+              ? "bg-gradient-to-r from-accent/28 to-accent-2/25 text-text shadow-[0_0_18px_rgba(55,208,201,0.2)]"
+              : "text-muted hover:text-text"
           }`}
         >
           {sandbox.modes.automation}
         </button>
       </div>
 
-      <div className="relative mt-4 h-[18.5rem] rounded-xl border border-border/75 bg-[radial-gradient(circle_at_70%_12%,rgba(91,140,255,0.22),transparent_35%),radial-gradient(circle_at_8%_92%,rgba(55,208,201,0.18),transparent_40%),linear-gradient(transparent_95%,rgba(155,167,180,0.08)_95%),linear-gradient(90deg,transparent_95%,rgba(155,167,180,0.08)_95%)] bg-[length:100%_100%,100%_100%,22px_22px,22px_22px] sm:h-[19.5rem]">
+      <div className="relative mt-4 h-[18.5rem] rounded-xl border border-border/75 bg-[radial-gradient(circle_at_70%_12%,rgba(91,140,255,0.22),transparent_35%),radial-gradient(circle_at_8%_92%,rgba(55,208,201,0.18),transparent_40%),linear-gradient(transparent_95%,rgba(155,167,180,0.11)_95%),linear-gradient(90deg,transparent_95%,rgba(155,167,180,0.11)_95%)] bg-[length:100%_100%,100%_100%,20px_20px,20px_20px] sm:h-[19.5rem]">
+        {state.mode === "automation" && !isComplete && state.automationPhase === "scanning" && (
+          <motion.div
+            className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-accent-2/20 via-accent-2/10 to-transparent"
+            animate={{ x: ["-24%", "115%"] }}
+            transition={{ duration: 1.7, repeat: Infinity, ease: "linear" }}
+          />
+        )}
+
         {state.mode === "automation" && !isComplete && (
           <motion.div
-            className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-accent-2/22 to-transparent"
+            className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-accent-2/24 to-transparent"
             animate={{ y: [0, 210, 0] }}
             transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
           />
         )}
 
         {state.mode === "automation" && targetBug && (
-          <motion.div
-            className="pointer-events-none absolute z-10 h-11 w-11 rounded-full border border-accent/70"
-            style={{ left: `${targetBug.x}%`, top: `${targetBug.y}%`, transform: "translate(-50%, -50%)" }}
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: [0.9, 1.08, 1], opacity: 1 }}
-            transition={{ duration: 0.35, ease: "easeOut" }}
-          />
+          <>
+            <motion.div
+              className="pointer-events-none absolute z-10 h-11 w-11 rounded-full border border-accent/70"
+              style={{ left: `${targetBug.x}%`, top: `${targetBug.y}%`, transform: "translate(-50%, -50%)" }}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: [0.9, 1.08, 1], opacity: 1 }}
+              transition={{ duration: 0.35, ease: "easeOut" }}
+            />
+            <motion.div
+              className="pointer-events-none absolute z-10 h-16 w-16 rounded-full border border-accent-2/45"
+              style={{ left: `${targetBug.x}%`, top: `${targetBug.y}%`, transform: "translate(-50%, -50%)" }}
+              initial={{ scale: 0.6, opacity: 0 }}
+              animate={{ scale: [0.75, 1.12], opacity: [0.15, 0.65, 0.05] }}
+              transition={{ duration: 0.55, ease: "easeOut" }}
+            />
+            <motion.div
+              className="pointer-events-none absolute z-10 h-20 w-20 rounded-full border border-dashed border-accent/35"
+              style={{ left: `${targetBug.x}%`, top: `${targetBug.y}%`, transform: "translate(-50%, -50%)" }}
+              initial={{ scale: 0.88, opacity: 0 }}
+              animate={{ scale: [0.95, 1.02, 0.98], opacity: 0.8 }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
+            />
+          </>
         )}
 
         <AnimatePresence>
@@ -250,7 +280,7 @@ export function InteractiveQASandbox(): JSX.Element {
       <div className="mt-4 rounded-lg border border-border/80 bg-bg/60 px-3 py-2.5 text-xs">
         <div className="flex flex-wrap items-center justify-between gap-2 text-muted">
           <span>
-            {sandbox.footerLabels.mode}: <span className="text-text">{state.mode === "manual" ? "Manual" : "Automation"}</span>
+            {sandbox.footerLabels.mode}: <span className="text-text">{modeLabel}</span>
           </span>
           <span>
             {sandbox.footerLabels.bugsFound}:{" "}

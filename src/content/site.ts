@@ -15,8 +15,8 @@ export const hero: HeroContent = {
   kicker: "Senior QA Automation Engineer \u00B7 AI-Assisted Quality Engineering",
   title: "Building scalable test automation, quality systems, and AI-assisted engineering workflows.",
   subtitle:
-    "I design and implement maintainable UI and API automation frameworks, CI-integrated quality workflows, and modern testing strategies that help teams deliver faster with stronger engineering confidence.",
-  chips: ["Playwright", "Cypress", "TypeScript", "Jest", "API Testing", "CI/CD", "GitHub Actions", "AI Workflows"],
+    "I design maintainable UI and API automation frameworks, CI-integrated quality workflows, and testing systems that help teams ship with confidence.",
+  chips: ["Playwright", "Cypress", "TypeScript", "Jest", "API Testing", "CI/CD", "GitHub Actions", "AI Workflows", "Test Architecture", "CodeX", "Agents"],
   primaryCta: { label: "View Work", href: "#projects" },
   secondaryCta: { label: "Contact Me", href: "#contact" },
   tertiaryCta: { label: "Download Resume", href: "resume.pdf", download: "Lucas-Vacis-Resume.pdf" },
