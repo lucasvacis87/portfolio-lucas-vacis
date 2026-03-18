@@ -1,7 +1,6 @@
 import { ExternalLink } from "lucide-react";
 import { projects } from "../../content/projects";
 import { Section } from "../layout/Section";
-import repoGraph from "../../assets/visuals/repo-graph.svg";
 
 export function ProjectsSection(): JSX.Element {
   return (
@@ -10,8 +9,8 @@ export function ProjectsSection(): JSX.Element {
       title="Featured Work"
       subtitle="Selected work focused on automation, engineering quality, and modern technical execution."
     >
-      <div className="mb-5 overflow-hidden rounded-2xl border border-border/80 bg-surface/70">
-        <img src={repoGraph} alt="Abstract project topology and system flow map" className="h-44 w-full object-cover opacity-90 md:h-52" loading="lazy" />
+      <div className="mb-5 overflow-hidden rounded-2xl border border-border/80 bg-[radial-gradient(circle_at_18%_20%,rgba(91,140,255,0.2),transparent_36%),radial-gradient(circle_at_86%_78%,rgba(55,208,201,0.18),transparent_40%),linear-gradient(145deg,rgba(17,22,29,0.92),rgba(10,14,19,0.9))]">
+        <div className="h-44 w-full bg-[linear-gradient(rgba(155,167,180,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(155,167,180,0.08)_1px,transparent_1px)] bg-[size:28px_28px] opacity-75 md:h-52" />
       </div>
       <div className="grid gap-4 xl:grid-cols-3">
         {projects.map((project) => (

@@ -1,7 +1,6 @@
 import { ExternalLink } from "lucide-react";
 import { repositories } from "../../content/repositories";
 import { Section } from "../layout/Section";
-import repoGraph from "../../assets/visuals/repo-graph.svg";
 
 export function RepositoriesSection(): JSX.Element {
   return (
@@ -10,8 +9,8 @@ export function RepositoriesSection(): JSX.Element {
       title="Featured Repositories"
       subtitle="Selected repositories that reflect how I build, structure, and scale engineering work."
     >
-      <div className="mb-5 overflow-hidden rounded-2xl border border-border/80 bg-surface/70">
-        <img src={repoGraph} alt="Abstract repository and CI flow graph" className="h-40 w-full object-cover opacity-90 md:h-48" loading="lazy" />
+      <div className="mb-5 overflow-hidden rounded-2xl border border-border/80 bg-[radial-gradient(circle_at_18%_20%,rgba(91,140,255,0.2),transparent_36%),radial-gradient(circle_at_86%_78%,rgba(55,208,201,0.18),transparent_40%),linear-gradient(145deg,rgba(17,22,29,0.92),rgba(10,14,19,0.9))]">
+        <div className="h-40 w-full bg-[linear-gradient(rgba(155,167,180,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(155,167,180,0.08)_1px,transparent_1px)] bg-[size:28px_28px] opacity-75 md:h-48" />
       </div>
       <div className="grid gap-4 lg:grid-cols-3">
         {repositories.map((repo) => (

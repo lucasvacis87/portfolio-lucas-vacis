@@ -1,6 +1,5 @@
 import { contact } from "../../content/contact";
 import { Section } from "../layout/Section";
-import contactSignal from "../../assets/visuals/contact-signal.svg";
 import { toMailtoLink, withBaseUrl } from "../../utils/url";
 
 export function ContactSection(): JSX.Element {
@@ -11,13 +10,8 @@ export function ContactSection(): JSX.Element {
     <Section id="contact" title={contact.title} subtitle={contact.subtitle}>
       <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
         <p className="muted max-w-3xl leading-7">{contact.body}</p>
-        <div className="overflow-hidden rounded-2xl border border-border/80 bg-surface/70">
-          <img
-            src={contactSignal}
-            alt="Abstract QA collaboration signal map"
-            className="h-full w-full object-cover opacity-90"
-            loading="lazy"
-          />
+        <div className="overflow-hidden rounded-2xl border border-border/80 bg-[radial-gradient(circle_at_22%_26%,rgba(91,140,255,0.18),transparent_40%),radial-gradient(circle_at_80%_78%,rgba(55,208,201,0.2),transparent_40%),linear-gradient(145deg,rgba(17,22,29,0.92),rgba(10,14,19,0.9))]">
+          <div className="h-full min-h-[200px] bg-[linear-gradient(rgba(155,167,180,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(155,167,180,0.08)_1px,transparent_1px)] bg-[size:28px_28px] opacity-75" />
         </div>
       </div>
       <div className="mt-6 flex flex-wrap gap-2.5">
