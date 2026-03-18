@@ -3,7 +3,7 @@ import type { HeroContent, NavigationItem } from "../types/content";
 export const navigationItems: NavigationItem[] = [
   { label: "Home", href: "#hero" },
   { label: "About", href: "#about" },
-  { label: "Expertise", href: "#skills" },
+  { label: "Capabilities", href: "#engineering-capabilities" },
   { label: "Work", href: "#projects" },
   { label: "Repositories", href: "#repositories" },
   { label: "Experience", href: "#experience" },

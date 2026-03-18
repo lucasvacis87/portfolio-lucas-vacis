@@ -6,29 +6,28 @@ export function RepositoriesSection(): JSX.Element {
   return (
     <Section
       id="repositories"
+      variant="flow"
+      accent="indigo"
       title="Featured Repositories"
       subtitle="Selected repositories that reflect how I build, structure, and scale engineering work."
     >
-      <div className="mb-5 overflow-hidden rounded-2xl border border-border/80 bg-[radial-gradient(circle_at_18%_20%,rgba(91,140,255,0.2),transparent_36%),radial-gradient(circle_at_86%_78%,rgba(55,208,201,0.18),transparent_40%),linear-gradient(145deg,rgba(17,22,29,0.92),rgba(10,14,19,0.9))]">
-        <div className="h-40 w-full bg-[linear-gradient(rgba(155,167,180,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(155,167,180,0.08)_1px,transparent_1px)] bg-[size:28px_28px] opacity-75 md:h-48" />
-      </div>
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="space-y-5">
         {repositories.map((repo) => (
           <article
             key={repo.name}
-            className="rounded-2xl border border-border/80 bg-surface/75 p-5 transition duration-300 hover:-translate-y-0.5 hover:border-accent-2/45 hover:shadow-glow"
+            className="border-b border-border/70 pb-5 last:border-b-0 last:pb-0"
           >
-            <div className="flex items-start justify-between gap-4">
-              <h3 className="font-mono text-sm text-text">{repo.name}</h3>
-              <span className="rounded-full border border-border/80 bg-bg/65 px-2.5 py-1 text-[11px] uppercase tracking-[0.1em] text-accent">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <h3 className="font-mono text-sm text-text md:text-base">{repo.name}</h3>
+              <span className="rounded-full border border-border/70 bg-bg/45 px-2.5 py-1 text-[11px] uppercase tracking-[0.1em] text-accent">
                 {repo.label}
               </span>
             </div>
             <p className="muted mt-3 text-sm leading-6">{repo.description}</p>
             <p className="mt-3 text-sm text-text">{repo.demonstrates}</p>
             <div className="mt-4 flex flex-wrap gap-2">
-              {repo.stack.map((tag) => (
-                <span key={tag} className="rounded-full border border-border/80 bg-bg/60 px-2.5 py-1 text-xs text-muted">
+                {repo.stack.map((tag) => (
+                <span key={tag} className="rounded-full border border-border/70 bg-bg/45 px-2.5 py-1 text-xs text-muted">
                   {tag}
                 </span>
               ))}

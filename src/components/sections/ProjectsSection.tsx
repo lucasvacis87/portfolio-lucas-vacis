@@ -6,6 +6,8 @@ export function ProjectsSection(): JSX.Element {
   return (
     <Section
       id="projects"
+      variant="panel"
+      accent="indigo"
       title="Featured Work"
       subtitle="Selected work focused on automation, engineering quality, and modern technical execution."
     >
