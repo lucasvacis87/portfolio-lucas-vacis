@@ -7,11 +7,13 @@ export function ContactSection(): JSX.Element {
   const emailHref = toMailtoLink(contact.email, contact.emailSubject);
 
   return (
-    <Section id="contact" title={contact.title} subtitle={contact.subtitle}>
+    <Section id="contact" variant="flow" accent="indigo" title={contact.title} subtitle={contact.subtitle}>
       <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
         <p className="muted max-w-3xl leading-7">{contact.body}</p>
-        <div className="overflow-hidden rounded-2xl border border-border/80 bg-[radial-gradient(circle_at_22%_26%,rgba(91,140,255,0.18),transparent_40%),radial-gradient(circle_at_80%_78%,rgba(55,208,201,0.2),transparent_40%),linear-gradient(145deg,rgba(17,22,29,0.92),rgba(10,14,19,0.9))]">
-          <div className="h-full min-h-[200px] bg-[linear-gradient(rgba(155,167,180,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(155,167,180,0.08)_1px,transparent_1px)] bg-[size:28px_28px] opacity-75" />
+        <div className="relative min-h-[200px]">
+          <div className="absolute inset-x-0 top-10 h-px bg-gradient-to-r from-transparent via-accent-2/75 to-transparent" />
+          <div className="absolute inset-x-0 top-20 h-px bg-gradient-to-r from-transparent via-border/70 to-transparent" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_35%_30%,rgba(91,140,255,0.16),transparent_46%),radial-gradient(circle_at_75%_70%,rgba(55,208,201,0.14),transparent_42%)]" />
         </div>
       </div>
       <div className="mt-6 flex flex-wrap gap-2.5">

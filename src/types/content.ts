@@ -53,9 +53,19 @@ export type SandboxContent = {
   };
 };
 
-export type SkillGroup = {
+export type CapabilityNode = {
+  id: string;
   name: string;
-  items: string[];
+  description: string;
+  position: {
+    x: number;
+    y: number;
+  };
+};
+
+export type CapabilityConnection = {
+  from: CapabilityNode["id"];
+  to: CapabilityNode["id"];
 };
 
 export type Service = {

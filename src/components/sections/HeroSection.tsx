@@ -32,14 +32,15 @@ export function HeroSection(): JSX.Element {
   return (
     <section
       id="hero"
-      className="relative overflow-hidden rounded-[1.7rem] border border-border/70 bg-surface/60 p-7 md:p-10 lg:-mx-12 lg:px-16 xl:-mx-32 xl:px-24 2xl:-mx-48 2xl:px-28"
+      className="relative overflow-hidden pb-16 pt-6 md:pb-20 md:pt-10"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_14%,rgba(91,140,255,0.24),transparent_42%),radial-gradient(circle_at_84%_36%,rgba(55,208,201,0.22),transparent_40%),radial-gradient(circle_at_100%_100%,rgba(55,208,201,0.12),transparent_46%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(155,167,180,0.09)_1px,transparent_1px),linear-gradient(90deg,rgba(155,167,180,0.08)_1px,transparent_1px)] bg-[size:30px_30px] opacity-45 [mask-image:radial-gradient(circle_at_center,black,transparent_84%)]" />
-      <div className="pointer-events-none absolute inset-0 opacity-[0.14] [background-image:radial-gradient(rgba(255,255,255,0.5)_0.55px,transparent_0.55px)] [background-size:3px_3px] [mask-image:radial-gradient(circle_at_center,black,transparent_78%)]" />
-      <div className="absolute -left-20 top-12 h-56 w-56 rounded-full bg-accent/14 blur-3xl" />
-      <div className="absolute -right-20 top-8 h-72 w-72 rounded-full bg-accent-2/14 blur-3xl" />
-      <div className="relative grid gap-12 md:grid-cols-[1.2fr_0.8fr] md:items-center">
+      <div className="pointer-events-none absolute -left-20 top-10 h-64 w-64 rounded-full bg-accent/12 blur-3xl" />
+      <div className="pointer-events-none absolute -right-24 top-8 h-72 w-72 rounded-full bg-accent-2/12 blur-3xl" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[82%] bg-[radial-gradient(circle_at_16%_20%,rgba(91,140,255,0.22),transparent_44%),radial-gradient(circle_at_84%_34%,rgba(55,208,201,0.18),transparent_42%)]" />
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[76%] bg-[linear-gradient(rgba(155,167,180,0.08)_1px,transparent_1px),linear-gradient(90deg,rgba(155,167,180,0.07)_1px,transparent_1px)] bg-[size:34px_34px] opacity-35 [mask-image:radial-gradient(circle_at_center,black,transparent_82%)]" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-28 bg-gradient-to-b from-transparent via-bg/70 to-bg" />
+      <div className="relative mx-auto w-full max-w-[84rem] px-5 md:px-8 xl:max-w-[88rem] 2xl:max-w-[96rem]">
+        <div className="grid gap-12 px-2 md:grid-cols-[1.2fr_0.8fr] md:items-center md:px-3">
         <motion.div
           variants={staggerContainer}
           initial="hidden"
@@ -102,6 +103,7 @@ export function HeroSection(): JSX.Element {
           </motion.div>
         </motion.div>
         <InteractiveQASandbox />
+        </div>
       </div>
     </section>
   );

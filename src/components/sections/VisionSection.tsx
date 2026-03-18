@@ -3,7 +3,7 @@ import { Section } from "../layout/Section";
 
 export function VisionSection(): JSX.Element {
   return (
-    <Section id="vision" title="QA + AI" subtitle={qaVision.subtitle}>
+    <Section id="vision" variant="panel" accent="indigo" title="QA + AI" subtitle={qaVision.subtitle}>
       <div className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
         <div>
           <p className="muted leading-7">{qaVision.body}</p>
