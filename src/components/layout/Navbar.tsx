@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FlaskConical, Menu, X } from "lucide-react";
 import { navigationItems } from "../../content/site";
+import { containerClassName } from "./Container";
 
 export function Navbar(): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,7 +39,7 @@ export function Navbar(): JSX.Element {
 
   return (
     <header className="sticky top-0 z-30 border-b border-border/45 bg-bg/78 backdrop-blur-xl">
-      <div className="relative mx-auto w-full max-w-6xl px-5 md:px-8 lg:max-w-[84rem] xl:max-w-[88rem] 2xl:max-w-[96rem]">
+      <div className={`relative ${containerClassName}`}>
         <div className="flex h-14 items-center gap-4">
           <a
             href="#hero"

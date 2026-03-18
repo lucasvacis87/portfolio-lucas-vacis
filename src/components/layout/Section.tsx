@@ -19,7 +19,7 @@ export function Section({
   headerAlign = "left",
   children
 }: SectionProps): JSX.Element {
-  const baseClasses = "relative py-4 md:py-7 lg:-mx-12 lg:px-16 xl:-mx-32 xl:px-24 2xl:-mx-48 2xl:px-28";
+  const baseClasses = "relative py-3 md:py-6";
   const panelClasses = "section-card p-6 md:p-8";
   const flowClasses = "px-1 md:px-2";
   const accentClass = accent === "indigo" ? "section-accent-indigo" : "section-accent-aqua";
