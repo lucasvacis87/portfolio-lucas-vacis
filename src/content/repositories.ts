@@ -3,11 +3,12 @@ import type { RepositoryItem } from "../types/content";
 export const repositories: RepositoryItem[] = [
   {
     name: "playwright-repo",
-    label: "Automation Architecture",
-    description:
-      "A practical example of modern test automation design using Playwright, TypeScript, CI workflows, parallel execution, and reporting strategy.",
+    label: "Automation",
+    tone: "automation",
+    priority: "featured",
+    description: "Production-grade Playwright architecture built for maintainable UI and API coverage, CI execution, and fast defect signal.",
     stack: ["Playwright", "TypeScript", "CI", "Reporting"],
-    demonstrates: "How I structure scalable automation with engineering-level maintainability.",
+    impact: "Shows how I structure automation as an engineering system, not a pile of tests: reusable patterns, reliable reporting, and CI-friendly execution.",
     links: {
       primary: { label: "View Repository", href: "https://github.com/lucasvacis87/playwright-repo" },
       secondary: { label: "Open Project", href: "https://github.com/lucasvacis87/playwright-repo" }
@@ -15,11 +16,12 @@ export const repositories: RepositoryItem[] = [
   },
   {
     name: "portfolio-lucas-vacis",
-    label: "Frontend Delivery",
-    description:
-      "The repository behind this portfolio, built with a modular frontend architecture, premium UI direction, and scalable content structure.",
-    stack: ["React", "TypeScript", "Tailwind", "Framer Motion"],
-    demonstrates: "How I present technical positioning with clean architecture and production-ready delivery.",
+    label: "Frontend",
+    tone: "frontend",
+    priority: "secondary",
+    description: "Content-driven React portfolio with modular sections, motion, and GitHub Pages-safe delivery.",
+    stack: ["React", "TypeScript", "Tailwind", "Motion"],
+    impact: "Demonstrates clean frontend composition and production-safe static deployment discipline.",
     links: {
       primary: { label: "View Repository", href: "https://github.com/lucasvacis87/portfolio-lucas-vacis" },
       secondary: { label: "Live Site", href: "https://lucasvacis87.github.io/portfolio-lucas-vacis/" }
@@ -27,15 +29,15 @@ export const repositories: RepositoryItem[] = [
   },
   {
     name: "sweetly",
-    label: "Full-Stack Monorepo",
-    description:
-      "A real e-commerce project for my mother's venture, built as a backend + frontend monorepo with checkout and complete purchase flow.",
-    stack: ["Monorepo", "Backend", "Frontend", "API Integration"],
-    demonstrates:
-      "How I deliver production-ready commerce flows end-to-end, from architecture to execution; later migrated to Tiendanube for platform operations.",
+    label: "Monorepo",
+    tone: "product",
+    priority: "secondary",
+    description: "End-to-end commerce codebase connecting product flows, API integration, and full-stack delivery.",
+    stack: ["Monorepo", "Backend", "Frontend", "API"],
+    impact: "Reflects product-minded delivery across architecture, integration boundaries, and execution detail.",
     links: {
       primary: { label: "View Repository", href: "https://github.com/lucasvacis87/sweetly" },
-      secondary: { label: "Live Demo", href: "https://lucasvacis87.github.io/sweetly-website/" }
+      secondary: { label: "Open Project", href: "https://lucasvacis87.github.io/sweetly-website/" }
     }
   }
 ];

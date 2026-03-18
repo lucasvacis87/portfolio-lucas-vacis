@@ -5,14 +5,14 @@
 @tailwind utilities;
 
 :root {
-  --color-bg: #0b0d10;
-  --color-surface: #12161b;
-  --color-surface-2: #171c22;
-  --color-text: #e8edf2;
-  --color-muted: #9ba7b4;
-  --color-accent: #37d0c9;
-  --color-accent-2: #5b8cff;
-  --color-border: rgba(155, 167, 180, 0.2);
+  --color-bg: #070a0f;
+  --color-surface: #0f141d;
+  --color-surface-2: #141b28;
+  --color-text: #edf2ff;
+  --color-muted: #9ba8bc;
+  --color-accent: #4e80ff;
+  --color-accent-2: #7d63ff;
+  --color-border: rgba(136, 150, 186, 0.22);
 }
 
 * {
@@ -38,37 +38,37 @@ body {
   font-family: Manrope, sans-serif;
   text-rendering: geometricPrecision;
   background:
-    radial-gradient(circle at 8% -10%, rgba(91, 140, 255, 0.16), transparent 28%),
-    radial-gradient(circle at 100% 5%, rgba(55, 208, 201, 0.12), transparent 32%),
-    radial-gradient(circle at 50% 110%, rgba(91, 140, 255, 0.1), transparent 36%),
+    radial-gradient(circle at 8% -10%, rgba(78, 128, 255, 0.13), transparent 30%),
+    radial-gradient(circle at 100% 5%, rgba(125, 99, 255, 0.08), transparent 34%),
+    radial-gradient(circle at 50% 110%, rgba(78, 128, 255, 0.07), transparent 38%),
     var(--color-bg);
   color: var(--color-text);
 }
 
 .section-card {
-  border: 1px solid rgba(155, 167, 180, 0.19);
+  border: 1px solid rgba(140, 160, 196, 0.18);
   background:
-    radial-gradient(circle at 10% -20%, rgba(91, 140, 255, 0.12), transparent 34%),
-    radial-gradient(circle at 100% 120%, rgba(55, 208, 201, 0.08), transparent 35%),
-    linear-gradient(140deg, rgba(255, 255, 255, 0.024), rgba(255, 255, 255, 0.008)),
-    rgba(18, 22, 27, 0.64);
-  border-radius: 1.25rem;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03), 0 14px 34px rgba(0, 0, 0, 0.16);
+    radial-gradient(circle at 14% -18%, rgba(78, 128, 255, 0.14), transparent 34%),
+    radial-gradient(circle at 86% 120%, rgba(125, 99, 255, 0.1), transparent 35%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.012), rgba(255, 255, 255, 0.004)),
+    rgba(15, 20, 29, 0.9);
+  border-radius: 1rem;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02), 0 20px 44px rgba(0, 0, 0, 0.34);
 }
 
 .section-accent-aqua {
-  --section-accent: rgba(55, 208, 201, 1);
+  --section-accent: rgba(78, 128, 255, 1);
 }
 
 .section-accent-indigo {
-  --section-accent: rgba(91, 140, 255, 1);
+  --section-accent: rgba(125, 99, 255, 1);
 }
 
 .section-title {
   font-family: "Space Grotesk", sans-serif;
-  font-size: clamp(1.55rem, 2vw, 2rem);
-  font-weight: 600;
-  letter-spacing: -0.02em;
+  font-size: clamp(1.65rem, 2.2vw, 2.1rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
 }
 
 .muted {

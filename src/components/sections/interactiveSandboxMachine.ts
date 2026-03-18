@@ -21,6 +21,7 @@ export type ToastMessage = {
 export type SandboxState = {
   mode: Mode;
   bugs: BugNode[];
+  manualRevealed: boolean;
   statusKey: StatusKey;
   automationPhase: AutomationPhase;
   targetBugId: number | null;
@@ -31,6 +32,7 @@ export type SandboxState = {
 
 export type SandboxAction =
   | { type: "SET_MODE"; mode: Mode }
+  | { type: "REVEAL_MANUAL_BUGS" }
   | { type: "SET_ACTIVE_BUG"; bugId: number | null }
   | { type: "AUTOMATION_DETECTED"; bugId: number }
   | { type: "SET_AUTOMATION_PHASE"; phase: AutomationPhase; statusKey?: StatusKey }
@@ -70,6 +72,7 @@ export function createInitialSandboxState(): SandboxState {
   return {
     mode: "manual",
     bugs: createBugs(),
+    manualRevealed: false,
     statusKey: "ready",
     automationPhase: "idle",
     targetBugId: null,
@@ -86,12 +89,21 @@ export function sandboxReducer(state: SandboxState, action: SandboxAction): Sand
       return {
         ...state,
         mode: action.mode,
+        manualRevealed: action.mode === "automation",
         activeBugId: null,
         targetBugId: null,
         automationPhase: "idle",
         statusKey: isComplete ? "complete" : action.mode === "automation" ? "scanning" : "ready"
       };
     }
+    case "REVEAL_MANUAL_BUGS":
+      if (state.mode !== "manual" || state.manualRevealed) {
+        return state;
+      }
+      return {
+        ...state,
+        manualRevealed: true
+      };
     case "SET_ACTIVE_BUG":
       return {
         ...state,
@@ -146,6 +158,7 @@ export function sandboxReducer(state: SandboxState, action: SandboxAction): Sand
       return {
         ...state,
         bugs: createBugs(),
+        manualRevealed: state.mode === "automation",
         messages: [],
         activeBugId: null,
         targetBugId: null,

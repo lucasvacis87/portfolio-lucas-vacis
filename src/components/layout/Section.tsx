@@ -7,6 +7,7 @@ type SectionProps = PropsWithChildren<{
   subtitle?: string;
   variant?: "panel" | "flow";
   accent?: "aqua" | "indigo";
+  headerAlign?: "left" | "center";
 }>;
 
 export function Section({
@@ -15,6 +16,7 @@ export function Section({
   subtitle,
   variant = "panel",
   accent = "aqua",
+  headerAlign = "left",
   children
 }: SectionProps): JSX.Element {
   const baseClasses = "relative py-4 md:py-7 lg:-mx-12 lg:px-16 xl:-mx-32 xl:px-24 2xl:-mx-48 2xl:px-28";
@@ -37,9 +39,9 @@ export function Section({
           <span className="pointer-events-none absolute -left-8 top-10 h-36 w-36 rounded-full bg-[var(--section-accent)] opacity-[0.07] blur-3xl" />
         </>
       ) : null}
-      <header className="mb-6">
+      <header className={`mb-6 ${headerAlign === "center" ? "mx-auto max-w-[76ch] text-center" : ""}`}>
         <h2 className="section-title">{title}</h2>
-        {subtitle ? <p className="muted mt-2 max-w-2xl">{subtitle}</p> : null}
+        {subtitle ? <p className={`muted mt-2 ${headerAlign === "center" ? "mx-auto max-w-[62ch]" : "max-w-2xl"}`}>{subtitle}</p> : null}
       </header>
       {children}
     </motion.section>

@@ -1,9 +1,8 @@
 export const about = {
   title: "Automation-First Quality Engineering",
-  subtitle: "A system-oriented approach to building reliable software.",
+  subtitle: "Quality designed as an engineering system, not an afterthought.",
   paragraphs: [
-    "I approach quality engineering as a system design problem, not just a testing task.",
-    "Instead of focusing on execution, I design structures where quality is built into the workflow through clear architecture, reliable signals, and scalable automation.",
-    "My focus is making testing sustainable over time, reducing CI friction, and turning automation into a long-term asset instead of a maintenance burden."
+    "I build quality workflows where architecture, CI signals, and automation patterns reinforce each other.",
+    "The goal is simple: faster releases with stronger confidence and lower maintenance overhead."
   ]
 };

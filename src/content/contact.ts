@@ -1,8 +1,8 @@
 export const contact = {
-  title: "Let's Build Better Quality Systems",
-  subtitle: "Open to opportunities in QA Automation, SDET, and modern quality engineering roles.",
-  body: "If you are looking for someone who can contribute beyond test execution - through automation architecture, quality strategy, CI integration, and AI-assisted engineering workflows - I would be glad to connect.",
-  closing: "Focused on scalable automation, modern engineering quality, and continuous improvement.",
+  title: "Let's Connect",
+  subtitle: "Open to QA Automation, SDET, and quality engineering opportunities.",
+  body: "If you need someone to strengthen automation architecture, CI quality workflows, and AI-assisted delivery, let's talk.",
+  closing: "Focused on scalable systems, clean execution, and continuous improvement.",
   email: "lucasvacis@gmail.com",
   emailSubject: "Portfolio Contact - QA Automation Collaboration",
   phone: "+54 9 11 3195 1392",

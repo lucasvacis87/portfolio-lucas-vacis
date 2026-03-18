@@ -1,4 +1,4 @@
-export type NavigationItem = {
+﻿export type NavigationItem = {
   label: string;
   href: `#${string}`;
 };
@@ -53,19 +53,11 @@ export type SandboxContent = {
   };
 };
 
-export type CapabilityNode = {
-  id: string;
-  name: string;
-  description: string;
-  position: {
-    x: number;
-    y: number;
-  };
-};
-
-export type CapabilityConnection = {
-  from: CapabilityNode["id"];
-  to: CapabilityNode["id"];
+export type EngineeringStackColumn = {
+  title: string;
+  accent: "blue" | "indigo" | "teal" | "purple";
+  summary: string;
+  items: string[];
 };
 
 export type Service = {
@@ -73,28 +65,36 @@ export type Service = {
   description: string;
 };
 
-export type Project = {
-  title: string;
-  subtitle: string;
-  description: string;
-  highlights: string[];
-  stack: string[];
-  links: {
-    primary: { label: string; href: string };
-    secondary: { label: string; href: string };
-  };
+export type ExperienceItem = {
+  role: string;
+  context: string;
+  period: string;
+  summary: string;
 };
 
-export type ExperienceItem = {
+export type QAVisionPillar = {
   title: string;
+  description: string;
+};
+
+export type QAVisionTrack = {
+  title: string;
+  points: string[];
+};
+
+export type QAVisionOutcome = {
+  label: string;
+  value: string;
 };
 
 export type RepositoryItem = {
   name: string;
   label: string;
+  tone: "automation" | "frontend" | "product";
+  priority: "featured" | "secondary";
   description: string;
   stack: string[];
-  demonstrates: string;
+  impact: string;
   links: {
     primary: { label: string; href: string };
     secondary: { label: string; href: string };

@@ -1,48 +1,28 @@
-import type { CapabilityConnection, CapabilityNode } from "../types/content";
+import type { EngineeringStackColumn } from "../types/content";
 
-export const capabilityNodes: CapabilityNode[] = [
+export const engineeringStackColumns: EngineeringStackColumn[] = [
   {
-    id: "test-architecture",
-    name: "Test Architecture",
-    description: "Designing scalable, maintainable automation frameworks and system-level testing structures.",
-    position: { x: 18, y: 14 }
+    title: "UI Automation",
+    accent: "blue",
+    summary: "Playwright · Cypress\nComponent testing · E2E strategy",
+    items: ["Playwright", "Cypress", "Testing Library", "Component testing"]
   },
   {
-    id: "ui-automation",
-    name: "UI Automation",
-    description: "Building resilient UI automation with reliable selectors, reusable patterns, and high-signal scenarios.",
-    position: { x: 78, y: 14 }
+    title: "API & Data",
+    accent: "indigo",
+    summary: "REST / GraphQL · Contract testing\nData management · Mocking strategy",
+    items: ["REST / GraphQL", "Contract testing", "Test data management", "Mocking strategies"]
   },
   {
-    id: "api-testing",
-    name: "API Testing",
-    description: "Validating service behavior through contract-aware checks, data integrity workflows, and backend confidence.",
-    position: { x: 20, y: 50 }
+    title: "CI/CD & Infrastructure",
+    accent: "teal",
+    summary: "GitHub Actions · Parallel execution\nPR environments · Test pipelines",
+    items: ["GitHub Actions", "Parallel execution", "PR environments", "Test pipelines"]
   },
   {
-    id: "ci-parallel-execution",
-    name: "CI & Parallel Execution",
-    description: "Structuring fast, deterministic pipelines with parallel execution and actionable quality gates.",
-    position: { x: 80, y: 50 }
-  },
-  {
-    id: "ai-assisted-qa",
-    name: "AI-Assisted QA",
-    description: "Using AI to accelerate test design, implementation, and debugging while preserving engineering rigor.",
-    position: { x: 50, y: 31 }
+    title: "AI & Productivity",
+    accent: "purple",
+    summary: "AI-assisted generation · Debugging\nCode automation · Quality insights",
+    items: ["AI-assisted test generation", "Debugging workflows", "Code automation", "Quality insights"]
   }
 ];
-
-export const capabilityConnections: CapabilityConnection[] = [
-  { from: "test-architecture", to: "ui-automation" },
-  { from: "test-architecture", to: "api-testing" },
-  { from: "test-architecture", to: "ci-parallel-execution" },
-  { from: "ui-automation", to: "ci-parallel-execution" },
-  { from: "api-testing", to: "ci-parallel-execution" },
-  { from: "ai-assisted-qa", to: "test-architecture" },
-  { from: "ai-assisted-qa", to: "ui-automation" },
-  { from: "ai-assisted-qa", to: "api-testing" },
-  { from: "ai-assisted-qa", to: "ci-parallel-execution" }
-];
-
-export const defaultActiveCapability = "test-architecture";

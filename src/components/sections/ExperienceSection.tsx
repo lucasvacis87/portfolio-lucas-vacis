@@ -3,7 +3,7 @@ import { Section } from "../layout/Section";
 
 export function ExperienceSection(): JSX.Element {
   return (
-    <Section id="experience" variant="flow" accent="aqua" title="Experience" subtitle={experienceIntro.subtitle}>
+    <Section id="experience" variant="flow" accent="aqua" headerAlign="center" title="Experience" subtitle={experienceIntro.subtitle}>
       <div className="space-y-4">
         {experienceIntro.paragraphs.map((paragraph) => (
           <p key={paragraph} className="muted leading-7">
@@ -11,12 +11,23 @@ export function ExperienceSection(): JSX.Element {
           </p>
         ))}
       </div>
-      <div className="mt-7 grid gap-4 md:grid-cols-2">
-        {experience.map((item, index) => (
-          <article key={item.title} className="relative border-l border-border/75 pl-4">
-            <span className="absolute -left-[5px] top-1.5 h-2.5 w-2.5 rounded-full bg-accent/85 shadow-[0_0_12px_rgba(55,208,201,0.35)]" />
-            <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-accent/80">Track {String(index + 1).padStart(2, "0")}</p>
-            <p className="mt-1 text-sm leading-6 text-text">{item.title}</p>
+
+      <div className="mt-7 space-y-4">
+        {experience.map((item) => (
+          <article
+            key={`${item.role}-${item.period}`}
+            className="rounded-2xl border border-border/50 bg-[#111722]/88 px-5 py-4 transition duration-300 hover:border-accent/28 hover:shadow-[0_16px_34px_rgba(0,0,0,0.28),0_0_24px_rgba(55,208,201,0.08)]"
+          >
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <h3 className="font-heading text-lg">{item.role}</h3>
+                <p className="muted mt-1 text-sm">{item.context}</p>
+              </div>
+              <span className="rounded-md border border-border/75 bg-bg/55 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
+                {item.period}
+              </span>
+            </div>
+            <p className="muted mt-3 text-sm leading-6">{item.summary}</p>
           </article>
         ))}
       </div>

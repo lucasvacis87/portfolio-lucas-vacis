@@ -1,34 +1,87 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { FlaskConical, Menu, X } from "lucide-react";
 import { navigationItems } from "../../content/site";
 
 export function Navbar(): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeHref, setActiveHref] = useState<string>("#hero");
 
   const closeMenu = (): void => setIsOpen(false);
 
+  useEffect(() => {
+    const updateActiveSection = (): void => {
+      let nextActive = "#hero";
+
+      navigationItems.forEach((item) => {
+        const section = document.querySelector<HTMLElement>(item.href);
+        if (!section) {
+          return;
+        }
+
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= 120) {
+          nextActive = item.href;
+        }
+      });
+
+      setActiveHref(nextActive);
+    };
+
+    updateActiveSection();
+    window.addEventListener("scroll", updateActiveSection, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", updateActiveSection);
+    };
+  }, []);
+
   return (
-    <header className="sticky top-0 z-30 border-b border-border/60 bg-bg/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-30 border-b border-border/45 bg-bg/78 backdrop-blur-xl">
       <div className="relative mx-auto w-full max-w-6xl px-5 md:px-8 lg:max-w-[84rem] xl:max-w-[88rem] 2xl:max-w-[96rem]">
-        <div className="flex h-16 items-center gap-5">
-          <a href="#hero" className="shrink-0 font-heading text-sm tracking-[0.18em] text-accent">
-            Lucas Vacis | QA Automation Engineer
+        <div className="flex h-14 items-center gap-4">
+          <a
+            href="#hero"
+            aria-label="Go to hero section"
+            className="shrink-0 rounded-sm bg-accent-2/14 p-2 text-accent-2 transition hover:bg-accent-2/24"
+          >
+            <FlaskConical size={28} aria-hidden="true" />
           </a>
-          <nav className="ml-auto hidden items-center gap-4 text-sm text-muted md:flex">
+          <nav className="ml-auto hidden items-center gap-1.5 text-[12px] text-muted md:flex">
             {navigationItems.map((item) => (
-              <a key={item.href} href={item.href} className="whitespace-nowrap transition-colors hover:text-text">
+              <a
+                key={item.href}
+                href={item.href}
+                className={`group relative whitespace-nowrap rounded-sm px-2.5 py-1.5 transition-all duration-200 ${
+                  activeHref === item.href
+                    ? "text-text"
+                    : "text-muted/65 hover:bg-surface-2/45 hover:text-text"
+                }`}
+              >
                 {item.label}
+                <span
+                  className={`absolute bottom-0 left-1/2 h-px -translate-x-1/2 bg-accent transition-all duration-200 ${
+                    activeHref === item.href
+                      ? "w-[70%] opacity-100 shadow-[0_0_10px_rgba(78,128,255,0.35)]"
+                      : "w-0 opacity-0 group-hover:w-[70%] group-hover:opacity-70"
+                  }`}
+                />
               </a>
             ))}
           </nav>
+          <a
+            href="#contact"
+            className="hidden rounded-sm bg-surface-2/35 px-3 py-1.5 text-[12px] font-semibold text-muted transition-all duration-200 hover:bg-accent-2/14 hover:text-text md:inline-flex"
+          >
+            Contact
+          </a>
           <button
             type="button"
             aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
             aria-expanded={isOpen}
             aria-controls="mobile-nav"
             onClick={() => setIsOpen((current) => !current)}
-            className="ml-auto inline-flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface-2/60 text-muted transition-colors hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg md:hidden"
+            className="ml-auto inline-flex h-10 w-10 items-center justify-center rounded-md bg-surface-2/60 text-muted transition-colors hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg md:hidden"
           >
             {isOpen ? <X size={18} aria-hidden="true" /> : <Menu size={18} aria-hidden="true" />}
           </button>
@@ -54,7 +107,7 @@ export function Navbar(): JSX.Element {
                 transition={{ duration: 0.22, ease: [0.2, 1, 0.3, 1] }}
                 className="absolute left-0 right-0 top-[calc(100%-0.35rem)] z-40 md:hidden"
               >
-                <nav className="mt-2 overflow-hidden rounded-2xl border border-border/85 bg-[#0f141b] p-2 shadow-[0_22px_48px_rgba(0,0,0,0.55)]">
+                <nav className="mt-2 overflow-hidden rounded-xl bg-[#0f141b] p-2 shadow-[0_22px_48px_rgba(0,0,0,0.55)]">
                   {navigationItems.map((item) => (
                     <a
                       key={item.href}
@@ -66,11 +119,11 @@ export function Navbar(): JSX.Element {
                     </a>
                   ))}
                   <a
-                    href="#projects"
+                    href="#repositories"
                     onClick={closeMenu}
-                    className="mt-2 block rounded-xl border border-accent/45 bg-accent/10 px-3 py-2.5 text-sm font-semibold text-text transition-colors hover:bg-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+                    className="mt-2 block rounded-xl bg-accent/10 px-3 py-2.5 text-sm font-semibold text-text transition-colors hover:bg-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
                   >
-                    View Work
+                    View Repositories
                   </a>
                 </nav>
               </motion.div>
