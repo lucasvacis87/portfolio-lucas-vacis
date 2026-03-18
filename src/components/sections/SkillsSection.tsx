@@ -54,10 +54,7 @@ export function SkillsSection(): JSX.Element {
   }, []);
 
   return (
-    <section
-      id="engineering-capabilities"
-      className="relative py-3 md:py-6 lg:-mx-12 lg:px-16 xl:-mx-32 xl:px-24 2xl:-mx-48 2xl:px-28"
-    >
+    <section id="engineering-capabilities" className="relative py-3 md:py-6">
       <div className="pointer-events-none absolute -left-16 top-8 h-48 w-48 rounded-full bg-accent-2/10 blur-3xl" />
       <div className="pointer-events-none absolute -right-20 top-24 h-56 w-56 rounded-full bg-accent/12 blur-3xl" />
 

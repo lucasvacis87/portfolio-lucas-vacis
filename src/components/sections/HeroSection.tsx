@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { hero } from "../../content/site";
 import { withBaseUrl } from "../../utils/url";
+import { containerClassName } from "../layout/Container";
 import { InteractiveQASandbox } from "./InteractiveQASandbox";
 
 export function HeroSection(): JSX.Element {
@@ -35,7 +36,7 @@ export function HeroSection(): JSX.Element {
       <div className="pointer-events-none absolute -right-24 top-8 h-72 w-72 rounded-full bg-accent-2/14 blur-3xl" />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_20%,rgba(78,128,255,0.18),transparent_52%),radial-gradient(circle_at_84%_34%,rgba(125,99,255,0.18),transparent_50%),radial-gradient(circle_at_50%_100%,rgba(7,10,15,0.85),transparent_58%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(155,167,180,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(155,167,180,0.06)_1px,transparent_1px)] bg-[size:34px_34px] opacity-30 [mask-image:radial-gradient(circle_at_center,black,transparent_86%)]" />
-      <div className="relative mx-auto w-full max-w-[84rem] px-5 md:px-8 xl:max-w-[88rem] 2xl:max-w-[96rem]">
+      <div className={`relative ${containerClassName}`}>
         <div className="grid gap-12 px-2 md:grid-cols-[1.2fr_0.8fr] md:items-center md:px-3">
           <motion.div
             variants={staggerContainer}

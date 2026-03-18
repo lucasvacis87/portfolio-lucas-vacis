@@ -3,7 +3,7 @@ import { about } from "../../content/about";
 
 export function AboutSection(): JSX.Element {
   return (
-    <section id="about" className="relative py-3 md:py-6 lg:-mx-12 lg:px-16 xl:-mx-32 xl:px-24 2xl:-mx-48 2xl:px-28">
+    <section id="about" className="relative py-3 md:py-6">
       <div className="pointer-events-none absolute -left-20 top-10 h-44 w-44 rounded-full bg-accent-2/8 blur-3xl" />
       <div className="pointer-events-none absolute -right-16 top-20 h-52 w-52 rounded-full bg-accent/8 blur-3xl" />
       <motion.div
