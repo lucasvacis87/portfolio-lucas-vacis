@@ -7,10 +7,16 @@ export type HeroContent = {
   kicker: string;
   title: string;
   subtitle: string;
+  proofPoints: string[];
   chips: string[];
   primaryCta: { label: string; href: string };
-  secondaryCta: { label: string; href: string };
-  tertiaryCta?: { label: string; href: string; download?: string };
+  secondaryCta: { label: string; href: string; download?: string };
+  systemsPanel: {
+    title: string;
+    subtitle: string;
+    lanes: { title: string; detail: string }[];
+    footer: string;
+  };
   microLine?: string;
 };
 
