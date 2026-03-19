@@ -85,15 +85,20 @@ export function createInitialSandboxState(): SandboxState {
 export function sandboxReducer(state: SandboxState, action: SandboxAction): SandboxState {
   switch (action.type) {
     case "SET_MODE": {
-      const isComplete = state.bugs.every((bug) => bug.found);
+      if (action.mode === state.mode) {
+        return state;
+      }
+
       return {
         ...state,
         mode: action.mode,
+        bugs: createBugs(),
         manualRevealed: action.mode === "automation",
+        messages: [],
         activeBugId: null,
         targetBugId: null,
         automationPhase: "idle",
-        statusKey: isComplete ? "complete" : action.mode === "automation" ? "scanning" : "ready"
+        statusKey: action.mode === "automation" ? "scanning" : "ready"
       };
     }
     case "REVEAL_MANUAL_BUGS":

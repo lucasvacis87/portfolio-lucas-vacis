@@ -17,14 +17,51 @@ function createState(overrides: Partial<SandboxState> = {}): SandboxState {
 }
 
 describe("interactiveSandboxMachine", () => {
-  it("switches to automation mode with scanning status when not complete", () => {
-    const state = createState();
+  it("switching mode resets the game and initializes automation state", () => {
+    const state = createState({
+      mode: "manual",
+      bugs: [
+        { id: 1, x: 20, y: 20, found: true },
+        { id: 2, x: 60, y: 60, found: false }
+      ],
+      manualRevealed: true,
+      statusKey: "bugReported",
+      messages: [{ id: 1, x: 20, y: 20, label: "Bug reported" }],
+      targetBugId: 2,
+      activeBugId: 1,
+      automationPhase: "reporting"
+    });
 
     const next = sandboxReducer(state, { type: "SET_MODE", mode: "automation" });
 
     expect(next.mode).toBe("automation");
+    expect(next.bugs).toHaveLength(8);
+    expect(next.bugs.every((bug) => bug.found === false)).toBe(true);
+    expect(next.messages).toHaveLength(0);
+    expect(next.activeBugId).toBeNull();
+    expect(next.targetBugId).toBeNull();
     expect(next.statusKey).toBe("scanning");
     expect(next.automationPhase).toBe("idle");
+    expect(next.manualRevealed).toBe(true);
+  });
+
+  it("switching back to manual also resets and starts from ready", () => {
+    const state = createState({
+      mode: "automation",
+      manualRevealed: true,
+      statusKey: "scanning",
+      messages: [{ id: 2, x: 60, y: 60, label: "Bug reported" }]
+    });
+
+    const next = sandboxReducer(state, { type: "SET_MODE", mode: "manual" });
+
+    expect(next.mode).toBe("manual");
+    expect(next.bugs).toHaveLength(8);
+    expect(next.bugs.every((bug) => bug.found === false)).toBe(true);
+    expect(next.messages).toHaveLength(0);
+    expect(next.statusKey).toBe("ready");
+    expect(next.automationPhase).toBe("idle");
+    expect(next.manualRevealed).toBe(false);
   });
 
   it("reports a bug in manual mode and appends a message", () => {
