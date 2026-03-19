@@ -134,7 +134,7 @@ export function InteractiveQASandbox(): JSX.Element {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="mx-auto w-full max-w-[35rem] overflow-hidden rounded-2xl bg-[radial-gradient(circle_at_8%_8%,rgba(78,128,255,0.2),transparent_38%),radial-gradient(circle_at_92%_90%,rgba(125,99,255,0.16),transparent_42%),#0f141c] p-[14px] shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_14px_34px_rgba(0,0,0,0.4),0_0_22px_rgba(125,99,255,0.14)] transition-shadow duration-300 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_16px_38px_rgba(0,0,0,0.44),0_0_30px_rgba(125,99,255,0.2)] lg:max-w-[38rem]"
+      className="mx-auto w-full max-w-[36rem] overflow-hidden rounded-2xl bg-[radial-gradient(circle_at_8%_8%,rgba(78,128,255,0.2),transparent_38%),radial-gradient(circle_at_92%_90%,rgba(125,99,255,0.16),transparent_42%),#0f141c] p-[14px] shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_14px_34px_rgba(0,0,0,0.4),0_0_22px_rgba(125,99,255,0.14)] transition-shadow duration-300 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_16px_38px_rgba(0,0,0,0.44),0_0_30px_rgba(125,99,255,0.2)] lg:max-w-[42rem]"
     >
       <div className="flex items-start justify-between gap-3">
         <div>
