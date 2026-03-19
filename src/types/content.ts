@@ -11,12 +11,6 @@ export type HeroContent = {
   chips: string[];
   primaryCta: { label: string; href: string };
   secondaryCta: { label: string; href: string; download?: string };
-  systemsPanel: {
-    title: string;
-    subtitle: string;
-    lanes: { title: string; detail: string }[];
-    footer: string;
-  };
   microLine?: string;
 };
 

@@ -3,6 +3,7 @@ import { ArrowRight, CheckCircle2, Download } from "lucide-react";
 import { hero } from "../../content/site";
 import { withBaseUrl } from "../../utils/url";
 import { containerClassName } from "../layout/Container";
+import { InteractiveQASandbox } from "./InteractiveQASandbox";
 
 export function HeroSection(): JSX.Element {
   const staggerContainer = {
@@ -109,32 +110,15 @@ export function HeroSection(): JSX.Element {
               </motion.p>
             ) : null}
           </motion.div>
-          <motion.aside
+          <motion.div
             variants={staggerContainer}
             initial="hidden"
             whileInView="show"
             viewport={{ once: true, margin: "-64px" }}
-            aria-label="Quality engineering systems overview"
-            className="relative h-full rounded-xl2 border border-border/70 bg-[linear-gradient(180deg,rgba(18,24,34,0.84),rgba(10,14,21,0.92))] p-6 shadow-[0_24px_60px_rgba(0,0,0,0.34)] backdrop-blur lg:p-7"
+            className="lg:pt-2"
           >
-            <motion.h2 variants={revealItem} className="font-heading text-[1.02rem] tracking-[-0.01em] text-text">
-              {hero.systemsPanel.title}
-            </motion.h2>
-            <motion.p variants={revealItem} className="mt-2 text-sm leading-6 text-muted">
-              {hero.systemsPanel.subtitle}
-            </motion.p>
-            <motion.ul variants={revealItem} className="mt-6 space-y-4">
-              {hero.systemsPanel.lanes.map((lane) => (
-                <li key={lane.title} className="rounded-lg border border-border/65 bg-bg/28 p-4">
-                  <p className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">{lane.title}</p>
-                  <p className="mt-2 text-sm leading-6 text-text/84">{lane.detail}</p>
-                </li>
-              ))}
-            </motion.ul>
-            <motion.p variants={revealItem} className="mt-6 border-t border-border/65 pt-4 text-xs leading-6 text-muted">
-              {hero.systemsPanel.footer}
-            </motion.p>
-          </motion.aside>
+            <InteractiveQASandbox />
+          </motion.div>
         </div>
       </div>
     </section>
