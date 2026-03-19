@@ -41,6 +41,7 @@ export type SandboxContent = {
   };
   messageLabels: {
     bugReported: string;
+    complete: string;
   };
   metrics: {
     totalBugs: number;
@@ -55,7 +56,7 @@ export type SandboxContent = {
 
 export type EngineeringStackColumn = {
   title: string;
-  accent: "blue" | "indigo" | "teal" | "purple";
+  accent: "blue" | "teal" | "violet" | "amber";
   summary: string;
   items: string[];
 };

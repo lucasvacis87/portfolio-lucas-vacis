@@ -178,6 +178,13 @@ export function InteractiveQASandbox(): JSX.Element {
         onPointerMove={() => dispatch({ type: "REVEAL_MANUAL_BUGS" })}
         onPointerDown={() => dispatch({ type: "REVEAL_MANUAL_BUGS" })}
       >
+        {isComplete && (
+          <div className="pointer-events-none absolute inset-0 z-40 flex items-center justify-center">
+            <p className="rounded-full border border-emerald-300/45 bg-emerald-400/12 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-emerald-200">
+              {sandbox.messageLabels.complete}
+            </p>
+          </div>
+        )}
         {state.mode === "manual" && !state.manualRevealed && (
           <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
             <p className="rounded-full bg-bg/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
