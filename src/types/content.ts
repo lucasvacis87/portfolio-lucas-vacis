@@ -7,10 +7,10 @@ export type HeroContent = {
   kicker: string;
   title: string;
   subtitle: string;
+  proofPoints: string[];
   chips: string[];
   primaryCta: { label: string; href: string };
-  secondaryCta: { label: string; href: string };
-  tertiaryCta?: { label: string; href: string; download?: string };
+  secondaryCta: { label: string; href: string; download?: string };
   microLine?: string;
 };
 
@@ -41,6 +41,7 @@ export type SandboxContent = {
   };
   messageLabels: {
     bugReported: string;
+    complete: string;
   };
   metrics: {
     totalBugs: number;
@@ -55,7 +56,7 @@ export type SandboxContent = {
 
 export type EngineeringStackColumn = {
   title: string;
-  accent: "blue" | "indigo" | "teal" | "purple";
+  accent: "blue" | "teal" | "violet" | "amber";
   summary: string;
   items: string[];
 };
