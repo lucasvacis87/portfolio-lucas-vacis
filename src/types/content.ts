@@ -90,3 +90,30 @@ export type RepositoryItem = {
     secondary: { label: string; href: string };
   };
 };
+
+export type ContactAction = {
+  id: string;
+  label: string;
+  href: string;
+  external?: boolean;
+  download?: string;
+  ariaLabel?: string;
+  tone: "primary" | "secondary";
+  icon: "mail" | "linkedin" | "github" | "resume";
+};
+
+export type ContactDetail = {
+  label: string;
+  value: string;
+  href?: string;
+};
+
+export type ContactContent = {
+  title: string;
+  subtitle: string;
+  body: string;
+  availabilityNote: string;
+  closing: string;
+  actions: ContactAction[];
+  details: ContactDetail[];
+};

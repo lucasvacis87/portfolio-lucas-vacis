@@ -20,7 +20,7 @@ export function Section({
   children
 }: SectionProps): JSX.Element {
   const baseClasses = "relative py-3 md:py-6";
-  const panelClasses = "section-card p-6 md:p-8";
+  const panelClasses = "section-card surface-panel p-6 md:p-8";
   const flowClasses = "px-1 md:px-2";
   const accentClass = accent === "indigo" ? "section-accent-indigo" : "section-accent-aqua";
 
@@ -35,7 +35,7 @@ export function Section({
     >
       {variant === "flow" ? (
         <>
-          <span className="pointer-events-none absolute inset-x-0 -top-1 h-px bg-gradient-to-r from-transparent via-border/80 to-transparent" />
+          <span className="separator-soft pointer-events-none absolute inset-x-0 -top-1 h-px" />
           <span className="pointer-events-none absolute -left-8 top-10 h-36 w-36 rounded-full bg-[var(--section-accent)] opacity-[0.07] blur-3xl" />
         </>
       ) : null}

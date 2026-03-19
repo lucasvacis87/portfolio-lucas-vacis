@@ -16,14 +16,14 @@ export function ExperienceSection(): JSX.Element {
         {experience.map((item) => (
           <article
             key={`${item.role}-${item.period}`}
-            className="rounded-2xl border border-border/50 bg-[#111722]/88 px-5 py-4 transition duration-300 hover:border-accent/28 hover:shadow-[0_16px_34px_rgba(0,0,0,0.28),0_0_24px_rgba(55,208,201,0.08)]"
+            className="surface-card rounded-2xl bg-[#111722]/86 px-5 py-4 transition duration-300 hover:shadow-[0_16px_34px_rgba(0,0,0,0.3),0_0_20px_rgba(55,208,201,0.07)]"
           >
             <div className="flex flex-wrap items-start justify-between gap-3">
               <div>
                 <h3 className="font-heading text-lg">{item.role}</h3>
                 <p className="muted mt-1 text-sm">{item.context}</p>
               </div>
-              <span className="rounded-md border border-border/75 bg-bg/55 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
+              <span className="surface-chip rounded-md bg-bg/45 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
                 {item.period}
               </span>
             </div>

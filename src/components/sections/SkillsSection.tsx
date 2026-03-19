@@ -4,24 +4,20 @@ import { engineeringStackColumns } from "../../content/capabilities";
 
 const accentStyles = {
   blue: {
-    border: "rgba(78,128,255,0.28)",
     bg: "radial-gradient(circle_at_50%_20%, rgba(78,128,255,0.16), rgba(15,20,29,0.9) 60%)",
-    glow: "0 0 26px rgba(78,128,255,0.2)"
+    glow: "0 0 24px rgba(78,128,255,0.16), inset 0 1px 0 rgba(255,255,255,0.04)"
   },
   indigo: {
-    border: "rgba(108,122,255,0.28)",
     bg: "radial-gradient(circle_at_50%_20%, rgba(108,122,255,0.16), rgba(15,20,29,0.9) 60%)",
-    glow: "0 0 26px rgba(108,122,255,0.2)"
+    glow: "0 0 24px rgba(108,122,255,0.16), inset 0 1px 0 rgba(255,255,255,0.04)"
   },
   teal: {
-    border: "rgba(75,171,195,0.28)",
     bg: "radial-gradient(circle_at_50%_20%, rgba(75,171,195,0.16), rgba(15,20,29,0.9) 60%)",
-    glow: "0 0 26px rgba(75,171,195,0.18)"
+    glow: "0 0 24px rgba(75,171,195,0.14), inset 0 1px 0 rgba(255,255,255,0.04)"
   },
   purple: {
-    border: "rgba(125,99,255,0.28)",
     bg: "radial-gradient(circle_at_50%_20%, rgba(125,99,255,0.16), rgba(15,20,29,0.9) 60%)",
-    glow: "0 0 26px rgba(125,99,255,0.2)"
+    glow: "0 0 24px rgba(125,99,255,0.16), inset 0 1px 0 rgba(255,255,255,0.04)"
   }
 } as const;
 
@@ -63,7 +59,7 @@ export function SkillsSection(): JSX.Element {
         <p className="muted mt-2 leading-7">Core systems and tooling behind my quality engineering workflows.</p>
       </header>
 
-      <div className="mx-auto mt-8 max-w-[74rem] overflow-hidden rounded-2xl border border-border/45 bg-[#0f141c]/84 shadow-[0_18px_42px_rgba(0,0,0,0.3)]">
+      <div className="surface-panel mx-auto mt-8 max-w-[74rem] overflow-hidden rounded-2xl bg-[#0f141c]/84 shadow-[0_18px_42px_rgba(0,0,0,0.3)]">
         <div className="grid grid-cols-1 gap-0 md:grid-cols-2 lg:flex lg:flex-row">
           {engineeringStackColumns.map((column, index) => {
             const isExpanded = hoveredIndex === index || (isMobile && activeMobileIndex === index);
@@ -86,7 +82,7 @@ export function SkillsSection(): JSX.Element {
                   }
                   setActiveMobileIndex((current) => (current === index ? null : index));
                 }}
-                className="relative -ml-px -mt-px h-[520px] border border-border/45 p-0 text-left transition-[flex-grow] duration-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset md:h-[620px] lg:h-[720px] lg:w-auto"
+                className="relative h-[520px] bg-[#0f141c]/80 p-0 text-left transition-[flex-grow] duration-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-inset md:h-[620px] lg:h-[720px] lg:w-auto"
                 animate={animateValues}
                 style={
                   isDesktop
@@ -101,7 +97,7 @@ export function SkillsSection(): JSX.Element {
                   className="absolute inset-0 transition-all duration-500"
                   style={{
                     background: isExpanded ? accent.bg : "rgba(15,20,29,0.88)",
-                    boxShadow: isExpanded ? `inset 0 0 0 1px ${accent.border}, ${accent.glow}` : "none"
+                    boxShadow: isExpanded ? accent.glow : "inset 0 1px 0 rgba(255,255,255,0.02)"
                   }}
                 />
                 <div className="relative flex h-full flex-col p-5">

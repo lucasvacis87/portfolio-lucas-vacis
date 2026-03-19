@@ -38,8 +38,9 @@ export function Navbar(): JSX.Element {
   }, []);
 
   return (
-    <header className="sticky top-0 z-30 border-b border-border/45 bg-bg/78 backdrop-blur-xl">
+    <header className="sticky top-0 z-30 bg-bg/78 shadow-[inset_0_-1px_0_rgba(255,255,255,0.05)] backdrop-blur-xl">
       <div className={`relative ${containerClassName}`}>
+        <span className="separator-soft pointer-events-none absolute inset-x-0 bottom-0 h-px" />
         <div className="flex h-14 items-center gap-4">
           <a
             href="#hero"

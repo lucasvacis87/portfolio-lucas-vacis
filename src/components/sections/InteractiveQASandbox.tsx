@@ -255,7 +255,7 @@ export function InteractiveQASandbox(): JSX.Element {
                     delay: state.mode === "automation" ? index * 0.08 : 0,
                     ease: "easeOut"
                   }}
-                  className={`absolute z-20 inline-flex h-9 w-9 items-center justify-center rounded-md border transition ${
+                  className={`absolute z-20 inline-flex h-9 w-9 items-center justify-center rounded-md shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_6px_18px_rgba(0,0,0,0.35)] transition ${
                     isActive
                       ? "bg-accent/22 shadow-[0_0_18px_rgba(78,128,255,0.35)]"
                       : "bg-bg/75 hover:bg-surface-2/75"
@@ -317,3 +317,4 @@ export function InteractiveQASandbox(): JSX.Element {
     </motion.div>
   );
 }
+
