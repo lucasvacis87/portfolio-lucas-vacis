@@ -36,7 +36,7 @@ export function HeroSection(): JSX.Element {
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_16%_22%,rgba(78,128,255,0.14),transparent_44%),radial-gradient(circle_at_88%_14%,rgba(55,208,201,0.11),transparent_30%)]" />
       <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(155,167,180,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(155,167,180,0.05)_1px,transparent_1px)] bg-[size:38px_38px] opacity-30 [mask-image:radial-gradient(circle_at_center,black,transparent_88%)]" />
       <div className={`relative ${containerClassName}`}>
-        <div className="grid gap-12 px-2 lg:grid-cols-[minmax(0,1.35fr)_minmax(300px,0.65fr)] lg:items-center lg:gap-10 md:px-3">
+        <div className="grid gap-12 px-2 lg:grid-cols-[minmax(0,1.15fr)_minmax(420px,0.85fr)] lg:items-center lg:gap-10 md:px-3">
           <motion.div
             variants={staggerContainer}
             initial="hidden"
