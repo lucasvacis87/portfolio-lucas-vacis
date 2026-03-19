@@ -72,19 +72,9 @@ export type ExperienceItem = {
   summary: string;
 };
 
-export type QAVisionPillar = {
+export type QAVisionPrinciple = {
   title: string;
   description: string;
-};
-
-export type QAVisionTrack = {
-  title: string;
-  points: string[];
-};
-
-export type QAVisionOutcome = {
-  label: string;
-  value: string;
 };
 
 export type RepositoryItem = {
