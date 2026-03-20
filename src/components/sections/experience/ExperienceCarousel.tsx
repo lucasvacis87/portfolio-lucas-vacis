@@ -282,7 +282,7 @@ export function ExperienceCarousel({
           return (
             <motion.div
               key={`${item.role}-${item.company}-${item.start}`}
-              className="absolute left-0 right-0"
+              className="absolute left-3 right-3 sm:left-4 sm:right-4"
               style={{
                 top: `${ACTIVE_TOP_PX}px`,
                 zIndex: 30 - Math.round(Math.abs(distance) * 10)
