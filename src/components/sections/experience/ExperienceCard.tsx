@@ -76,7 +76,7 @@ export function ExperienceCard({
       }
       className={`relative overflow-hidden rounded-2xl bg-[#101827]/82 px-5 py-4 text-left transition duration-300 md:px-6 md:py-5 ${
         mode === "carousel"
-          ? "cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+          ? "transform-gpu cursor-pointer will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg [backface-visibility:hidden]"
           : ""
       } ${
         mode === "carousel" && isAdjacentCarouselCard
@@ -97,6 +97,11 @@ export function ExperienceCard({
           : undefined
       }
       transition={transition}
+      style={{
+        clipPath: "inset(0 round 1rem)",
+        WebkitClipPath: "inset(0 round 1rem)",
+        WebkitMaskImage: "-webkit-radial-gradient(white, black)"
+      }}
     >
       <motion.div
         animate={{
