@@ -111,9 +111,6 @@ export function ExperienceCard({
           <p className="mt-1.5 text-sm text-text/78">
             {item.company} | {item.location}
           </p>
-          <p className={`mt-3 text-sm leading-6 text-text/84 md:max-w-[56ch] ${isAdjacentCarouselCard ? "line-clamp-2" : ""}`}>
-            {item.impactSummary}
-          </p>
         </div>
 
         <div className="flex flex-col items-start gap-2 md:items-end">
@@ -121,7 +118,7 @@ export function ExperienceCard({
         </div>
       </div>
 
-      <div className="mt-3 flex flex-wrap gap-2">
+      <div className="mt-2 flex flex-wrap gap-2">
         {(isAdjacentCarouselCard ? item.tech.slice(0, 5) : item.tech).map((tag) => (
           <span key={tag} className="surface-chip rounded-full bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.11em] text-text/74">
             {tag}
