@@ -5,6 +5,7 @@ import { Section } from "../layout/Section";
 import { ExperienceCard } from "./experience/ExperienceCard";
 import { ExperienceCarousel } from "./experience/ExperienceCarousel";
 import { NavigationControls } from "./experience/NavigationControls";
+import { ExperienceYearRail } from "./experience/ExperienceYearRail";
 
 type ViewMode = "carousel" | "list";
 
@@ -86,7 +87,7 @@ export function ExperienceSection(): JSX.Element {
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-text/58 sm:text-sm">Experience</p>
             {renderViewToggle()}
           </div>
-          <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_9.5rem] lg:items-center">
+          <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_6.25rem_9.5rem] lg:items-center">
             <ExperienceCarousel
               items={experience}
               activeIndex={activeIndex}
@@ -97,6 +98,7 @@ export function ExperienceSection(): JSX.Element {
               scrollEnabled={isCarouselScrollEnabled}
               onEnableScroll={() => setIsCarouselScrollEnabled(true)}
             />
+            <ExperienceYearRail items={experience} activeIndex={activeIndex} reducedMotion={Boolean(prefersReducedMotion)} />
 
             <NavigationControls
               canGoPrevious={canGoPrevious}

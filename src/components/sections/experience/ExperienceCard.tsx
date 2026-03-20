@@ -90,7 +90,6 @@ export function ExperienceCard({
           ? {
               scale: isActive ? 1.02 : 0.98,
               opacity: isActive ? 1 : 0.68,
-              filter: isActive ? "blur(0px)" : "blur(1.5px)",
               y: 0,
               backgroundColor: isActive ? "rgba(18, 28, 44, 0.9)" : "rgba(16, 24, 39, 0.78)",
               boxShadow: isActive ? "0 18px 38px rgba(0,0,0,0.34), 0 0 20px rgba(78,128,255,0.07)" : "0 8px 20px rgba(0,0,0,0.22)"
@@ -102,7 +101,8 @@ export function ExperienceCard({
       <motion.div
         animate={{
           opacity: isActive ? 1 : 0.92,
-          y: isActive ? 0 : 2
+          y: isActive ? 0 : 2,
+          filter: mode === "carousel" ? (isActive ? "blur(0px)" : "blur(1.5px)") : "blur(0px)"
         }}
         transition={reducedMotion ? { duration: 0 } : { duration: 0.22, ease: "easeOut" }}
       >
