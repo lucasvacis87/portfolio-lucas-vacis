@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "framer-motion";
+﻿import { AnimatePresence, motion } from "framer-motion";
 import type { ExperienceItem } from "../../../types/content";
 
 type ExperienceCardProps = {
@@ -94,7 +94,7 @@ export function ExperienceCard({
             ) : null}
           </div>
           <p className="mt-1.5 text-sm text-text/78">
-            {item.company} · {item.location}
+            {item.company} | {item.location}
           </p>
           <p className="mt-3 text-sm leading-6 text-text/84 md:max-w-[56ch]">{item.impactSummary}</p>
         </div>
@@ -145,4 +145,5 @@ export function ExperienceCard({
     </motion.article>
   );
 }
+
 
