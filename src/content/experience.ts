@@ -1,10 +1,8 @@
 import type { ExperienceItem } from "../types/content";
 
 export const experienceIntro = {
-  subtitle: "Delivering scalable quality engineering across US and LATAM product teams through automation-first execution.",
-  paragraphs: [
-    "I design automation ecosystems that scale across UI and API surfaces, connect cleanly to CI workflows, and keep release confidence high for product and engineering leadership."
-  ]
+  subtitle: "I lead end-to-end test architecture for UI and APIs, with stable CI signals that teams trust for every release.",
+  paragraphs: []
 };
 
 export const experience: ExperienceItem[] = [

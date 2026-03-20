@@ -74,13 +74,15 @@ export function ExperienceSection(): JSX.Element {
 
   return (
     <Section id="experience" variant="flow" accent="aqua" headerAlign="center" title="Experience" subtitle={experienceIntro.subtitle}>
-      <div className="space-y-4">
-        {experienceIntro.paragraphs.map((paragraph) => (
-          <p key={paragraph} className="muted leading-7">
-            {paragraph}
-          </p>
-        ))}
-      </div>
+      {experienceIntro.paragraphs.length > 0 ? (
+        <div className="space-y-4">
+          {experienceIntro.paragraphs.map((paragraph) => (
+            <p key={paragraph} className="muted leading-7">
+              {paragraph}
+            </p>
+          ))}
+        </div>
+      ) : null}
 
       {viewMode === "carousel" ? (
         <div className="mt-7 rounded-[1.5rem] bg-[#0c121b]/62 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_18px_40px_rgba(0,0,0,0.3)]">
