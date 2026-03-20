@@ -43,6 +43,7 @@ export function ExperienceCarousel({
   scrollEnabled,
   onEnableScroll
 }: ExperienceCarouselProps): JSX.Element {
+  const boardRef = useRef<HTMLDivElement | null>(null);
   const [virtualIndex, setVirtualIndex] = useState(activeIndex);
   const [isDragging, setIsDragging] = useState(false);
   const [isWheeling, setIsWheeling] = useState(false);
@@ -55,11 +56,37 @@ export function ExperienceCarousel({
   const wheelTimeoutRef = useRef<number | null>(null);
   const justDraggedUntilRef = useRef(0);
 
+  const virtualIndexRef = useRef(activeIndex);
+  const scrollEnabledRef = useRef(scrollEnabled);
+  const itemsLengthRef = useRef(items.length);
+
+  const setVirtualPosition = (position: number): void => {
+    const clamped = clampPosition(position, items.length);
+    virtualIndexRef.current = clamped;
+    setVirtualIndex(clamped);
+  };
+
+  const snapTo = (projectedPosition: number): void => {
+    const snapped = clampIndex(Math.round(projectedPosition), items.length);
+    virtualIndexRef.current = snapped;
+    setVirtualIndex(snapped);
+    onChangeActive(snapped);
+  };
+
+  useEffect(() => {
+    scrollEnabledRef.current = scrollEnabled;
+  }, [scrollEnabled]);
+
+  useEffect(() => {
+    itemsLengthRef.current = items.length;
+  }, [items.length]);
+
   useEffect(() => {
     if (isDragging || isWheeling) {
       return;
     }
 
+    virtualIndexRef.current = activeIndex;
     setVirtualIndex(activeIndex);
   }, [activeIndex, isDragging, isWheeling]);
 
@@ -71,11 +98,52 @@ export function ExperienceCarousel({
     };
   }, []);
 
-  const snapTo = (projectedPosition: number): void => {
-    const snapped = clampIndex(Math.round(projectedPosition), items.length);
-    setVirtualIndex(snapped);
-    onChangeActive(snapped);
-  };
+  useEffect(() => {
+    const board = boardRef.current;
+    if (!board) {
+      return;
+    }
+
+    const onWheelNative = (event: WheelEvent): void => {
+      if (!scrollEnabledRef.current || itemsLengthRef.current <= 1) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      const now = performance.now();
+      const previousAt = lastMoveAtRef.current || now;
+      const dt = Math.max(now - previousAt, 1);
+
+      const deltaIndex = event.deltaY / DRAG_STEP_PX;
+      const currentPosition = virtualIndexRef.current;
+      const nextPosition = clampPosition(currentPosition + deltaIndex, itemsLengthRef.current);
+
+      velocityIndexRef.current = deltaIndex / dt;
+      lastMoveAtRef.current = now;
+      virtualIndexRef.current = nextPosition;
+      setVirtualIndex(nextPosition);
+      setIsWheeling(true);
+
+      if (wheelTimeoutRef.current !== null) {
+        window.clearTimeout(wheelTimeoutRef.current);
+      }
+
+      wheelTimeoutRef.current = window.setTimeout(() => {
+        setIsWheeling(false);
+        const projected = nextPosition + velocityIndexRef.current * DRAG_STEP_PX * INERTIA_GAIN;
+        snapTo(projected);
+        velocityIndexRef.current = 0;
+      }, WHEEL_SNAP_DELAY_MS);
+    };
+
+    board.addEventListener("wheel", onWheelNative, { passive: false });
+
+    return () => {
+      board.removeEventListener("wheel", onWheelNative);
+    };
+  }, [items.length, onChangeActive]);
 
   const moveBy = (step: number): void => {
     snapTo(activeIndex + step);
@@ -88,47 +156,13 @@ export function ExperienceCarousel({
 
   return (
     <div
+      ref={boardRef}
       aria-label="Experience timeline carousel"
       role="region"
       tabIndex={0}
       className={`relative h-[46rem] overflow-hidden rounded-[1.4rem] bg-transparent p-0 shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
         isDragging ? "cursor-grabbing" : "cursor-grab"
       }`}
-      onWheel={(event) => {
-        if (!scrollEnabled) {
-          return;
-        }
-
-        event.preventDefault();
-        event.stopPropagation();
-
-        if (items.length <= 1) {
-          return;
-        }
-
-        const now = performance.now();
-        const previousAt = lastMoveAtRef.current || now;
-        const dt = Math.max(now - previousAt, 1);
-
-        const deltaIndex = event.deltaY / DRAG_STEP_PX;
-        const nextPosition = clampPosition(virtualIndex + deltaIndex, items.length);
-
-        velocityIndexRef.current = deltaIndex / dt;
-        lastMoveAtRef.current = now;
-        setVirtualIndex(nextPosition);
-        setIsWheeling(true);
-
-        if (wheelTimeoutRef.current !== null) {
-          window.clearTimeout(wheelTimeoutRef.current);
-        }
-
-        wheelTimeoutRef.current = window.setTimeout(() => {
-          setIsWheeling(false);
-          const projected = nextPosition + velocityIndexRef.current * DRAG_STEP_PX * INERTIA_GAIN;
-          snapTo(projected);
-          velocityIndexRef.current = 0;
-        }, WHEEL_SNAP_DELAY_MS);
-      }}
       onKeyDown={(event) => {
         if (event.key === "ArrowDown") {
           event.preventDefault();
@@ -148,16 +182,12 @@ export function ExperienceCarousel({
         }
       }}
       onPointerDown={(event) => {
-        if (!scrollEnabled) {
-          return;
-        }
-
-        if (items.length <= 1) {
+        if (!scrollEnabled || items.length <= 1) {
           return;
         }
 
         dragStartYRef.current = event.clientY;
-        dragStartPosRef.current = virtualIndex;
+        dragStartPosRef.current = virtualIndexRef.current;
         lastMoveYRef.current = event.clientY;
         lastMoveAtRef.current = performance.now();
         velocityIndexRef.current = 0;
@@ -165,11 +195,7 @@ export function ExperienceCarousel({
         event.currentTarget.setPointerCapture(event.pointerId);
       }}
       onPointerMove={(event) => {
-        if (!scrollEnabled) {
-          return;
-        }
-
-        if (!isDragging) {
+        if (!scrollEnabled || !isDragging) {
           return;
         }
 
@@ -182,15 +208,10 @@ export function ExperienceCarousel({
         lastMoveAtRef.current = now;
 
         const deltaFromStart = event.clientY - dragStartYRef.current;
-        const nextPosition = clampPosition(dragStartPosRef.current - deltaFromStart / DRAG_STEP_PX, items.length);
-        setVirtualIndex(nextPosition);
+        setVirtualPosition(dragStartPosRef.current - deltaFromStart / DRAG_STEP_PX);
       }}
       onPointerUp={(event) => {
-        if (!scrollEnabled) {
-          return;
-        }
-
-        if (!isDragging) {
+        if (!scrollEnabled || !isDragging) {
           return;
         }
 
@@ -199,17 +220,13 @@ export function ExperienceCarousel({
         }
 
         setIsDragging(false);
-        const projected = virtualIndex + velocityIndexRef.current * DRAG_STEP_PX * INERTIA_GAIN;
+        const projected = virtualIndexRef.current + velocityIndexRef.current * DRAG_STEP_PX * INERTIA_GAIN;
         snapTo(projected);
         velocityIndexRef.current = 0;
         justDraggedUntilRef.current = Date.now() + 180;
       }}
       onPointerCancel={(event) => {
-        if (!scrollEnabled) {
-          return;
-        }
-
-        if (!isDragging) {
+        if (!scrollEnabled || !isDragging) {
           return;
         }
 
@@ -218,12 +235,13 @@ export function ExperienceCarousel({
         }
 
         setIsDragging(false);
-        snapTo(virtualIndex);
+        snapTo(virtualIndexRef.current);
         velocityIndexRef.current = 0;
       }}
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#0c121b] via-[#0c121b]/62 to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#0c121b] via-[#0c121b]/60 to-transparent" />
+
       {!scrollEnabled ? (
         <button
           type="button"
@@ -236,6 +254,7 @@ export function ExperienceCarousel({
           </span>
         </button>
       ) : null}
+
       <div className="relative h-full touch-none select-none">
         {items.map((item, index) => {
           const distance = index - virtualIndex;
@@ -293,4 +312,3 @@ export function ExperienceCarousel({
     </div>
   );
 }
-
