@@ -6,6 +6,7 @@ type ExperienceCardProps = {
   mode: "carousel" | "list";
   isActive: boolean;
   carouselVariant?: "active" | "adjacent";
+  listStatic?: boolean;
   isInteractive?: boolean;
   onActivate?: () => void;
   listDetailsExpanded?: boolean;
@@ -45,6 +46,7 @@ export function ExperienceCard({
   mode,
   isActive,
   carouselVariant = "active",
+  listStatic = false,
   isInteractive = true,
   onActivate,
   listDetailsExpanded = false,
@@ -54,7 +56,7 @@ export function ExperienceCard({
   const period = formatPeriod(item);
   const transition = reducedMotion ? { duration: 0 } : { duration: 0.24, ease: [0.2, 1, 0.3, 1] };
   const isAdjacentCarouselCard = mode === "carousel" && carouselVariant === "adjacent";
-  const shouldShowDetails = mode === "carousel" ? isActive && !isAdjacentCarouselCard : listDetailsExpanded;
+  const shouldShowDetails = mode === "carousel" ? isActive && !isAdjacentCarouselCard : listStatic || listDetailsExpanded;
   const compactCarouselDetails = mode === "list";
 
   return (
@@ -75,7 +77,7 @@ export function ExperienceCard({
           : undefined
       }
       className={`relative overflow-hidden rounded-2xl bg-[#101827]/82 px-5 py-4 text-left transition duration-300 md:px-6 md:py-5 ${
-        mode === "carousel"
+        mode === "carousel" && isInteractive
           ? "transform-gpu cursor-pointer will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg [backface-visibility:hidden]"
           : ""
       } ${
@@ -166,7 +168,7 @@ export function ExperienceCard({
         ) : null}
       </AnimatePresence>
 
-      {mode === "list" ? (
+      {mode === "list" && !listStatic ? (
         <div className="mt-4">
           <button
             type="button"

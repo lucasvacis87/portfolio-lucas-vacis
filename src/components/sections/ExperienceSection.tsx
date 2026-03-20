@@ -24,7 +24,6 @@ export function ExperienceSection(): JSX.Element {
   const [viewMode, setViewMode] = useState<ViewMode>("carousel");
   const [isMobile, setIsMobile] = useState(false);
   const [isCarouselScrollEnabled, setIsCarouselScrollEnabled] = useState(false);
-  const [expandedListIndex, setExpandedListIndex] = useState<number | null>(0);
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(max-width: 767px)");
@@ -126,8 +125,7 @@ export function ExperienceSection(): JSX.Element {
               item={item}
               mode="list"
               isActive={index === activeIndex}
-              listDetailsExpanded={expandedListIndex === index}
-              onToggleListDetails={() => setExpandedListIndex((current) => (current === index ? null : index))}
+              listStatic
               reducedMotion={Boolean(prefersReducedMotion)}
             />
           ))}
