@@ -22,9 +22,9 @@ const DRAG_THRESHOLD_PX = 16;
 const DRAG_RESET_MS = 180;
 const DRAG_STEP_PX = 300;
 const SLOT_TOP = {
-  prev: -124,
-  active: 112,
-  next: 504
+  prev: -132,
+  active: 104,
+  next: 476
 } as const;
 
 function clampIndex(index: number, length: number): number {
@@ -111,7 +111,7 @@ export function ExperienceCarousel({ items, activeIndex, onChangeActive, reduced
       aria-label="Experience timeline carousel"
       role="region"
       tabIndex={0}
-      className={`relative h-[46rem] overflow-hidden rounded-[1.4rem] border border-white/[0.06] bg-[#0c121b]/72 shadow-[0_24px_48px_rgba(0,0,0,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
+      className={`relative h-[46rem] overflow-hidden rounded-[1.4rem] border border-white/[0.06] bg-[#0c121b]/72 p-4 shadow-[0_24px_48px_rgba(0,0,0,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
         isDragging ? "cursor-grabbing" : "cursor-grab"
       }`}
       onWheel={(event) => {
@@ -190,8 +190,7 @@ export function ExperienceCarousel({ items, activeIndex, onChangeActive, reduced
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#0c121b] via-[#0c121b]/62 to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#0c121b] via-[#0c121b]/60 to-transparent" />
-      <div className="pointer-events-none absolute inset-4 rounded-2xl" />
-      <div className="pointer-events-none absolute left-4 right-4 top-[8rem] h-[23.2rem] rounded-2xl border border-white/[0.07] bg-white/[0.01]" />
+      <div className="pointer-events-none absolute left-4 right-4 top-[7.25rem] h-[23.2rem] rounded-2xl border border-white/[0.07] bg-white/[0.01]" />
 
       <div className="relative h-full touch-none select-none">
         {visibleSlots.map(({ slot, index }) => {
@@ -206,7 +205,7 @@ export function ExperienceCarousel({ items, activeIndex, onChangeActive, reduced
           return (
             <div
               key={`${slot}-${item.role}-${item.company}-${item.start}`}
-              className="absolute left-4 right-4"
+              className="absolute left-0 right-0"
               style={{
                 top: `${SLOT_TOP[slot]}px`,
                 zIndex: slot === "active" ? 30 : 20

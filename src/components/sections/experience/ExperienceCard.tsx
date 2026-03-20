@@ -17,11 +17,19 @@ function formatPeriod(item: ExperienceItem): string {
   return `${item.start} - ${item.end}`;
 }
 
-function DetailSection({ title, items }: { title: string; items: string[] }): JSX.Element {
+function DetailSection({
+  title,
+  items,
+  compact
+}: {
+  title: string;
+  items: string[];
+  compact?: boolean;
+}): JSX.Element {
   return (
     <section className="rounded-xl bg-black/18 p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
       <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-text/52">{title}</p>
-      <div className="mt-2.5 space-y-2">
+      <div className={`mt-2.5 space-y-2 ${compact ? "max-h-[9.25rem] overflow-y-auto pr-1.5 no-scrollbar" : ""}`}>
         {items.map((entry) => (
           <p key={entry} className="text-[13px] leading-6 text-text/86">
             {entry}
@@ -47,6 +55,7 @@ export function ExperienceCard({
   const transition = reducedMotion ? { duration: 0 } : { duration: 0.24, ease: [0.2, 1, 0.3, 1] };
   const isAdjacentCarouselCard = mode === "carousel" && carouselVariant === "adjacent";
   const shouldShowDetails = mode === "carousel" ? isActive && !isAdjacentCarouselCard : listDetailsExpanded;
+  const compactCarouselDetails = mode === "carousel";
 
   return (
     <motion.article
@@ -133,9 +142,9 @@ export function ExperienceCard({
             className="overflow-hidden"
           >
             <div className="mt-4 grid gap-3 md:grid-cols-3 md:gap-3.5">
-              <DetailSection title="Impact" items={item.details.impact} />
-              <DetailSection title="Responsibilities" items={item.details.responsibilities} />
-              <DetailSection title="Systems / Tech" items={item.details.systems} />
+              <DetailSection title="Impact" items={item.details.impact} compact={compactCarouselDetails} />
+              <DetailSection title="Responsibilities" items={item.details.responsibilities} compact={compactCarouselDetails} />
+              <DetailSection title="Systems / Tech" items={item.details.systems} compact={compactCarouselDetails} />
             </div>
           </motion.div>
         ) : null}
