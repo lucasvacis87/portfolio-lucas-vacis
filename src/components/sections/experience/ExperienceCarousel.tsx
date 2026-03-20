@@ -15,7 +15,7 @@ type ExperienceCarouselProps = {
 
 const WHEEL_SNAP_DELAY_MS = 140;
 const DRAG_STEP_PX = 300;
-const ACTIVE_TOP_PX = 76;
+const ACTIVE_TOP_PX = 28;
 const SLOT_OFFSET_PX = 352;
 const RENDER_DISTANCE = 2.2;
 const INERTIA_GAIN = 0.2;
