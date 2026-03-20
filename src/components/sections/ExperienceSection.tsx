@@ -48,12 +48,12 @@ export function ExperienceSection(): JSX.Element {
   const showCurrentRoleButton = activeIndex !== 0;
 
   const renderViewToggle = (): JSX.Element => (
-    <div role="group" aria-label="Experience section view toggle" className="inline-flex rounded-xl bg-[#0b1118] p-1">
+    <div role="group" aria-label="Experience section view toggle" className="inline-flex rounded-xl bg-[#0b1118] p-0.5">
       <button
         type="button"
         onClick={() => setViewMode("carousel")}
         aria-pressed={viewMode === "carousel"}
-        className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition sm:text-sm ${
+        className={`rounded-lg px-3 py-1 text-xs font-semibold transition sm:text-sm ${
           viewMode === "carousel" ? "bg-white text-[#09111a]" : "text-text/70 hover:bg-white/[0.08] hover:text-text"
         } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg`}
       >
@@ -63,7 +63,7 @@ export function ExperienceSection(): JSX.Element {
         type="button"
         onClick={() => setViewMode("list")}
         aria-pressed={viewMode === "list"}
-        className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition sm:text-sm ${
+        className={`rounded-lg px-3 py-1 text-xs font-semibold transition sm:text-sm ${
           viewMode === "list" ? "bg-white text-[#09111a]" : "text-text/70 hover:bg-white/[0.08] hover:text-text"
         } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg`}
       >
@@ -86,9 +86,6 @@ export function ExperienceSection(): JSX.Element {
 
       {viewMode === "carousel" ? (
         <div className="mt-7 rounded-[1.5rem] bg-[#0c121b]/62 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_18px_40px_rgba(0,0,0,0.3)]">
-          <div className="mb-3 flex flex-wrap items-center justify-end gap-3 rounded-2xl bg-[#0f161f]/52 px-3 py-3 md:px-4">
-            {renderViewToggle()}
-          </div>
           <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_6.25rem_9.5rem] lg:items-center">
             <ExperienceCarousel
               items={experience}
@@ -104,6 +101,8 @@ export function ExperienceSection(): JSX.Element {
             <ExperienceYearRail items={experience} position={carouselPosition} reducedMotion={Boolean(prefersReducedMotion)} />
 
             <NavigationControls
+              viewMode={viewMode}
+              onViewModeChange={setViewMode}
               canGoPrevious={canGoPrevious}
               canGoNext={canGoNext}
               showCurrentRole={showCurrentRoleButton}
@@ -114,8 +113,8 @@ export function ExperienceSection(): JSX.Element {
           </div>
         </div>
       ) : (
-        <div className="mt-6 space-y-4">
-          <div className="flex flex-wrap items-center justify-end gap-3 rounded-2xl bg-[#0f161f]/74 px-3 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_10px_28px_rgba(0,0,0,0.2)] md:px-4">
+        <div className="mt-6 space-y-2">
+          <div className="flex flex-wrap items-center justify-end gap-3 rounded-2xl bg-[#0f161f]/74 px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_10px_28px_rgba(0,0,0,0.2)] md:px-4">
             {renderViewToggle()}
           </div>
           {isMobile ? (

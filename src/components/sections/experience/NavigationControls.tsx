@@ -1,6 +1,8 @@
 ﻿import { ArrowUp, ArrowDown, RotateCcw } from "lucide-react";
 
 type NavigationControlsProps = {
+  viewMode: "carousel" | "list";
+  onViewModeChange: (mode: "carousel" | "list") => void;
   canGoPrevious: boolean;
   canGoNext: boolean;
   showCurrentRole: boolean;
@@ -34,6 +36,8 @@ function ControlButton({
 }
 
 export function NavigationControls({
+  viewMode,
+  onViewModeChange,
   canGoPrevious,
   canGoNext,
   showCurrentRole,
@@ -44,6 +48,28 @@ export function NavigationControls({
   return (
     <aside className="flex shrink-0 items-center lg:self-center">
       <div className="flex w-full items-center gap-2 rounded-2xl bg-transparent p-2 shadow-none lg:w-[9.5rem] lg:flex-col lg:items-center">
+        <div role="group" aria-label="Experience section view toggle" className="inline-flex rounded-xl bg-[#0b1118] p-0.5">
+          <button
+            type="button"
+            onClick={() => onViewModeChange("carousel")}
+            aria-pressed={viewMode === "carousel"}
+            className={`rounded-lg px-3 py-1 text-xs font-semibold transition ${
+              viewMode === "carousel" ? "bg-white text-[#09111a]" : "text-text/70 hover:bg-white/[0.08] hover:text-text"
+            } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg`}
+          >
+            Carousel
+          </button>
+          <button
+            type="button"
+            onClick={() => onViewModeChange("list")}
+            aria-pressed={viewMode === "list"}
+            className={`rounded-lg px-3 py-1 text-xs font-semibold transition ${
+              viewMode === "list" ? "bg-white text-[#09111a]" : "text-text/70 hover:bg-white/[0.08] hover:text-text"
+            } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg`}
+          >
+            List
+          </button>
+        </div>
         <ControlButton label="Show previous experience" icon={<ArrowUp size={17} aria-hidden="true" />} onClick={onPrevious} disabled={!canGoPrevious} />
         <ControlButton label="Show next experience" icon={<ArrowDown size={17} aria-hidden="true" />} onClick={onNext} disabled={!canGoNext} />
         <button
