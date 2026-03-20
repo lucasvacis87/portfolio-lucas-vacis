@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+﻿import { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import type { ExperienceItem } from "../../../types/content";
 import { ExperienceCard } from "./ExperienceCard";
@@ -10,22 +10,12 @@ type ExperienceCarouselProps = {
   reducedMotion: boolean;
 };
 
-type CarouselSlot = "prev" | "active" | "next";
-
-type SlotItem = {
-  slot: CarouselSlot;
-  index: number;
-};
-
-const WHEEL_THROTTLE_MS = 220;
-const DRAG_THRESHOLD_PX = 16;
-const DRAG_RESET_MS = 180;
+const WHEEL_SNAP_DELAY_MS = 140;
 const DRAG_STEP_PX = 300;
-const SLOT_TOP = {
-  prev: -132,
-  active: 104,
-  next: 476
-} as const;
+const ACTIVE_TOP_PX = 104;
+const SLOT_OFFSET_PX = 372;
+const RENDER_DISTANCE = 2.2;
+const INERTIA_GAIN = 0.2;
 
 function clampIndex(index: number, length: number): number {
   if (length <= 0) {
@@ -35,76 +25,57 @@ function clampIndex(index: number, length: number): number {
   return Math.min(Math.max(index, 0), length - 1);
 }
 
-function getVisibleSlots(activeIndex: number, length: number): SlotItem[] {
-  const slots: SlotItem[] = [];
-
-  if (activeIndex > 0) {
-    slots.push({ slot: "prev", index: activeIndex - 1 });
+function clampPosition(position: number, length: number): number {
+  if (length <= 0) {
+    return 0;
   }
 
-  slots.push({ slot: "active", index: activeIndex });
-
-  if (activeIndex + 1 < length) {
-    slots.push({ slot: "next", index: activeIndex + 1 });
-  }
-
-  return slots;
+  return Math.min(Math.max(position, 0), length - 1);
 }
 
 export function ExperienceCarousel({ items, activeIndex, onChangeActive, reducedMotion }: ExperienceCarouselProps): JSX.Element {
-  const lastWheelAtRef = useRef(0);
-  const dragStartYRef = useRef(0);
-  const dragStartAtRef = useRef(0);
-  const dragLastYRef = useRef(0);
-  const dragLastAtRef = useRef(0);
-  const justDraggedUntilRef = useRef(0);
-  const [dragOffset, setDragOffset] = useState(0);
+  const [virtualIndex, setVirtualIndex] = useState(activeIndex);
   const [isDragging, setIsDragging] = useState(false);
-  const hasManyItems = items.length > 1;
+  const [isWheeling, setIsWheeling] = useState(false);
 
-  const visibleSlots = useMemo(() => getVisibleSlots(activeIndex, items.length), [activeIndex, items.length]);
+  const dragStartYRef = useRef(0);
+  const dragStartPosRef = useRef(0);
+  const lastMoveYRef = useRef(0);
+  const lastMoveAtRef = useRef(0);
+  const velocityIndexRef = useRef(0);
+  const wheelTimeoutRef = useRef<number | null>(null);
+  const justDraggedUntilRef = useRef(0);
 
-  const goTo = (index: number): void => {
-    const clamped = clampIndex(index, items.length);
-    if (clamped === activeIndex) {
+  useEffect(() => {
+    if (isDragging || isWheeling) {
       return;
     }
 
-    onChangeActive(clamped);
+    setVirtualIndex(activeIndex);
+  }, [activeIndex, isDragging, isWheeling]);
+
+  useEffect(() => {
+    return () => {
+      if (wheelTimeoutRef.current !== null) {
+        window.clearTimeout(wheelTimeoutRef.current);
+      }
+    };
+  }, []);
+
+  const snapTo = (projectedPosition: number): void => {
+    const snapped = clampIndex(Math.round(projectedPosition), items.length);
+    setVirtualIndex(snapped);
+    onChangeActive(snapped);
   };
 
   const moveBy = (step: number): void => {
-    goTo(activeIndex + step);
+    snapTo(activeIndex + step);
   };
 
   const canTriggerClick = (): boolean => Date.now() > justDraggedUntilRef.current;
 
-  const finishDrag = (pointerId?: number, currentTarget?: HTMLDivElement): void => {
-    if (!isDragging) {
-      return;
-    }
-
-    if (pointerId !== undefined && currentTarget?.hasPointerCapture(pointerId)) {
-      currentTarget.releasePointerCapture(pointerId);
-    }
-
-    setIsDragging(false);
-
-    const totalDelta = dragLastYRef.current - dragStartYRef.current;
-    const elapsed = Math.max(dragLastAtRef.current - dragStartAtRef.current, 1);
-    const velocity = (dragLastYRef.current - dragStartYRef.current) / elapsed;
-    const projected = totalDelta + velocity * 220;
-    const projectedSteps = Math.round(projected / DRAG_STEP_PX);
-    const shouldSnap = Math.abs(totalDelta) >= DRAG_THRESHOLD_PX || Math.abs(projectedSteps) > 0;
-
-    if (shouldSnap) {
-      const targetIndex = clampIndex(activeIndex - projectedSteps, items.length);
-      onChangeActive(targetIndex);
-      justDraggedUntilRef.current = Date.now() + DRAG_RESET_MS;
-    }
-
-    setDragOffset(0);
-  };
+  const focusIndex = useMemo(() => clampIndex(Math.round(virtualIndex), items.length), [virtualIndex, items.length]);
+  const isSettled = !isDragging && !isWheeling && Math.abs(virtualIndex - focusIndex) < 0.02;
 
   return (
     <div
@@ -115,27 +86,34 @@ export function ExperienceCarousel({ items, activeIndex, onChangeActive, reduced
         isDragging ? "cursor-grabbing" : "cursor-grab"
       }`}
       onWheel={(event) => {
-        if (!hasManyItems || isDragging) {
+        if (items.length <= 1) {
           return;
         }
 
-        if (Math.abs(event.deltaY) < 8) {
-          return;
+        event.preventDefault();
+
+        const now = performance.now();
+        const previousAt = lastMoveAtRef.current || now;
+        const dt = Math.max(now - previousAt, 1);
+
+        const deltaIndex = event.deltaY / DRAG_STEP_PX;
+        const nextPosition = clampPosition(virtualIndex + deltaIndex, items.length);
+
+        velocityIndexRef.current = deltaIndex / dt;
+        lastMoveAtRef.current = now;
+        setVirtualIndex(nextPosition);
+        setIsWheeling(true);
+
+        if (wheelTimeoutRef.current !== null) {
+          window.clearTimeout(wheelTimeoutRef.current);
         }
 
-        const now = Date.now();
-        if (now - lastWheelAtRef.current < WHEEL_THROTTLE_MS) {
-          event.preventDefault();
-          return;
-        }
-
-        const direction = event.deltaY > 0 ? 1 : -1;
-        const targetIndex = clampIndex(activeIndex + direction, items.length);
-        if (targetIndex !== activeIndex) {
-          event.preventDefault();
-          moveBy(direction);
-          lastWheelAtRef.current = now;
-        }
+        wheelTimeoutRef.current = window.setTimeout(() => {
+          setIsWheeling(false);
+          const projected = nextPosition + velocityIndexRef.current * DRAG_STEP_PX * INERTIA_GAIN;
+          snapTo(projected);
+          velocityIndexRef.current = 0;
+        }, WHEEL_SNAP_DELAY_MS);
       }}
       onKeyDown={(event) => {
         if (event.key === "ArrowDown") {
@@ -152,18 +130,19 @@ export function ExperienceCarousel({ items, activeIndex, onChangeActive, reduced
 
         if (event.key === "Home") {
           event.preventDefault();
-          goTo(0);
+          snapTo(0);
         }
       }}
       onPointerDown={(event) => {
-        if (!hasManyItems) {
+        if (items.length <= 1) {
           return;
         }
 
         dragStartYRef.current = event.clientY;
-        dragLastYRef.current = event.clientY;
-        dragStartAtRef.current = performance.now();
-        dragLastAtRef.current = dragStartAtRef.current;
+        dragStartPosRef.current = virtualIndex;
+        lastMoveYRef.current = event.clientY;
+        lastMoveAtRef.current = performance.now();
+        velocityIndexRef.current = 0;
         setIsDragging(true);
         event.currentTarget.setPointerCapture(event.pointerId);
       }}
@@ -172,20 +151,45 @@ export function ExperienceCarousel({ items, activeIndex, onChangeActive, reduced
           return;
         }
 
-        dragLastYRef.current = event.clientY;
-        dragLastAtRef.current = performance.now();
-        setDragOffset(event.clientY - dragStartYRef.current);
+        const now = performance.now();
+        const dt = Math.max(now - lastMoveAtRef.current, 1);
+        const dy = event.clientY - lastMoveYRef.current;
+
+        velocityIndexRef.current = -dy / DRAG_STEP_PX / dt;
+        lastMoveYRef.current = event.clientY;
+        lastMoveAtRef.current = now;
+
+        const deltaFromStart = event.clientY - dragStartYRef.current;
+        const nextPosition = clampPosition(dragStartPosRef.current - deltaFromStart / DRAG_STEP_PX, items.length);
+        setVirtualIndex(nextPosition);
       }}
       onPointerUp={(event) => {
-        finishDrag(event.pointerId, event.currentTarget);
+        if (!isDragging) {
+          return;
+        }
+
+        if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+          event.currentTarget.releasePointerCapture(event.pointerId);
+        }
+
+        setIsDragging(false);
+        const projected = virtualIndex + velocityIndexRef.current * DRAG_STEP_PX * INERTIA_GAIN;
+        snapTo(projected);
+        velocityIndexRef.current = 0;
+        justDraggedUntilRef.current = Date.now() + 180;
       }}
       onPointerCancel={(event) => {
-        finishDrag(event.pointerId, event.currentTarget);
-      }}
-      onPointerLeave={(event) => {
-        if (isDragging && !event.currentTarget.hasPointerCapture(event.pointerId)) {
-          finishDrag();
+        if (!isDragging) {
+          return;
         }
+
+        if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+          event.currentTarget.releasePointerCapture(event.pointerId);
+        }
+
+        setIsDragging(false);
+        snapTo(virtualIndex);
+        velocityIndexRef.current = 0;
       }}
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#0c121b] via-[#0c121b]/62 to-transparent" />
@@ -193,32 +197,32 @@ export function ExperienceCarousel({ items, activeIndex, onChangeActive, reduced
       <div className="pointer-events-none absolute left-4 right-4 top-[7.25rem] h-[23.2rem] rounded-2xl border border-white/[0.07] bg-white/[0.01]" />
 
       <div className="relative h-full touch-none select-none">
-        {visibleSlots.map(({ slot, index }) => {
-          const item = items[index];
-          if (!item) {
+        {items.map((item, index) => {
+          const distance = index - virtualIndex;
+          if (Math.abs(distance) > RENDER_DISTANCE) {
             return null;
           }
 
-          const isActive = slot === "active";
-          const variant = isActive ? "active" : "adjacent";
+          const isFocus = index === focusIndex;
+          const isInteractive = !isDragging && !isWheeling;
+          const variant = isSettled && isFocus ? "active" : "adjacent";
 
           return (
-            <div
-              key={`${slot}-${item.role}-${item.company}-${item.start}`}
+            <motion.div
+              key={`${item.role}-${item.company}-${item.start}`}
               className="absolute left-0 right-0"
               style={{
-                top: `${SLOT_TOP[slot]}px`,
-                zIndex: slot === "active" ? 30 : 20
+                top: `${ACTIVE_TOP_PX}px`,
+                zIndex: 30 - Math.round(Math.abs(distance) * 10)
               }}
-            >
-              <motion.div
-                animate={{
-                  y: isDragging ? dragOffset : 0
-                }}
+              animate={{
+                y: distance * SLOT_OFFSET_PX,
+                opacity: Math.abs(distance) > 1.4 ? 0 : 1
+              }}
               transition={
                 reducedMotion
                   ? { duration: 0 }
-                  : isDragging
+                  : isDragging || isWheeling
                     ? { duration: 0 }
                     : { duration: 0.28, ease: [0.2, 1, 0.3, 1] }
               }
@@ -227,19 +231,18 @@ export function ExperienceCarousel({ items, activeIndex, onChangeActive, reduced
                 item={item}
                 mode="carousel"
                 carouselVariant={variant}
-                isActive={isActive}
-                isInteractive={!isDragging}
+                isActive={isSettled && isFocus}
+                isInteractive={isInteractive}
                 onActivate={() => {
                   if (!canTriggerClick()) {
                     return;
                   }
 
-                  goTo(index);
+                  snapTo(index);
                 }}
                 reducedMotion={reducedMotion}
               />
-              </motion.div>
-            </div>
+            </motion.div>
           );
         })}
       </div>
