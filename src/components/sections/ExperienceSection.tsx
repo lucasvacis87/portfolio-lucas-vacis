@@ -86,8 +86,7 @@ export function ExperienceSection(): JSX.Element {
 
       {viewMode === "carousel" ? (
         <div className="mt-7 rounded-[1.5rem] bg-[#0c121b]/62 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_18px_40px_rgba(0,0,0,0.3)]">
-          <div className="mb-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-[#0f161f]/52 px-3 py-3 md:px-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-text/58 sm:text-sm">Experience</p>
+          <div className="mb-3 flex flex-wrap items-center justify-end gap-3 rounded-2xl bg-[#0f161f]/52 px-3 py-3 md:px-4">
             {renderViewToggle()}
           </div>
           <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_6.25rem_9.5rem] lg:items-center">
@@ -116,8 +115,7 @@ export function ExperienceSection(): JSX.Element {
         </div>
       ) : (
         <div className="mt-6 space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-[#0f161f]/74 px-3 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_10px_28px_rgba(0,0,0,0.2)] md:px-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-text/58 sm:text-sm">Experience</p>
+          <div className="flex flex-wrap items-center justify-end gap-3 rounded-2xl bg-[#0f161f]/74 px-3 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_10px_28px_rgba(0,0,0,0.2)] md:px-4">
             {renderViewToggle()}
           </div>
           {isMobile ? (
