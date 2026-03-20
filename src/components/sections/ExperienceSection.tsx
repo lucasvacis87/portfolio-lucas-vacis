@@ -21,6 +21,7 @@ export function ExperienceSection(): JSX.Element {
   const [activeIndex, setActiveIndex] = useState(0);
   const [viewMode, setViewMode] = useState<ViewMode>("carousel");
   const [isMobile, setIsMobile] = useState(false);
+  const [isCarouselScrollEnabled, setIsCarouselScrollEnabled] = useState(false);
   const [expandedListIndex, setExpandedListIndex] = useState<number | null>(0);
 
   useEffect(() => {
@@ -49,6 +50,31 @@ export function ExperienceSection(): JSX.Element {
     return item ? `${item.role} at ${item.company}` : "Current role";
   }, [activeIndex]);
 
+  const renderViewToggle = (): JSX.Element => (
+    <div role="group" aria-label="Experience section view toggle" className="inline-flex rounded-xl bg-[#0b1118] p-1">
+      <button
+        type="button"
+        onClick={() => setViewMode("carousel")}
+        aria-pressed={viewMode === "carousel"}
+        className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition sm:text-sm ${
+          viewMode === "carousel" ? "bg-white text-[#09111a]" : "text-text/70 hover:bg-white/[0.08] hover:text-text"
+        } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg`}
+      >
+        Carousel view
+      </button>
+      <button
+        type="button"
+        onClick={() => setViewMode("list")}
+        aria-pressed={viewMode === "list"}
+        className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition sm:text-sm ${
+          viewMode === "list" ? "bg-white text-[#09111a]" : "text-text/70 hover:bg-white/[0.08] hover:text-text"
+        } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg`}
+      >
+        List view
+      </button>
+    </div>
+  );
+
   return (
     <Section id="experience" variant="flow" accent="aqua" headerAlign="center" title="Experience" subtitle={experienceIntro.subtitle}>
       <div className="space-y-4">
@@ -59,40 +85,14 @@ export function ExperienceSection(): JSX.Element {
         ))}
       </div>
 
-      <div className="mt-7 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-[#0f161f]/74 px-3 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_10px_28px_rgba(0,0,0,0.2)] md:px-4">
-        <p className="text-xs text-text/62 sm:text-sm">
-          Active focus: <span className="font-semibold text-text/85">{activeRoleLabel}</span>
-        </p>
-        <div role="group" aria-label="Experience section view toggle" className="inline-flex rounded-xl bg-[#0b1118] p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
-          <button
-            type="button"
-            onClick={() => setViewMode("carousel")}
-            aria-pressed={viewMode === "carousel"}
-            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition sm:text-sm ${
-              viewMode === "carousel"
-                ? "bg-white text-[#09111a]"
-                : "text-text/70 hover:bg-white/[0.08] hover:text-text"
-            } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg`}
-          >
-            Carousel view
-          </button>
-          <button
-            type="button"
-            onClick={() => setViewMode("list")}
-            aria-pressed={viewMode === "list"}
-            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition sm:text-sm ${
-              viewMode === "list"
-                ? "bg-white text-[#09111a]"
-                : "text-text/70 hover:bg-white/[0.08] hover:text-text"
-            } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg`}
-          >
-            List view
-          </button>
-        </div>
-      </div>
-
       {viewMode === "carousel" ? (
-        <div className="mt-6 rounded-[1.5rem] bg-[#0c121b]/62 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_18px_40px_rgba(0,0,0,0.3)]">
+        <div className="mt-7 rounded-[1.5rem] bg-[#0c121b]/62 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_18px_40px_rgba(0,0,0,0.3)]">
+          <div className="mb-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-[#0f161f]/52 px-3 py-3 md:px-4">
+            <p className="text-xs text-text/62 sm:text-sm">
+              Active focus: <span className="font-semibold text-text/85">{activeRoleLabel}</span>
+            </p>
+            {renderViewToggle()}
+          </div>
           <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_9.5rem] lg:items-start">
             <ExperienceCarousel
               items={experience}
@@ -101,6 +101,8 @@ export function ExperienceSection(): JSX.Element {
                 setActiveIndex(clampIndex(nextIndex));
               }}
               reducedMotion={Boolean(prefersReducedMotion)}
+              scrollEnabled={isCarouselScrollEnabled}
+              onEnableScroll={() => setIsCarouselScrollEnabled(true)}
             />
 
             <NavigationControls
@@ -115,6 +117,12 @@ export function ExperienceSection(): JSX.Element {
         </div>
       ) : (
         <div className="mt-6 space-y-4">
+          <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-[#0f161f]/74 px-3 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_10px_28px_rgba(0,0,0,0.2)] md:px-4">
+            <p className="text-xs text-text/62 sm:text-sm">
+              Active focus: <span className="font-semibold text-text/85">{activeRoleLabel}</span>
+            </p>
+            {renderViewToggle()}
+          </div>
           {isMobile ? (
             <p className="text-xs text-text/50">List view is default on mobile for faster recruiter scanning.</p>
           ) : null}

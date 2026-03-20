@@ -8,6 +8,8 @@ type ExperienceCarouselProps = {
   activeIndex: number;
   onChangeActive: (nextIndex: number) => void;
   reducedMotion: boolean;
+  scrollEnabled: boolean;
+  onEnableScroll: () => void;
 };
 
 const WHEEL_SNAP_DELAY_MS = 140;
@@ -33,7 +35,14 @@ function clampPosition(position: number, length: number): number {
   return Math.min(Math.max(position, 0), length - 1);
 }
 
-export function ExperienceCarousel({ items, activeIndex, onChangeActive, reducedMotion }: ExperienceCarouselProps): JSX.Element {
+export function ExperienceCarousel({
+  items,
+  activeIndex,
+  onChangeActive,
+  reducedMotion,
+  scrollEnabled,
+  onEnableScroll
+}: ExperienceCarouselProps): JSX.Element {
   const [virtualIndex, setVirtualIndex] = useState(activeIndex);
   const [isDragging, setIsDragging] = useState(false);
   const [isWheeling, setIsWheeling] = useState(false);
@@ -86,11 +95,16 @@ export function ExperienceCarousel({ items, activeIndex, onChangeActive, reduced
         isDragging ? "cursor-grabbing" : "cursor-grab"
       }`}
       onWheel={(event) => {
-        if (items.length <= 1) {
+        if (!scrollEnabled) {
           return;
         }
 
         event.preventDefault();
+        event.stopPropagation();
+
+        if (items.length <= 1) {
+          return;
+        }
 
         const now = performance.now();
         const previousAt = lastMoveAtRef.current || now;
@@ -134,6 +148,10 @@ export function ExperienceCarousel({ items, activeIndex, onChangeActive, reduced
         }
       }}
       onPointerDown={(event) => {
+        if (!scrollEnabled) {
+          return;
+        }
+
         if (items.length <= 1) {
           return;
         }
@@ -147,6 +165,10 @@ export function ExperienceCarousel({ items, activeIndex, onChangeActive, reduced
         event.currentTarget.setPointerCapture(event.pointerId);
       }}
       onPointerMove={(event) => {
+        if (!scrollEnabled) {
+          return;
+        }
+
         if (!isDragging) {
           return;
         }
@@ -164,6 +186,10 @@ export function ExperienceCarousel({ items, activeIndex, onChangeActive, reduced
         setVirtualIndex(nextPosition);
       }}
       onPointerUp={(event) => {
+        if (!scrollEnabled) {
+          return;
+        }
+
         if (!isDragging) {
           return;
         }
@@ -179,6 +205,10 @@ export function ExperienceCarousel({ items, activeIndex, onChangeActive, reduced
         justDraggedUntilRef.current = Date.now() + 180;
       }}
       onPointerCancel={(event) => {
+        if (!scrollEnabled) {
+          return;
+        }
+
         if (!isDragging) {
           return;
         }
@@ -194,6 +224,18 @@ export function ExperienceCarousel({ items, activeIndex, onChangeActive, reduced
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#0c121b] via-[#0c121b]/62 to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#0c121b] via-[#0c121b]/60 to-transparent" />
+      {!scrollEnabled ? (
+        <button
+          type="button"
+          onClick={onEnableScroll}
+          className="absolute inset-0 z-40 flex items-center justify-center rounded-[1.4rem] bg-[#0c121b]/70 backdrop-blur-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+          aria-label="Enable carousel scrolling"
+        >
+          <span className="rounded-full bg-white/[0.08] px-4 py-2 text-sm font-semibold text-text/86 shadow-[0_10px_24px_rgba(0,0,0,0.32)]">
+            Click to enable carousel scroll
+          </span>
+        </button>
+      ) : null}
       <div className="relative h-full touch-none select-none">
         {items.map((item, index) => {
           const distance = index - virtualIndex;
