@@ -20,6 +20,7 @@ function clampIndex(index: number): number {
 export function ExperienceSection(): JSX.Element {
   const prefersReducedMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
+  const [carouselPosition, setCarouselPosition] = useState(0);
   const [viewMode, setViewMode] = useState<ViewMode>("carousel");
   const [isMobile, setIsMobile] = useState(false);
   const [isCarouselScrollEnabled, setIsCarouselScrollEnabled] = useState(false);
@@ -94,11 +95,12 @@ export function ExperienceSection(): JSX.Element {
               onChangeActive={(nextIndex) => {
                 setActiveIndex(clampIndex(nextIndex));
               }}
+              onPositionChange={setCarouselPosition}
               reducedMotion={Boolean(prefersReducedMotion)}
               scrollEnabled={isCarouselScrollEnabled}
               onEnableScroll={() => setIsCarouselScrollEnabled(true)}
             />
-            <ExperienceYearRail items={experience} activeIndex={activeIndex} reducedMotion={Boolean(prefersReducedMotion)} />
+            <ExperienceYearRail items={experience} position={carouselPosition} reducedMotion={Boolean(prefersReducedMotion)} />
 
             <NavigationControls
               canGoPrevious={canGoPrevious}

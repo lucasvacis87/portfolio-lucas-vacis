@@ -7,6 +7,7 @@ type ExperienceCarouselProps = {
   items: ExperienceItem[];
   activeIndex: number;
   onChangeActive: (nextIndex: number) => void;
+  onPositionChange: (position: number) => void;
   reducedMotion: boolean;
   scrollEnabled: boolean;
   onEnableScroll: () => void;
@@ -39,6 +40,7 @@ export function ExperienceCarousel({
   items,
   activeIndex,
   onChangeActive,
+  onPositionChange,
   reducedMotion,
   scrollEnabled,
   onEnableScroll
@@ -64,12 +66,14 @@ export function ExperienceCarousel({
     const clamped = clampPosition(position, items.length);
     virtualIndexRef.current = clamped;
     setVirtualIndex(clamped);
+    onPositionChange(clamped);
   };
 
   const snapTo = (projectedPosition: number): void => {
     const snapped = clampIndex(Math.round(projectedPosition), items.length);
     virtualIndexRef.current = snapped;
     setVirtualIndex(snapped);
+    onPositionChange(snapped);
     onChangeActive(snapped);
   };
 
@@ -88,7 +92,8 @@ export function ExperienceCarousel({
 
     virtualIndexRef.current = activeIndex;
     setVirtualIndex(activeIndex);
-  }, [activeIndex, isDragging, isWheeling]);
+    onPositionChange(activeIndex);
+  }, [activeIndex, isDragging, isWheeling, onPositionChange]);
 
   useEffect(() => {
     return () => {
@@ -134,6 +139,7 @@ export function ExperienceCarousel({
       lastMoveAtRef.current = now;
       virtualIndexRef.current = nextPosition;
       setVirtualIndex(nextPosition);
+      onPositionChange(nextPosition);
       setIsWheeling(true);
 
       if (wheelTimeoutRef.current !== null) {
@@ -153,7 +159,7 @@ export function ExperienceCarousel({
     return () => {
       board.removeEventListener("wheel", onWheelNative);
     };
-  }, [items.length, onChangeActive]);
+  }, [items.length, onChangeActive, onPositionChange]);
 
   const moveBy = (step: number): void => {
     snapTo(activeIndex + step);
