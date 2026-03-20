@@ -109,6 +109,16 @@ export function ExperienceCarousel({
         return;
       }
 
+      const atTopEdge = virtualIndexRef.current <= 0.001;
+      const atBottomEdge = virtualIndexRef.current >= itemsLengthRef.current - 1 - 0.001;
+      const isScrollingUp = event.deltaY < 0;
+      const isScrollingDown = event.deltaY > 0;
+      const shouldReleaseToPage = (atTopEdge && isScrollingUp) || (atBottomEdge && isScrollingDown);
+
+      if (shouldReleaseToPage) {
+        return;
+      }
+
       event.preventDefault();
       event.stopPropagation();
 
