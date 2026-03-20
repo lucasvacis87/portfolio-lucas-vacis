@@ -1,7 +1,54 @@
+import { useEffect, useMemo, useState } from "react";
+import { useReducedMotion } from "framer-motion";
 import { experience, experienceIntro } from "../../content/experience";
 import { Section } from "../layout/Section";
+import { ExperienceCard } from "./experience/ExperienceCard";
+import { ExperienceCarousel } from "./experience/ExperienceCarousel";
+import { NavigationControls } from "./experience/NavigationControls";
+
+type ViewMode = "carousel" | "list";
+
+function clampIndex(index: number): number {
+  if (experience.length === 0) {
+    return 0;
+  }
+
+  return Math.max(0, Math.min(index, experience.length - 1));
+}
 
 export function ExperienceSection(): JSX.Element {
+  const prefersReducedMotion = useReducedMotion();
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [viewMode, setViewMode] = useState<ViewMode>("carousel");
+  const [isMobile, setIsMobile] = useState(false);
+  const [expandedListIndex, setExpandedListIndex] = useState<number | null>(0);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 767px)");
+
+    const syncBreakpoint = (): void => {
+      const mobile = mediaQuery.matches;
+      setIsMobile(mobile);
+      setViewMode(mobile ? "list" : "carousel");
+    };
+
+    syncBreakpoint();
+    mediaQuery.addEventListener("change", syncBreakpoint);
+
+    return () => {
+      mediaQuery.removeEventListener("change", syncBreakpoint);
+    };
+  }, []);
+
+  const canGoPrevious = activeIndex > 0;
+  const canGoNext = activeIndex < experience.length - 1;
+  const showCurrentRoleButton = activeIndex !== 0;
+
+  const activeRoleLabel = useMemo(() => {
+    const item = experience[activeIndex];
+    return item ? `${item.role} at ${item.company}` : "Current role";
+  }, [activeIndex]);
+
   return (
     <Section id="experience" variant="flow" accent="aqua" headerAlign="center" title="Experience" subtitle={experienceIntro.subtitle}>
       <div className="space-y-4">
@@ -12,25 +59,77 @@ export function ExperienceSection(): JSX.Element {
         ))}
       </div>
 
-      <div className="mt-7 space-y-4">
-        {experience.map((item) => (
-          <article
-            key={`${item.role}-${item.period}`}
-            className="surface-card rounded-2xl bg-[#111722]/86 px-5 py-4 transition duration-300 hover:shadow-[0_16px_34px_rgba(0,0,0,0.3),0_0_20px_rgba(55,208,201,0.07)]"
+      <div className="mt-7 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/[0.06] bg-[#0f161f]/74 px-3 py-3 md:px-4">
+        <p className="text-xs text-text/62 sm:text-sm">
+          Active focus: <span className="font-semibold text-text/85">{activeRoleLabel}</span>
+        </p>
+        <div role="group" aria-label="Experience section view toggle" className="inline-flex rounded-xl border border-white/[0.08] bg-[#0b1118] p-1">
+          <button
+            type="button"
+            onClick={() => setViewMode("carousel")}
+            aria-pressed={viewMode === "carousel"}
+            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition sm:text-sm ${
+              viewMode === "carousel"
+                ? "bg-white text-[#09111a]"
+                : "text-text/70 hover:bg-white/[0.08] hover:text-text"
+            } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg`}
           >
-            <div className="flex flex-wrap items-start justify-between gap-3">
-              <div>
-                <h3 className="font-heading text-lg">{item.role}</h3>
-                <p className="muted mt-1 text-sm">{item.context}</p>
-              </div>
-              <span className="surface-chip rounded-md bg-bg/45 px-2.5 py-1 font-mono text-[11px] uppercase tracking-[0.08em] text-muted">
-                {item.period}
-              </span>
-            </div>
-            <p className="muted mt-3 text-sm leading-6">{item.summary}</p>
-          </article>
-        ))}
+            Carousel view
+          </button>
+          <button
+            type="button"
+            onClick={() => setViewMode("list")}
+            aria-pressed={viewMode === "list"}
+            className={`rounded-lg px-3 py-1.5 text-xs font-semibold transition sm:text-sm ${
+              viewMode === "list"
+                ? "bg-white text-[#09111a]"
+                : "text-text/70 hover:bg-white/[0.08] hover:text-text"
+            } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg`}
+          >
+            List view
+          </button>
+        </div>
       </div>
+
+      {viewMode === "carousel" ? (
+        <div className="mt-6 grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+          <ExperienceCarousel
+            items={experience}
+            activeIndex={activeIndex}
+            onChangeActive={(nextIndex) => {
+              setActiveIndex(clampIndex(nextIndex));
+            }}
+            reducedMotion={Boolean(prefersReducedMotion)}
+          />
+
+          <NavigationControls
+            canGoPrevious={canGoPrevious}
+            canGoNext={canGoNext}
+            showCurrentRole={showCurrentRoleButton}
+            onPrevious={() => setActiveIndex((index) => clampIndex(index - 1))}
+            onNext={() => setActiveIndex((index) => clampIndex(index + 1))}
+            onCurrentRole={() => setActiveIndex(0)}
+          />
+        </div>
+      ) : (
+        <div className="mt-6 space-y-4">
+          {isMobile ? (
+            <p className="text-xs text-text/50">List view is default on mobile for faster recruiter scanning.</p>
+          ) : null}
+          {experience.map((item, index) => (
+            <ExperienceCard
+              key={`${item.role}-${item.company}-${item.start}`}
+              item={item}
+              mode="list"
+              isActive={index === activeIndex}
+              listDetailsExpanded={expandedListIndex === index}
+              onToggleListDetails={() => setExpandedListIndex((current) => (current === index ? null : index))}
+              reducedMotion={Boolean(prefersReducedMotion)}
+            />
+          ))}
+        </div>
+      )}
     </Section>
   );
 }
+
