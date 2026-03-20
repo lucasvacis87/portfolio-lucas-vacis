@@ -55,7 +55,7 @@ export function ExperienceCard({
   const transition = reducedMotion ? { duration: 0 } : { duration: 0.24, ease: [0.2, 1, 0.3, 1] };
   const isAdjacentCarouselCard = mode === "carousel" && carouselVariant === "adjacent";
   const shouldShowDetails = mode === "carousel" ? isActive && !isAdjacentCarouselCard : listDetailsExpanded;
-  const compactCarouselDetails = mode === "carousel";
+  const compactCarouselDetails = mode === "list";
 
   return (
     <motion.article
