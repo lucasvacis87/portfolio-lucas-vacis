@@ -118,14 +118,15 @@ export function ExperienceCard({
 
         <div className="flex flex-col items-start gap-2 md:items-end">
           <span className="surface-chip rounded-md bg-bg/45 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-text/65">{period}</span>
-          <div className="flex max-w-[22rem] flex-wrap gap-2 md:justify-end">
-            {(isAdjacentCarouselCard ? item.tech.slice(0, 5) : item.tech).map((tag) => (
-              <span key={tag} className="surface-chip rounded-full bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.11em] text-text/74">
-                {tag}
-              </span>
-            ))}
-          </div>
         </div>
+      </div>
+
+      <div className="mt-3 flex flex-wrap gap-2">
+        {(isAdjacentCarouselCard ? item.tech.slice(0, 5) : item.tech).map((tag) => (
+          <span key={tag} className="surface-chip rounded-full bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.11em] text-text/74">
+            {tag}
+          </span>
+        ))}
       </div>
 
       <AnimatePresence initial={false}>
