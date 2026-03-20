@@ -5,6 +5,7 @@ type ExperienceCardProps = {
   item: ExperienceItem;
   mode: "carousel" | "list";
   isActive: boolean;
+  carouselVariant?: "active" | "adjacent";
   isInteractive?: boolean;
   onActivate?: () => void;
   listDetailsExpanded?: boolean;
@@ -35,6 +36,7 @@ export function ExperienceCard({
   item,
   mode,
   isActive,
+  carouselVariant = "active",
   isInteractive = true,
   onActivate,
   listDetailsExpanded = false,
@@ -43,7 +45,8 @@ export function ExperienceCard({
 }: ExperienceCardProps): JSX.Element {
   const period = formatPeriod(item);
   const transition = reducedMotion ? { duration: 0 } : { duration: 0.24, ease: [0.2, 1, 0.3, 1] };
-  const shouldShowDetails = mode === "carousel" ? isActive : listDetailsExpanded;
+  const isAdjacentCarouselCard = mode === "carousel" && carouselVariant === "adjacent";
+  const shouldShowDetails = mode === "carousel" ? isActive && !isAdjacentCarouselCard : listDetailsExpanded;
 
   return (
     <motion.article
@@ -66,13 +69,19 @@ export function ExperienceCard({
         mode === "carousel"
           ? "cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
           : ""
+      } ${
+        mode === "carousel" && isAdjacentCarouselCard
+          ? "min-h-[10.5rem] md:min-h-[11.25rem]"
+          : mode === "carousel"
+            ? "min-h-[22.5rem] md:min-h-[23rem]"
+            : ""
       }`}
       animate={
         mode === "carousel"
           ? {
-              scale: isActive ? 1 : 0.95,
-              opacity: isActive ? 1 : 0.56,
-              filter: isActive ? "blur(0px)" : "blur(2px)",
+              scale: isActive ? 1 : 0.96,
+              opacity: isActive ? 1 : 0.58,
+              filter: isActive ? "blur(0px)" : "blur(1.8px)",
               y: 0,
               boxShadow: isActive
                 ? "0 22px 44px rgba(0,0,0,0.42), 0 0 0 1px rgba(255,255,255,0.05), 0 0 24px rgba(78,128,255,0.08)"
@@ -96,13 +105,15 @@ export function ExperienceCard({
           <p className="mt-1.5 text-sm text-text/78">
             {item.company} | {item.location}
           </p>
-          <p className="mt-3 text-sm leading-6 text-text/84 md:max-w-[56ch]">{item.impactSummary}</p>
+          <p className={`mt-3 text-sm leading-6 text-text/84 md:max-w-[56ch] ${isAdjacentCarouselCard ? "line-clamp-2" : ""}`}>
+            {item.impactSummary}
+          </p>
         </div>
 
         <div className="flex flex-col items-start gap-2 md:items-end">
           <span className="surface-chip rounded-md bg-bg/45 px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.12em] text-text/65">{period}</span>
           <div className="flex max-w-[22rem] flex-wrap gap-2 md:justify-end">
-            {item.tech.map((tag) => (
+            {(isAdjacentCarouselCard ? item.tech.slice(0, 5) : item.tech).map((tag) => (
               <span key={tag} className="surface-chip rounded-full bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.11em] text-text/74">
                 {tag}
               </span>
