@@ -74,7 +74,7 @@ export function ExperienceCard({
             }
           : undefined
       }
-      className={`surface-card relative overflow-hidden rounded-2xl border border-white/[0.05] bg-[#0f161f]/88 px-5 py-4 text-left transition duration-300 md:px-6 md:py-5 ${
+      className={`surface-card relative overflow-hidden rounded-2xl bg-[#0f161f]/88 px-5 py-4 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_14px_34px_rgba(0,0,0,0.32)] transition duration-300 md:px-6 md:py-5 ${
         mode === "carousel"
           ? "cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
           : ""

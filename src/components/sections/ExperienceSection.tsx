@@ -59,11 +59,11 @@ export function ExperienceSection(): JSX.Element {
         ))}
       </div>
 
-      <div className="mt-7 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/[0.06] bg-[#0f161f]/74 px-3 py-3 md:px-4">
+      <div className="mt-7 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-[#0f161f]/74 px-3 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_10px_28px_rgba(0,0,0,0.2)] md:px-4">
         <p className="text-xs text-text/62 sm:text-sm">
           Active focus: <span className="font-semibold text-text/85">{activeRoleLabel}</span>
         </p>
-        <div role="group" aria-label="Experience section view toggle" className="inline-flex rounded-xl border border-white/[0.08] bg-[#0b1118] p-1">
+        <div role="group" aria-label="Experience section view toggle" className="inline-flex rounded-xl bg-[#0b1118] p-1 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
           <button
             type="button"
             onClick={() => setViewMode("carousel")}
@@ -92,7 +92,7 @@ export function ExperienceSection(): JSX.Element {
       </div>
 
       {viewMode === "carousel" ? (
-        <div className="mt-6 grid gap-3 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-start">
+        <div className="mt-6 grid gap-3 lg:grid-cols-[minmax(0,1fr)_9.5rem] lg:items-start">
           <ExperienceCarousel
             items={experience}
             activeIndex={activeIndex}
