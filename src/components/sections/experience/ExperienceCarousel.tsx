@@ -249,9 +249,6 @@ export function ExperienceCarousel({
         velocityIndexRef.current = 0;
       }}
     >
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#0c121b] via-[#0c121b]/62 to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#0c121b] via-[#0c121b]/60 to-transparent" />
-
       {!scrollEnabled ? (
         <button
           type="button"

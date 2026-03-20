@@ -74,7 +74,7 @@ export function ExperienceCard({
             }
           : undefined
       }
-      className={`relative overflow-hidden rounded-2xl bg-[#101827]/82 px-5 py-4 text-left shadow-[0_14px_34px_rgba(0,0,0,0.34)] transition duration-300 md:px-6 md:py-5 ${
+      className={`relative overflow-hidden rounded-2xl bg-[#101827]/82 px-5 py-4 text-left transition duration-300 md:px-6 md:py-5 ${
         mode === "carousel"
           ? "cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
           : ""
@@ -92,9 +92,7 @@ export function ExperienceCard({
               opacity: isActive ? 1 : 0.58,
               filter: isActive ? "blur(0px)" : "blur(1.8px)",
               y: 0,
-              boxShadow: isActive
-                ? "0 22px 44px rgba(0,0,0,0.42), 0 0 24px rgba(78,128,255,0.08)"
-                : "0 12px 28px rgba(0,0,0,0.3)"
+              boxShadow: "none"
             }
           : undefined
       }
