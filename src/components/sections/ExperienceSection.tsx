@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { experience, experienceIntro } from "../../content/experience";
 import { Section } from "../layout/Section";
@@ -45,11 +45,6 @@ export function ExperienceSection(): JSX.Element {
   const canGoNext = activeIndex < experience.length - 1;
   const showCurrentRoleButton = activeIndex !== 0;
 
-  const activeRoleLabel = useMemo(() => {
-    const item = experience[activeIndex];
-    return item ? `${item.role} at ${item.company}` : "Current role";
-  }, [activeIndex]);
-
   const renderViewToggle = (): JSX.Element => (
     <div role="group" aria-label="Experience section view toggle" className="inline-flex rounded-xl bg-[#0b1118] p-1">
       <button
@@ -88,12 +83,10 @@ export function ExperienceSection(): JSX.Element {
       {viewMode === "carousel" ? (
         <div className="mt-7 rounded-[1.5rem] bg-[#0c121b]/62 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_18px_40px_rgba(0,0,0,0.3)]">
           <div className="mb-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-[#0f161f]/52 px-3 py-3 md:px-4">
-            <p className="text-xs text-text/62 sm:text-sm">
-              Active focus: <span className="font-semibold text-text/85">{activeRoleLabel}</span>
-            </p>
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-text/58 sm:text-sm">Experience</p>
             {renderViewToggle()}
           </div>
-          <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_9.5rem] lg:items-start">
+          <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_9.5rem] lg:items-center">
             <ExperienceCarousel
               items={experience}
               activeIndex={activeIndex}
@@ -118,9 +111,7 @@ export function ExperienceSection(): JSX.Element {
       ) : (
         <div className="mt-6 space-y-4">
           <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-[#0f161f]/74 px-3 py-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_10px_28px_rgba(0,0,0,0.2)] md:px-4">
-            <p className="text-xs text-text/62 sm:text-sm">
-              Active focus: <span className="font-semibold text-text/85">{activeRoleLabel}</span>
-            </p>
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-text/58 sm:text-sm">Experience</p>
             {renderViewToggle()}
           </div>
           {isMobile ? (

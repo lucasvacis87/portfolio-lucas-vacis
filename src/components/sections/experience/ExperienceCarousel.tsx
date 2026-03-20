@@ -314,7 +314,7 @@ export function ExperienceCarousel({
       </div>
 
       <p className="pointer-events-none absolute bottom-3 left-4 text-[11px] text-text/45">
-        Scroll, drag, arrow keys, or click a card to move focus.
+        Scroll or use controls to explore.
       </p>
     </div>
   );

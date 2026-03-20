@@ -42,7 +42,7 @@ export function NavigationControls({
   onCurrentRole
 }: NavigationControlsProps): JSX.Element {
   return (
-    <aside className="flex shrink-0 items-center lg:items-start">
+    <aside className="flex shrink-0 items-center lg:self-center">
       <div className="flex w-full items-center gap-2 rounded-2xl bg-transparent p-2 shadow-none lg:w-[9.5rem] lg:flex-col lg:items-center">
         <ControlButton label="Show previous experience" icon={<ArrowUp size={17} aria-hidden="true" />} onClick={onPrevious} disabled={!canGoPrevious} />
         <ControlButton label="Show next experience" icon={<ArrowDown size={17} aria-hidden="true" />} onClick={onNext} disabled={!canGoNext} />
