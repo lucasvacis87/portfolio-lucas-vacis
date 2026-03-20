@@ -199,9 +199,14 @@ export function ExperienceCarousel({ items, activeIndex, onChangeActive, reduced
           const variant = isActive ? "active" : "adjacent";
 
           return (
-            <motion.div
+            <div
               key={`${slot}-${item.role}-${item.company}-${item.start}`}
               className="absolute left-2 right-2 top-1/2 -translate-y-1/2 sm:left-3 sm:right-3"
+              style={{
+                zIndex: slot === "active" ? 30 : 20
+              }}
+            >
+              <motion.div
               animate={{
                 y: y + (isDragging ? dragOffset : 0)
               }}
@@ -212,9 +217,6 @@ export function ExperienceCarousel({ items, activeIndex, onChangeActive, reduced
                     ? { duration: 0 }
                     : { duration: 0.28, ease: [0.2, 1, 0.3, 1] }
               }
-              style={{
-                zIndex: slot === "active" ? 30 : 20
-              }}
             >
               <ExperienceCard
                 item={item}
@@ -231,7 +233,8 @@ export function ExperienceCarousel({ items, activeIndex, onChangeActive, reduced
                 }}
                 reducedMotion={reducedMotion}
               />
-            </motion.div>
+              </motion.div>
+            </div>
           );
         })}
       </div>
