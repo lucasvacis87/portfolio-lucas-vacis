@@ -74,7 +74,7 @@ export function ExperienceCard({
             }
           : undefined
       }
-      className={`surface-card relative overflow-hidden rounded-2xl bg-[#0f161f]/88 px-5 py-4 text-left shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_14px_34px_rgba(0,0,0,0.32)] transition duration-300 md:px-6 md:py-5 ${
+      className={`relative overflow-hidden rounded-2xl bg-[#101827]/82 px-5 py-4 text-left shadow-[0_14px_34px_rgba(0,0,0,0.34)] transition duration-300 md:px-6 md:py-5 ${
         mode === "carousel"
           ? "cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
           : ""
@@ -93,14 +93,13 @@ export function ExperienceCard({
               filter: isActive ? "blur(0px)" : "blur(1.8px)",
               y: 0,
               boxShadow: isActive
-                ? "0 22px 44px rgba(0,0,0,0.42), 0 0 0 1px rgba(255,255,255,0.05), 0 0 24px rgba(78,128,255,0.08)"
-                : "0 12px 28px rgba(0,0,0,0.28), 0 0 0 1px rgba(255,255,255,0.03)"
+                ? "0 22px 44px rgba(0,0,0,0.42), 0 0 24px rgba(78,128,255,0.08)"
+                : "0 12px 28px rgba(0,0,0,0.3)"
             }
           : undefined
       }
       transition={transition}
     >
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
       <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-start">
         <div className="min-w-0">
           <div className="flex flex-wrap items-center gap-2">
@@ -165,5 +164,6 @@ export function ExperienceCard({
     </motion.article>
   );
 }
+
 
 

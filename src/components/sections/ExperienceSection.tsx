@@ -92,24 +92,26 @@ export function ExperienceSection(): JSX.Element {
       </div>
 
       {viewMode === "carousel" ? (
-        <div className="mt-6 grid gap-3 lg:grid-cols-[minmax(0,1fr)_9.5rem] lg:items-start">
-          <ExperienceCarousel
-            items={experience}
-            activeIndex={activeIndex}
-            onChangeActive={(nextIndex) => {
-              setActiveIndex(clampIndex(nextIndex));
-            }}
-            reducedMotion={Boolean(prefersReducedMotion)}
-          />
+        <div className="mt-6 rounded-[1.5rem] bg-[#0c121b]/62 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_18px_40px_rgba(0,0,0,0.3)]">
+          <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_9.5rem] lg:items-start">
+            <ExperienceCarousel
+              items={experience}
+              activeIndex={activeIndex}
+              onChangeActive={(nextIndex) => {
+                setActiveIndex(clampIndex(nextIndex));
+              }}
+              reducedMotion={Boolean(prefersReducedMotion)}
+            />
 
-          <NavigationControls
-            canGoPrevious={canGoPrevious}
-            canGoNext={canGoNext}
-            showCurrentRole={showCurrentRoleButton}
-            onPrevious={() => setActiveIndex((index) => clampIndex(index - 1))}
-            onNext={() => setActiveIndex((index) => clampIndex(index + 1))}
-            onCurrentRole={() => setActiveIndex(0)}
-          />
+            <NavigationControls
+              canGoPrevious={canGoPrevious}
+              canGoNext={canGoNext}
+              showCurrentRole={showCurrentRoleButton}
+              onPrevious={() => setActiveIndex((index) => clampIndex(index - 1))}
+              onNext={() => setActiveIndex((index) => clampIndex(index + 1))}
+              onCurrentRole={() => setActiveIndex(0)}
+            />
+          </div>
         </div>
       ) : (
         <div className="mt-6 space-y-4">

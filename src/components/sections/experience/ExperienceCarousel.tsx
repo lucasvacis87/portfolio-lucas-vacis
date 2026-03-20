@@ -82,7 +82,7 @@ export function ExperienceCarousel({ items, activeIndex, onChangeActive, reduced
       aria-label="Experience timeline carousel"
       role="region"
       tabIndex={0}
-      className={`relative h-[46rem] overflow-hidden rounded-[1.4rem] bg-[#0c121b]/72 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_24px_48px_rgba(0,0,0,0.35)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
+      className={`relative h-[46rem] overflow-hidden rounded-[1.4rem] bg-transparent p-0 shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
         isDragging ? "cursor-grabbing" : "cursor-grab"
       }`}
       onWheel={(event) => {
@@ -194,8 +194,6 @@ export function ExperienceCarousel({ items, activeIndex, onChangeActive, reduced
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#0c121b] via-[#0c121b]/62 to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#0c121b] via-[#0c121b]/60 to-transparent" />
-      <div className="pointer-events-none absolute left-4 right-4 top-[7.25rem] h-[23.2rem] rounded-2xl bg-white/[0.02] shadow-[inset_0_0_0_1px_rgba(255,255,255,0.03)]" />
-
       <div className="relative h-full touch-none select-none">
         {items.map((item, index) => {
           const distance = index - virtualIndex;
@@ -253,3 +251,4 @@ export function ExperienceCarousel({ items, activeIndex, onChangeActive, reduced
     </div>
   );
 }
+
