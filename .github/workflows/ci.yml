@@ -5,10 +5,23 @@ on:
     branches: ["main"]
   push:
     branches: ["main"]
+  workflow_dispatch:
+    inputs:
+      force_e2e_failure:
+        description: "Run an intentionally failing E2E test to inspect CI reporting"
+        required: false
+        default: false
+        type: boolean
+  schedule:
+    - cron: "0 9 * * 1-5"
+
+permissions:
+  contents: read
+  pull-requests: write
 
 jobs:
-  build-and-test:
-    name: build-and-test
+  quality:
+    name: quality
     runs-on: ubuntu-latest
 
     steps:
@@ -24,8 +37,112 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Typecheck
+        run: npm run typecheck
+
       - name: Build
         run: npm run build
 
-      - name: Test
-        run: npm test
+      - name: Unit tests
+        run: npm run test:unit
+
+      - name: Component tests
+        run: npm run test:component
+
+  e2e-smoke:
+    name: e2e-smoke
+    runs-on: ubuntu-latest
+    needs: quality
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build app for preview
+        run: npm run build
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run E2E smoke tests
+        id: run_e2e
+        continue-on-error: true
+        run: npm run test:e2e:ci
+        env:
+          CI: "true"
+          PLAYWRIGHT_INTENTIONAL_FAILURE: ${{ github.event_name == 'workflow_dispatch' && inputs.force_e2e_failure && 'true' || 'false' }}
+
+      - name: Generate custom E2E report
+        if: always()
+        run: npm run report:e2e
+
+      - name: Export E2E metrics
+        if: always()
+        id: e2e_metrics
+        run: |
+          node -e "const fs=require('fs');const p='artifacts/playwright/custom/metrics.json';const m=fs.existsSync(p)?JSON.parse(fs.readFileSync(p,'utf8')):{total:0,passed:0,failed:0,flaky:0,skipped:0,retryRate:0,durationMs:0};const out=process.env.GITHUB_OUTPUT;fs.appendFileSync(out,`total=${m.total}\npassed=${m.passed}\nfailed=${m.failed}\nflaky=${m.flaky}\nskipped=${m.skipped}\nretry_rate=${m.retryRate}\nduration_ms=${m.durationMs}\n`);"
+
+      - name: Upload Playwright and custom report artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: e2e-report-artifacts
+          path: |
+            artifacts/playwright
+            report
+          if-no-files-found: warn
+          retention-days: ${{ github.event_name == 'pull_request' && 14 || 30 }}
+
+      - name: Publish E2E summary
+        if: always()
+        run: |
+          echo "## E2E Smoke Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Total: ${{ steps.e2e_metrics.outputs.total }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Passed: ${{ steps.e2e_metrics.outputs.passed }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Failed: ${{ steps.e2e_metrics.outputs.failed }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Flaky: ${{ steps.e2e_metrics.outputs.flaky }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Retry rate: ${{ steps.e2e_metrics.outputs.retry_rate }}%" >> $GITHUB_STEP_SUMMARY
+          echo "- Duration(ms): ${{ steps.e2e_metrics.outputs.duration_ms }}" >> $GITHUB_STEP_SUMMARY
+          echo "- Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> $GITHUB_STEP_SUMMARY
+
+      - name: Comment E2E results on PR
+        if: always() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const runUrl = `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const body = [
+              "## E2E Smoke Report",
+              "",
+              `- Total: ${{ steps.e2e_metrics.outputs.total }}`,
+              `- Passed: ${{ steps.e2e_metrics.outputs.passed }}`,
+              `- Failed: ${{ steps.e2e_metrics.outputs.failed }}`,
+              `- Flaky: ${{ steps.e2e_metrics.outputs.flaky }}`,
+              `- Retry rate: ${{ steps.e2e_metrics.outputs.retry_rate }}%`,
+              "",
+              `Artifacts and reports: ${runUrl}`,
+              "",
+              "Includes Playwright HTML report, custom HTML executive report, traces, screenshots, and videos."
+            ].join("\n");
+            github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.payload.pull_request.number,
+              body
+            });
+
+      - name: Fail job if E2E failed
+        if: steps.run_e2e.outcome == 'failure'
+        run: |
+          echo "E2E smoke suite failed."
+          exit 1

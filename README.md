@@ -38,7 +38,16 @@ Single-page premium dark portfolio for a QA Automation Engineer with AI-oriented
 1. `npm install`
 2. `npm run dev`
 3. `npm run build`
-4. `npm test`
+4. `npm run test:unit`
+5. `npm run test:component`
+6. `npm run test:e2e`
+
+## E2E reports
+
+- Open Playwright HTML report: `npm run report:e2e:open`
+- Regenerate and open custom report: `npm run report:e2e:custom:open`
+- Manual Playwright report path: `artifacts/playwright/html`
+- Manual custom report path: `report/index.html`
 
 ## Branch naming
 
@@ -110,8 +119,29 @@ Apply these settings on GitHub for a professional PR-based flow:
 - `vite.config.ts` keeps Pages-safe dynamic `base` behavior in GitHub Actions
 - The deploy artifact continues to come from `dist`
 
-## Next phase
+## Testing showcase
 
-- Expand unit and content validation coverage
-- Add Playwright-based UI automation in a separate PR workflow
-- Keep deploy isolated from future UI automation jobs
+The portfolio now follows a layered testing strategy designed for interview demos and production confidence.
+
+- Unit tests: content contracts and utility logic
+- Component tests: navigation behavior, CTA integrity, ARIA states
+- E2E smoke tests: key landing flows, anchor navigation, core accessibility checks
+- E2E smoke tests: key landing flows, anchor navigation, and visual regression snapshots
+- Parallel E2E execution in CI for fast feedback
+- Rich artifacts on failures: traces, screenshots, videos, and custom executive HTML report
+
+### CI jobs
+
+- `quality`: typecheck, build, unit tests, component tests
+- `e2e-smoke`: Playwright smoke suite + custom reporting pipeline
+
+### Reporting outputs
+
+- Playwright HTML report: `artifacts/playwright/html`
+- Playwright JSON + JUnit: `artifacts/playwright/results.json`, `artifacts/playwright/junit.xml`
+- Custom executive report: `report/index.html`
+
+For interview-oriented narrative and metrics guidance, see:
+
+- [docs/qa-testing-showcase.md](docs/qa-testing-showcase.md)
+- [docs/linkedin-post-template.md](docs/linkedin-post-template.md)
