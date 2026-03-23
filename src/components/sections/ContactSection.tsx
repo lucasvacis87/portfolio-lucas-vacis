@@ -23,9 +23,9 @@ export function ContactSection(): JSX.Element {
   };
 
   const primaryActionClassName =
-    "inline-flex min-h-10 items-center gap-2 rounded-full bg-gradient-to-r from-accent to-accent-2 px-4 py-2 text-sm font-semibold text-white shadow-[0_8px_24px_rgba(78,128,255,0.35)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(125,99,255,0.4)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-2 focus-visible:ring-offset-2 focus-visible:ring-offset-bg";
+    "inline-flex min-h-10 items-center gap-2 rounded-full bg-gradient-to-r from-accent to-accent-2 px-3.5 py-2 text-[13px] font-semibold text-white shadow-[0_8px_24px_rgba(78,128,255,0.35)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_10px_30px_rgba(125,99,255,0.4)] active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-2 focus-visible:ring-offset-2 focus-visible:ring-offset-bg sm:px-4 sm:text-sm";
   const secondaryActionClassName =
-    "inline-flex min-h-10 items-center gap-2 rounded-full bg-surface-2/42 px-4 py-2 text-sm font-semibold text-muted transition duration-200 hover:-translate-y-0.5 hover:bg-surface-2/72 hover:text-text active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg";
+    "inline-flex min-h-10 items-center gap-2 rounded-full bg-surface-2/42 px-3.5 py-2 text-[13px] font-semibold text-muted transition duration-200 hover:-translate-y-0.5 hover:bg-surface-2/72 hover:text-text active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg sm:px-4 sm:text-sm";
   const emailFallbackAddress = useMemo(() => {
     const emailAction = contact.actions.find((action) => action.id === "email");
     if (!emailAction) {
@@ -136,8 +136,8 @@ export function ContactSection(): JSX.Element {
   return (
     <Section id="contact" variant="panel" accent="indigo" headerAlign="center" title={contact.title} subtitle={contact.subtitle}>
       <div className="relative px-2 pb-1 text-center md:px-4">
-        <p className="mx-auto max-w-[62ch] text-sm leading-6 text-muted md:text-[0.95rem]">{contact.body}</p>
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-2.5">
+        <p className="mx-auto max-w-[62ch] text-[13px] leading-6 text-muted md:text-[0.95rem]">{contact.body}</p>
+        <div className="mt-5 flex flex-wrap items-center justify-center gap-2 md:mt-6 md:gap-2.5">
           {contact.actions.map((action) => {
             const href = action.id === "resume" ? withBaseUrl(action.href) : action.href;
             const className = action.tone === "primary" ? primaryActionClassName : secondaryActionClassName;
@@ -173,7 +173,7 @@ export function ContactSection(): JSX.Element {
         ) : null}
         <div className="relative mx-auto mt-7 max-w-3xl pt-4">
           <span className="separator-soft pointer-events-none absolute inset-x-0 top-0 h-px" aria-hidden="true" />
-          <div className="flex flex-wrap items-center justify-center gap-y-2 text-sm text-text/82">
+          <div className="flex flex-wrap items-center justify-center gap-y-2 text-[13px] text-text/82 md:text-sm">
             {contact.details.map((detail, index) => (
               <div key={detail.label} className="inline-flex items-center">
                 {detail.href ? (

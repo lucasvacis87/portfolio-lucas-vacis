@@ -45,9 +45,9 @@ export function Navbar(): JSX.Element {
           <a
             href="#hero"
             aria-label="Go to hero section"
-            className="shrink-0 rounded-sm bg-accent-2/14 p-2 text-accent-2 transition hover:bg-accent-2/24"
+            className="shrink-0 rounded-sm bg-accent-2/14 p-1.5 text-accent-2 transition hover:bg-accent-2/24 sm:p-2"
           >
-            <FlaskConical size={28} aria-hidden="true" />
+            <FlaskConical className="h-6 w-6 md:h-7 md:w-7" aria-hidden="true" />
           </a>
           <nav className="ml-auto hidden items-center gap-1.5 text-[12px] text-muted md:flex">
             {navigationItems.map((item) => (
