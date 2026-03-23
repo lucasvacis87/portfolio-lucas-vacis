@@ -50,7 +50,7 @@ export function SkillsSection(): JSX.Element {
   }, []);
 
   return (
-    <section id="engineering-capabilities" className="relative py-3 md:py-6">
+    <section id="engineering-capabilities" className="relative hidden py-3 md:block md:py-6">
       <div className="pointer-events-none absolute -left-16 top-8 h-48 w-48 rounded-full bg-[#7a8aa8]/6 blur-3xl" />
       <div className="pointer-events-none absolute -right-20 top-24 h-56 w-56 rounded-full bg-[#63718f]/8 blur-3xl" />
 

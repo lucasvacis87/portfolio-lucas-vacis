@@ -19,9 +19,9 @@ export function Section({
   headerAlign = "left",
   children
 }: SectionProps): JSX.Element {
-  const baseClasses = "relative py-3 md:py-6";
-  const panelClasses = "section-card surface-panel p-6 md:p-8";
-  const flowClasses = "px-1 md:px-2";
+  const baseClasses = "relative py-2.5 md:py-6";
+  const panelClasses = "section-card surface-panel p-4 sm:p-6 md:p-8";
+  const flowClasses = "px-0.5 md:px-2";
   const accentClass = accent === "indigo" ? "section-accent-indigo" : "section-accent-aqua";
 
   return (
@@ -39,9 +39,13 @@ export function Section({
           <span className="pointer-events-none absolute -left-8 top-10 h-36 w-36 rounded-full bg-[var(--section-accent)] opacity-[0.07] blur-3xl" />
         </>
       ) : null}
-      <header className={`mb-6 ${headerAlign === "center" ? "mx-auto max-w-[76ch] text-center" : ""}`}>
+      <header className={`mb-5 md:mb-6 ${headerAlign === "center" ? "mx-auto max-w-[76ch] text-center" : ""}`}>
         <h2 className="section-title">{title}</h2>
-        {subtitle ? <p className={`muted mt-2 ${headerAlign === "center" ? "mx-auto max-w-[62ch]" : "max-w-2xl"}`}>{subtitle}</p> : null}
+        {subtitle ? (
+          <p className={`muted mt-2 text-sm leading-6 md:text-base md:leading-7 ${headerAlign === "center" ? "mx-auto max-w-[62ch]" : "max-w-2xl"}`}>
+            {subtitle}
+          </p>
+        ) : null}
       </header>
       {children}
     </motion.section>
