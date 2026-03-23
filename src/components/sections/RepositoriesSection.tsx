@@ -42,7 +42,7 @@ export function RepositoriesSection(): JSX.Element {
       subtitle="Selected codebases that reflect how I structure, scale, and ship engineering work."
     >
       <div className="grid gap-5 lg:grid-cols-[minmax(0,1.28fr)_minmax(0,0.92fr)] lg:items-stretch">
-        <article className={`surface-card group relative overflow-hidden rounded-[1.5rem] bg-[#0d131d]/88 p-4.5 transition duration-300 ease-out hover:-translate-y-1 sm:p-6 ${featuredTone.glow} md:p-7 lg:min-h-[32rem]`}>
+        <article className={`surface-card group relative overflow-hidden rounded-[1.5rem] bg-[#0d131d]/88 p-4 transition duration-300 ease-out hover:-translate-y-1 sm:p-6 ${featuredTone.glow} md:p-7 lg:min-h-[32rem]`}>
           <div className={`pointer-events-none absolute inset-0 ${featuredTone.tint}`} />
           <div className={`pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r ${featuredTone.edge}`} />
           <div className="pointer-events-none absolute right-0 top-0 h-40 w-40 bg-[radial-gradient(circle,rgba(255,255,255,0.08),transparent_68%)] opacity-40 blur-3xl transition duration-300 group-hover:opacity-60" />
