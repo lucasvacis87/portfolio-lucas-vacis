@@ -1,4 +1,4 @@
-﻿export type NavigationItem = {
+export type NavigationItem = {
   label: string;
   href: `#${string}`;
 };
@@ -66,11 +66,22 @@ export type Service = {
   description: string;
 };
 
+export type ExperienceDetails = {
+  impact: string[];
+  responsibilities: string[];
+  systems: string[];
+};
+
 export type ExperienceItem = {
   role: string;
-  context: string;
-  period: string;
-  summary: string;
+  company: string;
+  location: string;
+  start: string;
+  end: string;
+  isCurrent: boolean;
+  impactSummary: string;
+  tech: string[];
+  details: ExperienceDetails;
 };
 
 export type QAVisionPrinciple = {
@@ -118,3 +129,4 @@ export type ContactContent = {
   actions: ContactAction[];
   details: ContactDetail[];
 };
+
