@@ -12,6 +12,7 @@ type ExperienceCardProps = {
   onActivate?: () => void;
   listDetailsExpanded?: boolean;
   onToggleListDetails?: () => void;
+  compactMobile?: boolean;
   reducedMotion: boolean;
 };
 
@@ -29,11 +30,11 @@ function DetailSection({
   compact?: boolean;
 }): JSX.Element {
   return (
-    <section className="rounded-xl bg-black/18 p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)]">
+    <section className={`rounded-xl bg-black/18 p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.03)] ${compact ? "p-3" : ""}`}>
       <p className="font-mono text-[10px] uppercase tracking-[0.14em] text-text/40">{title}</p>
-      <div className={`mt-2.5 space-y-2 ${compact ? "max-h-[9.25rem] overflow-y-auto pr-1.5 no-scrollbar" : ""}`}>
+      <div className={`mt-2.5 space-y-2 ${compact ? "max-h-[8rem] overflow-y-auto pr-1.5 no-scrollbar" : ""}`}>
         {items.map((entry) => (
-          <p key={entry} className="text-[14px] leading-7 text-text/78">
+          <p key={entry} className="text-[13px] leading-6 text-text/78 sm:text-[14px] sm:leading-7">
             {entry}
           </p>
         ))}
@@ -53,18 +54,20 @@ export function ExperienceCard({
   onActivate,
   listDetailsExpanded = false,
   onToggleListDetails,
+  compactMobile = false,
   reducedMotion
 }: ExperienceCardProps): JSX.Element {
   const period = formatPeriod(item);
   const transition = reducedMotion ? { duration: 0 } : { duration: 0.24, ease: [0.2, 1, 0.3, 1] };
   const isAdjacentCarouselCard = mode === "carousel" && carouselVariant === "adjacent";
   const shouldShowDetails = mode === "carousel" ? isActive && !isAdjacentCarouselCard : listStatic || listDetailsExpanded;
-  const compactCarouselDetails = false;
+  const compactCarouselDetails = compactMobile && mode === "list";
   const lockedInactiveOpacity = 0.6;
   const interactiveInactiveOpacity = 0.68;
   const inactiveOpacity = isLocked ? lockedInactiveOpacity : interactiveInactiveOpacity;
   const inactiveScale = isLocked ? 0.975 : 0.98;
   const inactiveBlur = isLocked ? "blur(1.2px)" : "blur(0.8px)";
+  const visibleTechTags = mode === "carousel" ? (isAdjacentCarouselCard ? item.tech.slice(0, 5) : item.tech) : compactMobile ? item.tech.slice(0, 3) : item.tech;
 
   return (
     <motion.article
@@ -83,13 +86,13 @@ export function ExperienceCard({
             }
           : undefined
       }
-      className={`relative overflow-hidden rounded-2xl bg-[#101827]/82 px-5 py-4 text-left transition duration-300 md:px-6 md:py-5 ${
+      className={`relative overflow-hidden rounded-2xl bg-[#101827]/82 px-4 py-3 text-left transition duration-300 sm:px-5 sm:py-4 md:px-6 md:py-5 ${
         mode === "carousel" && isInteractive
           ? "transform-gpu cursor-pointer will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg [backface-visibility:hidden]"
           : ""
       } ${
         mode === "list"
-          ? "shadow-[0_8px_20px_rgba(0,0,0,0.2)] hover:bg-[#121d2d]/86 hover:shadow-[0_12px_24px_rgba(0,0,0,0.24)]"
+          ? `${compactMobile ? "shadow-[0_6px_16px_rgba(0,0,0,0.16)]" : "shadow-[0_8px_20px_rgba(0,0,0,0.2)]"} hover:bg-[#121d2d]/86 hover:shadow-[0_12px_24px_rgba(0,0,0,0.24)]`
           : ""
       } ${
         mode === "carousel" && isAdjacentCarouselCard
@@ -128,23 +131,23 @@ export function ExperienceCard({
         }}
         transition={reducedMotion ? { duration: 0 } : { duration: 0.22, ease: "easeOut" }}
       >
-        <div className="grid gap-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-start">
+        <div className="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto] md:items-start">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
-              <h3 className="font-heading text-[1.18rem] tracking-[-0.02em] text-text md:text-[1.34rem]">{item.role}</h3>
+              <h3 className="font-heading text-[1.08rem] tracking-[-0.02em] text-text sm:text-[1.18rem] md:text-[1.34rem]">{item.role}</h3>
               {item.isCurrent ? (
                 <span className="surface-chip rounded-full bg-accent/18 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.14em] text-[#9fbeff]">
                   Current
                 </span>
               ) : null}
             </div>
-            <p className="mt-1.5 text-[1.02rem] text-text/78">
+            <p className="mt-1.5 text-[0.94rem] text-text/78 sm:text-[1.02rem]">
               {item.company} | {item.location}
             </p>
             <motion.p
               animate={{ opacity: isActive ? 1 : 0.86, y: isActive ? 0 : 1 }}
               transition={reducedMotion ? { duration: 0 } : { duration: 0.24, ease: "easeOut" }}
-              className={`mt-4 text-[1.04rem] leading-8 text-text/92 ${isAdjacentCarouselCard ? "line-clamp-2 text-text/84" : ""}`}
+              className={`mt-3 text-[0.98rem] leading-6 text-text/92 sm:mt-4 sm:text-[1.04rem] sm:leading-8 ${isAdjacentCarouselCard ? "line-clamp-2 text-text/84" : ""}`}
             >
               {item.impactSummary}
             </motion.p>
@@ -155,9 +158,9 @@ export function ExperienceCard({
           </div>
         </div>
 
-        <div className="mt-4 flex flex-wrap gap-2">
-          {(isAdjacentCarouselCard ? item.tech.slice(0, 5) : item.tech).map((tag) => (
-            <span key={tag} className="surface-chip rounded-full bg-white/[0.04] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.11em] text-text/74">
+        <div className="mt-4 flex flex-wrap gap-1.5 sm:gap-2">
+          {visibleTechTags.map((tag) => (
+            <span key={tag} className="surface-chip rounded-full bg-white/[0.04] px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.11em] text-text/74 sm:text-[10px]">
               {tag}
             </span>
           ))}
@@ -189,7 +192,7 @@ export function ExperienceCard({
             type="button"
             onClick={onToggleListDetails}
             aria-expanded={listDetailsExpanded}
-            className="inline-flex items-center rounded-full bg-white/[0.05] px-3 py-1.5 text-xs font-semibold text-text/82 transition hover:bg-white/[0.1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+            className="inline-flex items-center rounded-full bg-white/[0.05] px-3 py-1.5 text-[11px] font-semibold text-text/82 transition hover:bg-white/[0.1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg sm:text-xs"
           >
             {listDetailsExpanded ? "Hide details" : "View details"}
           </button>
