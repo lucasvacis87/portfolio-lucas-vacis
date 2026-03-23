@@ -110,11 +110,14 @@ export function RepositoriesSection(): JSX.Element {
             const tone = repositoryToneStyles[repo.tone];
 
             return (
-              <article key={repo.name} className={`surface-card group relative overflow-hidden rounded-[1.3rem] bg-[#0d131d]/84 p-4 transition duration-300 ease-out hover:-translate-y-1 sm:p-5 ${tone.glow} md:p-6`}>
+              <article
+                key={repo.name}
+                className={`surface-card group relative overflow-hidden rounded-[1.3rem] bg-[#0d131d]/84 p-4 transition duration-300 ease-out hover:-translate-y-1 sm:p-5 ${tone.glow} md:p-6`}
+              >
                 <div className={`pointer-events-none absolute inset-0 ${tone.tint}`} />
                 <div className={`pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r ${tone.edge}`} />
 
-                <div className="relative">
+                <div className="relative flex h-full flex-col">
                   <div className="flex items-start justify-between gap-4">
                     <div className="min-w-0">
                       <span className={`surface-chip inline-flex rounded-full px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.16em] ${tone.badge}`}>
@@ -138,7 +141,7 @@ export function RepositoriesSection(): JSX.Element {
 
                   <p className="mt-4 text-xs leading-5 text-text/56">{repo.impact}</p>
 
-                  <div className="mt-6 flex flex-wrap items-center gap-3">
+                  <div className="mt-auto flex flex-wrap items-center gap-3 pt-5">
                     <a
                       className={primaryButtonClass}
                       href={repo.links.primary.href}
