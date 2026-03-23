@@ -27,6 +27,10 @@ export function RepositoriesSection(): JSX.Element {
   const featuredRepository = repositories.find((repo) => repo.priority === "featured") ?? repositories[0];
   const secondaryRepositories = repositories.filter((repo) => repo !== featuredRepository);
   const featuredTone = repositoryToneStyles[featuredRepository.tone];
+  const primaryButtonClass =
+    "inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-[#0a1018] transition duration-200 hover:bg-white/92 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg";
+  const secondaryButtonClass =
+    "inline-flex items-center gap-2 rounded-full bg-white/[0.055] px-4 py-2.5 text-sm font-semibold text-text/82 transition duration-200 hover:bg-white/[0.09] hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-2 focus-visible:ring-offset-2 focus-visible:ring-offset-bg";
 
   return (
     <Section
@@ -82,7 +86,7 @@ export function RepositoriesSection(): JSX.Element {
 
             <div className="mt-auto flex flex-wrap items-center gap-3 pt-8">
               <a
-                className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-[#0a1018] transition duration-200 hover:bg-white/92 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+                className={primaryButtonClass}
                 href={featuredRepository.links.primary.href}
                 target="_blank"
                 rel="noreferrer"
@@ -91,7 +95,7 @@ export function RepositoriesSection(): JSX.Element {
                 <ExternalLink size={14} />
               </a>
               <a
-                className="inline-flex items-center gap-2 rounded-full bg-white/[0.055] px-4 py-2.5 text-sm font-semibold text-text/82 transition duration-200 hover:bg-white/[0.09] hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-2 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+                className={secondaryButtonClass}
                 href={featuredRepository.links.secondary.href}
                 target="_blank"
                 rel="noreferrer"
@@ -142,24 +146,24 @@ export function RepositoriesSection(): JSX.Element {
 
                   <p className="mt-4 text-xs leading-5 text-text/56">{repo.impact}</p>
 
-                  <div className="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2">
+                  <div className="mt-6 flex flex-wrap items-center gap-3">
                     <a
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-text/84 transition hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+                      className={primaryButtonClass}
                       href={repo.links.primary.href}
                       target="_blank"
                       rel="noreferrer"
                     >
                       {repo.links.primary.label}
-                      <ExternalLink size={12} />
+                      <ExternalLink size={14} />
                     </a>
                     <a
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-text/54 transition hover:text-text/82 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-2 focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+                      className={secondaryButtonClass}
                       href={repo.links.secondary.href}
                       target="_blank"
                       rel="noreferrer"
                     >
                       {repo.links.secondary.label}
-                      <ExternalLink size={12} />
+                      <ExternalLink size={14} />
                     </a>
                   </div>
                 </div>
