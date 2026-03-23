@@ -45,31 +45,7 @@ export function ExperienceSection(): JSX.Element {
   const canGoPrevious = activeIndex > 0;
   const canGoNext = activeIndex < experience.length - 1;
   const showCurrentRoleButton = activeIndex !== 0;
-
-  const renderViewToggle = (): JSX.Element => (
-    <div role="group" aria-label="Experience section view toggle" className="inline-flex rounded-xl bg-[#0b1118] p-0.5">
-      <button
-        type="button"
-        onClick={() => setViewMode("carousel")}
-        aria-pressed={viewMode === "carousel"}
-        className={`rounded-lg px-3 py-1 text-xs font-semibold transition sm:text-sm ${
-          viewMode === "carousel" ? "bg-white text-[#09111a]" : "text-text/70 hover:bg-white/[0.08] hover:text-text"
-        } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg`}
-      >
-        Carousel view
-      </button>
-      <button
-        type="button"
-        onClick={() => setViewMode("list")}
-        aria-pressed={viewMode === "list"}
-        className={`rounded-lg px-3 py-1 text-xs font-semibold transition sm:text-sm ${
-          viewMode === "list" ? "bg-white text-[#09111a]" : "text-text/70 hover:bg-white/[0.08] hover:text-text"
-        } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg`}
-      >
-        List view
-      </button>
-    </div>
-  );
+  const boardPosition = viewMode === "carousel" ? carouselPosition : activeIndex;
 
   return (
     <Section id="experience" variant="flow" accent="aqua" headerAlign="center" title="Experience" subtitle={experienceIntro.subtitle}>
@@ -83,9 +59,9 @@ export function ExperienceSection(): JSX.Element {
         </div>
       ) : null}
 
-      {viewMode === "carousel" ? (
-        <div className="mt-7 rounded-[1.5rem] bg-[#0c121b]/62 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.025),0_18px_40px_rgba(0,0,0,0.3)]">
-          <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_6.25rem_9.5rem] lg:items-center">
+      <div className="mt-6 rounded-[1.5rem] border border-white/[0.04] bg-[#0d141e]/68 p-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.02),0_20px_42px_rgba(0,0,0,0.32)] sm:p-4">
+        <div className="grid gap-3 lg:grid-cols-[minmax(0,1fr)_6.25rem_9.5rem] lg:items-start">
+          {viewMode === "carousel" ? (
             <ExperienceCarousel
               items={experience}
               activeIndex={activeIndex}
@@ -97,40 +73,49 @@ export function ExperienceSection(): JSX.Element {
               scrollEnabled={isCarouselScrollEnabled}
               onEnableScroll={() => setIsCarouselScrollEnabled(true)}
             />
-            <ExperienceYearRail items={experience} position={carouselPosition} reducedMotion={Boolean(prefersReducedMotion)} />
+          ) : (
+            <div className="relative rounded-[1.25rem] bg-[#0d141e]/74 p-1 shadow-[0_18px_36px_rgba(0,0,0,0.24)] sm:p-2">
+              <div className="space-y-2.5">
+                {experience.map((item, index) => (
+                  <ExperienceCard
+                    key={`${item.role}-${item.company}-${item.start}`}
+                    item={item}
+                    mode="list"
+                    isActive={index === activeIndex}
+                    listStatic
+                    reducedMotion={Boolean(prefersReducedMotion)}
+                  />
+                ))}
+              </div>
+              {isMobile ? (
+                <p className="pointer-events-none sticky bottom-0 mt-3 bg-gradient-to-t from-[#0d141e]/90 to-transparent pt-8 text-[11px] text-text/44">
+                  List view is default on mobile for faster recruiter scanning.
+                </p>
+              ) : null}
+            </div>
+          )}
 
-            <NavigationControls
-              viewMode={viewMode}
-              onViewModeChange={setViewMode}
-              canGoPrevious={canGoPrevious}
-              canGoNext={canGoNext}
-              showCurrentRole={showCurrentRoleButton}
-              onPrevious={() => setActiveIndex((index) => clampIndex(index - 1))}
-              onNext={() => setActiveIndex((index) => clampIndex(index + 1))}
-              onCurrentRole={() => setActiveIndex(0)}
-            />
-          </div>
+          {viewMode === "carousel" ? (
+            <ExperienceYearRail items={experience} position={boardPosition} reducedMotion={Boolean(prefersReducedMotion)} />
+          ) : (
+            <div className="hidden lg:block" aria-hidden="true" />
+          )}
+
+          <NavigationControls
+            viewMode={viewMode}
+            onViewModeChange={setViewMode}
+            disableCarouselToggle={isMobile}
+            canGoPrevious={canGoPrevious}
+            canGoNext={canGoNext}
+            showCurrentRole={showCurrentRoleButton}
+            showTimelineControls={viewMode === "carousel"}
+            timelineDisabled={viewMode === "carousel" && !isCarouselScrollEnabled}
+            onPrevious={() => setActiveIndex((index) => clampIndex(index - 1))}
+            onNext={() => setActiveIndex((index) => clampIndex(index + 1))}
+            onCurrentRole={() => setActiveIndex(0)}
+          />
         </div>
-      ) : (
-        <div className="mt-6 space-y-2">
-          <div className="flex flex-wrap items-center justify-end gap-3 rounded-2xl bg-[#0f161f]/74 px-3 py-2 shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_10px_28px_rgba(0,0,0,0.2)] md:px-4">
-            {renderViewToggle()}
-          </div>
-          {isMobile ? (
-            <p className="text-xs text-text/50">List view is default on mobile for faster recruiter scanning.</p>
-          ) : null}
-          {experience.map((item, index) => (
-            <ExperienceCard
-              key={`${item.role}-${item.company}-${item.start}`}
-              item={item}
-              mode="list"
-              isActive={index === activeIndex}
-              listStatic
-              reducedMotion={Boolean(prefersReducedMotion)}
-            />
-          ))}
-        </div>
-      )}
+      </div>
     </Section>
   );
 }

@@ -5,6 +5,7 @@ type ExperienceCardProps = {
   item: ExperienceItem;
   mode: "carousel" | "list";
   isActive: boolean;
+  isLocked?: boolean;
   carouselVariant?: "active" | "adjacent";
   listStatic?: boolean;
   isInteractive?: boolean;
@@ -45,6 +46,7 @@ export function ExperienceCard({
   item,
   mode,
   isActive,
+  isLocked = false,
   carouselVariant = "active",
   listStatic = false,
   isInteractive = true,
@@ -57,7 +59,12 @@ export function ExperienceCard({
   const transition = reducedMotion ? { duration: 0 } : { duration: 0.24, ease: [0.2, 1, 0.3, 1] };
   const isAdjacentCarouselCard = mode === "carousel" && carouselVariant === "adjacent";
   const shouldShowDetails = mode === "carousel" ? isActive && !isAdjacentCarouselCard : listStatic || listDetailsExpanded;
-  const compactCarouselDetails = mode === "list";
+  const compactCarouselDetails = false;
+  const lockedInactiveOpacity = 0.6;
+  const interactiveInactiveOpacity = 0.68;
+  const inactiveOpacity = isLocked ? lockedInactiveOpacity : interactiveInactiveOpacity;
+  const inactiveScale = isLocked ? 0.975 : 0.98;
+  const inactiveBlur = isLocked ? "blur(1.2px)" : "blur(0.8px)";
 
   return (
     <motion.article
@@ -81,6 +88,10 @@ export function ExperienceCard({
           ? "transform-gpu cursor-pointer will-change-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg [backface-visibility:hidden]"
           : ""
       } ${
+        mode === "list"
+          ? "shadow-[0_8px_20px_rgba(0,0,0,0.2)] hover:bg-[#121d2d]/86 hover:shadow-[0_12px_24px_rgba(0,0,0,0.24)]"
+          : ""
+      } ${
         mode === "carousel" && isAdjacentCarouselCard
           ? "min-h-[10.5rem] md:min-h-[11.25rem]"
           : mode === "carousel"
@@ -90,11 +101,15 @@ export function ExperienceCard({
       animate={
         mode === "carousel"
           ? {
-              scale: isActive ? 1.02 : 0.98,
-              opacity: isActive ? 1 : 0.68,
+              scale: isActive ? (isLocked ? 1.025 : 1.02) : inactiveScale,
+              opacity: isActive ? 1 : inactiveOpacity,
               y: 0,
               backgroundColor: isActive ? "rgba(18, 28, 44, 0.9)" : "rgba(16, 24, 39, 0.78)",
-              boxShadow: isActive ? "0 18px 38px rgba(0,0,0,0.34), 0 0 20px rgba(78,128,255,0.07)" : "0 8px 20px rgba(0,0,0,0.22)"
+              boxShadow: isActive
+                ? isLocked
+                  ? "0 24px 50px rgba(0,0,0,0.42), 0 0 22px rgba(78,128,255,0.08)"
+                  : "0 18px 38px rgba(0,0,0,0.34), 0 0 20px rgba(78,128,255,0.07)"
+                : "0 8px 20px rgba(0,0,0,0.22)"
             }
           : undefined
       }
@@ -109,7 +124,7 @@ export function ExperienceCard({
         animate={{
           opacity: isActive ? 1 : 0.92,
           y: isActive ? 0 : 2,
-          filter: mode === "carousel" ? (isActive ? "blur(0px)" : "blur(1.5px)") : "blur(0px)"
+          filter: mode === "carousel" ? (isActive ? "blur(0px)" : inactiveBlur) : "blur(0px)"
         }}
         transition={reducedMotion ? { duration: 0 } : { duration: 0.22, ease: "easeOut" }}
       >

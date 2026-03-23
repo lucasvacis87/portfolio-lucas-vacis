@@ -176,7 +176,7 @@ export function ExperienceCarousel({
       aria-label="Experience timeline carousel"
       role="region"
       tabIndex={0}
-      className={`relative h-[46rem] overflow-hidden rounded-[1.4rem] bg-transparent p-0 shadow-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
+      className={`relative h-[43rem] overflow-hidden rounded-[1.25rem] bg-[#0d141e]/74 p-0 shadow-[0_18px_36px_rgba(0,0,0,0.24)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
         isDragging ? "cursor-grabbing" : "cursor-grab"
       }`}
       onKeyDown={(event) => {
@@ -195,6 +195,12 @@ export function ExperienceCarousel({
         if (event.key === "Home") {
           event.preventDefault();
           snapTo(0);
+          return;
+        }
+
+        if (event.key === "End") {
+          event.preventDefault();
+          snapTo(items.length - 1);
         }
       }}
       onPointerDown={(event) => {
@@ -256,16 +262,26 @@ export function ExperienceCarousel({
       }}
     >
       {!scrollEnabled ? (
-        <button
+        <motion.button
           type="button"
           onClick={onEnableScroll}
-          className="absolute inset-0 z-40 flex items-center justify-center rounded-[1.4rem] bg-[#0c121b]/70 backdrop-blur-[1px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
+          initial={reducedMotion ? false : { opacity: 0 }}
+          animate={reducedMotion ? undefined : { opacity: 1 }}
+          transition={reducedMotion ? { duration: 0 } : { duration: 0.2, ease: "easeOut" }}
+          whileHover={reducedMotion ? undefined : { y: -1 }}
+          className="absolute inset-0 z-40 flex items-end justify-center rounded-[1.25rem] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
           aria-label="Enable carousel scrolling"
         >
-          <span className="rounded-full bg-white/[0.08] px-4 py-2 text-sm font-semibold text-text/86 shadow-[0_10px_24px_rgba(0,0,0,0.32)]">
+          <span className="mb-16 rounded-full bg-white/[0.1] px-4 py-2 text-sm font-semibold text-text/88 shadow-[0_10px_24px_rgba(0,0,0,0.28)]">
             Click to enable carousel scroll
           </span>
-        </button>
+        </motion.button>
+      ) : null}
+      {!scrollEnabled ? (
+        <>
+          <div className="pointer-events-none absolute inset-0 z-30 rounded-[1.25rem] bg-[#0c121b]/26 backdrop-blur-[1.35px]" />
+          <div className="pointer-events-none absolute inset-0 z-30 rounded-[1.25rem] bg-[radial-gradient(circle_at_50%_36%,rgba(10,16,24,0.02)_0%,rgba(10,16,24,0.22)_52%,rgba(10,16,24,0.42)_100%)]" />
+        </>
       ) : null}
 
       <div className="relative h-full touch-none select-none">
@@ -304,6 +320,7 @@ export function ExperienceCarousel({
                 mode="carousel"
                 carouselVariant={variant}
                 isActive={isSettled && isFocus}
+                isLocked={!scrollEnabled}
                 isInteractive={isInteractive}
                 onActivate={() => {
                   if (!canTriggerClick()) {

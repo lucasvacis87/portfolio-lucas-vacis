@@ -26,8 +26,8 @@ export function ExperienceYearRail({ items, position, reducedMotion }: Experienc
   const nearestIndex = Math.round(position);
 
   return (
-    <aside className="hidden h-[46rem] w-[6.25rem] lg:block" aria-hidden="true">
-      <div className="relative h-full overflow-hidden rounded-2xl bg-[#0f161f]/28">
+    <aside className="hidden h-[43rem] w-[6.25rem] lg:block" aria-hidden="true">
+      <div className="relative h-full overflow-hidden rounded-2xl bg-[#0f161f]/24">
         <div className="pointer-events-none absolute inset-y-0 left-2 w-px bg-gradient-to-b from-transparent via-white/22 to-transparent" />
         {items.map((item, index) => {
           const distance = index - position;

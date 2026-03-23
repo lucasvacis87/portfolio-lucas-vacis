@@ -3,9 +3,12 @@
 type NavigationControlsProps = {
   viewMode: "carousel" | "list";
   onViewModeChange: (mode: "carousel" | "list") => void;
+  disableCarouselToggle?: boolean;
   canGoPrevious: boolean;
   canGoNext: boolean;
   showCurrentRole: boolean;
+  showTimelineControls?: boolean;
+  timelineDisabled?: boolean;
   onPrevious: () => void;
   onNext: () => void;
   onCurrentRole: () => void;
@@ -38,24 +41,32 @@ function ControlButton({
 export function NavigationControls({
   viewMode,
   onViewModeChange,
+  disableCarouselToggle = false,
   canGoPrevious,
   canGoNext,
   showCurrentRole,
+  showTimelineControls = true,
+  timelineDisabled = false,
   onPrevious,
   onNext,
   onCurrentRole
 }: NavigationControlsProps): JSX.Element {
   return (
-    <aside className="flex shrink-0 items-center lg:self-center">
-      <div className="flex w-full items-center gap-2 rounded-2xl bg-transparent p-2 shadow-none lg:w-[9.5rem] lg:flex-col lg:items-center">
-        <div role="group" aria-label="Experience section view toggle" className="inline-flex rounded-xl bg-[#0b1118] p-0.5">
+    <aside className="flex shrink-0 items-start lg:self-start">
+      <div
+        className={`flex w-full items-center gap-2 rounded-2xl bg-[#0d151f]/72 p-2 shadow-[0_14px_30px_rgba(0,0,0,0.26)] ${
+          showTimelineControls ? "lg:w-[9.5rem] lg:flex-col lg:items-center" : "lg:w-auto lg:flex-col lg:items-center"
+        }`}
+      >
+        <div role="group" aria-label="Experience section view toggle" className="inline-flex rounded-xl bg-[#0b1118]/80 p-0.5">
           <button
             type="button"
             onClick={() => onViewModeChange("carousel")}
             aria-pressed={viewMode === "carousel"}
+            disabled={disableCarouselToggle}
             className={`rounded-lg px-3 py-1 text-xs font-semibold transition ${
               viewMode === "carousel" ? "bg-white text-[#09111a]" : "text-text/70 hover:bg-white/[0.08] hover:text-text"
-            } focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg`}
+            } disabled:cursor-not-allowed disabled:opacity-45 disabled:hover:bg-transparent disabled:hover:text-text/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg`}
           >
             Carousel
           </button>
@@ -70,20 +81,34 @@ export function NavigationControls({
             List
           </button>
         </div>
-        <ControlButton label="Show previous experience" icon={<ArrowUp size={17} aria-hidden="true" />} onClick={onPrevious} disabled={!canGoPrevious} />
-        <ControlButton label="Show next experience" icon={<ArrowDown size={17} aria-hidden="true" />} onClick={onNext} disabled={!canGoNext} />
-        <button
-          type="button"
-          onClick={onCurrentRole}
-          aria-label="Return to current role"
-          disabled={!showCurrentRole}
-          className={`inline-flex h-11 w-[8.25rem] items-center justify-center gap-1.5 rounded-xl bg-white/[0.05] px-3 text-xs font-semibold tracking-[0.02em] text-text/84 shadow-[0_8px_18px_rgba(0,0,0,0.22)] transition duration-200 hover:bg-white/[0.1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
-            showCurrentRole ? "opacity-100" : "pointer-events-none opacity-0"
-          }`}
-        >
-          <RotateCcw size={13} aria-hidden="true" />
-          Current role
-        </button>
+        {showTimelineControls ? (
+          <>
+            <ControlButton
+              label="Show previous experience"
+              icon={<ArrowUp size={17} aria-hidden="true" />}
+              onClick={onPrevious}
+              disabled={timelineDisabled || !canGoPrevious}
+            />
+            <ControlButton
+              label="Show next experience"
+              icon={<ArrowDown size={17} aria-hidden="true" />}
+              onClick={onNext}
+              disabled={timelineDisabled || !canGoNext}
+            />
+            <button
+              type="button"
+              onClick={onCurrentRole}
+              aria-label="Return to current role"
+              disabled={timelineDisabled || !showCurrentRole}
+              className={`inline-flex h-11 w-[8.25rem] items-center justify-center gap-1.5 rounded-xl bg-white/[0.05] px-3 text-xs font-semibold tracking-[0.02em] text-text/84 shadow-[0_8px_18px_rgba(0,0,0,0.22)] transition duration-200 hover:bg-white/[0.1] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg ${
+                showCurrentRole && !timelineDisabled ? "opacity-100" : "pointer-events-none opacity-0"
+              }`}
+            >
+              <RotateCcw size={13} aria-hidden="true" />
+              Current role
+            </button>
+          </>
+        ) : null}
       </div>
     </aside>
   );
