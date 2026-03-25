@@ -19,9 +19,9 @@ export const repositories: RepositoryItem[] = [
     label: "Automation",
     tone: "automation",
     priority: "secondary",
-    description: "Portfolio delivered as a quality-engineering project: layered testing, Playwright smoke coverage, CI evidence, and custom reporting on top of a production-ready React frontend.",
+    description: "Portfolio built as a quality-engineering project with layered testing, Playwright smoke coverage, CI evidence, and custom reporting.",
     stack: ["Playwright", "CI", "Reporting", "React"],
-    impact: "Built as an automation-first system with unit, component, and E2E coverage, plus failure triage artifacts and clear observability.",
+    impact: "Automation-first delivery with unit, component, and E2E coverage, plus failure triage artifacts.",
     links: {
       primary: { label: "View Repository", href: "https://github.com/lucasvacis87/portfolio-lucas-vacis" },
       secondary: { label: "Live Site", href: "https://lucasvacis87.github.io/portfolio-lucas-vacis/" }

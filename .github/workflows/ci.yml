@@ -89,7 +89,26 @@ jobs:
         if: always()
         id: e2e_metrics
         run: |
-          node -e "const fs=require('fs');const p='artifacts/playwright/custom/metrics.json';const m=fs.existsSync(p)?JSON.parse(fs.readFileSync(p,'utf8')):{total:0,passed:0,failed:0,flaky:0,skipped:0,retryRate:0,durationMs:0};const out=process.env.GITHUB_OUTPUT;fs.appendFileSync(out,`total=${m.total}\npassed=${m.passed}\nfailed=${m.failed}\nflaky=${m.flaky}\nskipped=${m.skipped}\nretry_rate=${m.retryRate}\nduration_ms=${m.durationMs}\n`);"
+          node <<'EOF'
+          const fs = require('fs');
+          const metricsPath = 'artifacts/playwright/custom/metrics.json';
+          const metrics = fs.existsSync(metricsPath)
+            ? JSON.parse(fs.readFileSync(metricsPath, 'utf8'))
+            : { total: 0, passed: 0, failed: 0, flaky: 0, skipped: 0, retryRate: 0, durationMs: 0 };
+
+          const githubOutput = process.env.GITHUB_OUTPUT;
+          const lines = [
+            `total=${metrics.total}`,
+            `passed=${metrics.passed}`,
+            `failed=${metrics.failed}`,
+            `flaky=${metrics.flaky}`,
+            `skipped=${metrics.skipped}`,
+            `retry_rate=${metrics.retryRate}`,
+            `duration_ms=${metrics.durationMs}`
+          ].join('\n') + '\n';
+
+          fs.appendFileSync(githubOutput, lines);
+          EOF
 
       - name: Upload Playwright and custom report artifacts
         if: always()
