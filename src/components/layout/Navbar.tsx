@@ -2,56 +2,91 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { FlaskConical, Menu, X } from "lucide-react";
 import { navigationItems } from "../../content/site";
+import { containerClassName } from "./Container";
+
+function getActiveHref(offset = 120): string {
+  let nextActive = "#hero";
+  let bestDistance = Number.POSITIVE_INFINITY;
+
+  navigationItems.forEach((item) => {
+    const section = document.querySelector<HTMLElement>(item.href);
+    if (!section) {
+      return;
+    }
+
+    const style = window.getComputedStyle(section);
+    if (style.display === "none" || style.visibility === "hidden") {
+      return;
+    }
+
+    const rect = section.getBoundingClientRect();
+    const isInViewBand = rect.top <= window.innerHeight * 0.6 && rect.bottom >= offset;
+    const distance = Math.abs(rect.top - offset);
+
+    if (isInViewBand && distance < bestDistance) {
+      bestDistance = distance;
+      nextActive = item.href;
+      return;
+    }
+
+    if (bestDistance === Number.POSITIVE_INFINITY && rect.top <= offset) {
+      nextActive = item.href;
+    }
+  });
+
+  return nextActive;
+}
 
 export function Navbar(): JSX.Element {
   const [isOpen, setIsOpen] = useState(false);
   const [activeHref, setActiveHref] = useState<string>("#hero");
+  const mobileNavigationItems = navigationItems.filter((item) => item.href !== "#engineering-capabilities");
 
   const closeMenu = (): void => setIsOpen(false);
+  const handleNavClick = (href: string): void => {
+    setActiveHref(href);
+    closeMenu();
+    requestAnimationFrame(() => {
+      setActiveHref(getActiveHref());
+    });
+  };
 
   useEffect(() => {
     const updateActiveSection = (): void => {
-      let nextActive = "#hero";
-
-      navigationItems.forEach((item) => {
-        const section = document.querySelector<HTMLElement>(item.href);
-        if (!section) {
-          return;
-        }
-
-        const rect = section.getBoundingClientRect();
-        if (rect.top <= 120) {
-          nextActive = item.href;
-        }
-      });
-
-      setActiveHref(nextActive);
+      setActiveHref(getActiveHref());
     };
 
     updateActiveSection();
     window.addEventListener("scroll", updateActiveSection, { passive: true });
+    window.addEventListener("hashchange", updateActiveSection);
+    window.addEventListener("resize", updateActiveSection);
 
     return () => {
       window.removeEventListener("scroll", updateActiveSection);
+      window.removeEventListener("hashchange", updateActiveSection);
+      window.removeEventListener("resize", updateActiveSection);
     };
   }, []);
 
   return (
-    <header className="sticky top-0 z-30 border-b border-border/45 bg-bg/78 backdrop-blur-xl">
-      <div className="relative mx-auto w-full max-w-6xl px-5 md:px-8 lg:max-w-[84rem] xl:max-w-[88rem] 2xl:max-w-[96rem]">
+    <header className="sticky top-0 z-30 bg-bg/78 shadow-[inset_0_-1px_0_rgba(255,255,255,0.05)] backdrop-blur-xl">
+      <div className={`relative ${containerClassName}`}>
+        <span className="separator-soft pointer-events-none absolute inset-x-0 bottom-0 h-px" />
         <div className="flex h-14 items-center gap-4">
           <a
             href="#hero"
             aria-label="Go to hero section"
-            className="shrink-0 rounded-sm bg-accent-2/14 p-2 text-accent-2 transition hover:bg-accent-2/24"
+            className="shrink-0 rounded-sm bg-accent-2/14 p-1.5 text-accent-2 transition hover:bg-accent-2/24 sm:p-2"
           >
-            <FlaskConical size={28} aria-hidden="true" />
+            <FlaskConical className="h-6 w-6 md:h-7 md:w-7" aria-hidden="true" />
           </a>
           <nav className="ml-auto hidden items-center gap-1.5 text-[12px] text-muted md:flex">
             {navigationItems.map((item) => (
               <a
                 key={item.href}
                 href={item.href}
+                onClick={() => handleNavClick(item.href)}
+                aria-current={activeHref === item.href ? "page" : undefined}
                 className={`group relative whitespace-nowrap rounded-sm px-2.5 py-1.5 transition-all duration-200 ${
                   activeHref === item.href
                     ? "text-text"
@@ -69,12 +104,6 @@ export function Navbar(): JSX.Element {
               </a>
             ))}
           </nav>
-          <a
-            href="#contact"
-            className="hidden rounded-sm bg-surface-2/35 px-3 py-1.5 text-[12px] font-semibold text-muted transition-all duration-200 hover:bg-accent-2/14 hover:text-text md:inline-flex"
-          >
-            Contact
-          </a>
           <button
             type="button"
             aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
@@ -108,23 +137,17 @@ export function Navbar(): JSX.Element {
                 className="absolute left-0 right-0 top-[calc(100%-0.35rem)] z-40 md:hidden"
               >
                 <nav className="mt-2 overflow-hidden rounded-xl bg-[#0f141b] p-2 shadow-[0_22px_48px_rgba(0,0,0,0.55)]">
-                  {navigationItems.map((item) => (
+                  {mobileNavigationItems.map((item) => (
                     <a
                       key={item.href}
                       href={item.href}
-                      onClick={closeMenu}
+                      onClick={() => handleNavClick(item.href)}
+                      aria-current={activeHref === item.href ? "page" : undefined}
                       className="block rounded-xl px-3 py-2.5 text-sm font-medium text-muted transition-colors hover:bg-[#1b222c] hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
                     >
                       {item.label}
                     </a>
                   ))}
-                  <a
-                    href="#repositories"
-                    onClick={closeMenu}
-                    className="mt-2 block rounded-xl bg-accent/10 px-3 py-2.5 text-sm font-semibold text-text transition-colors hover:bg-accent/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-bg"
-                  >
-                    View Repositories
-                  </a>
                 </nav>
               </motion.div>
             </>

@@ -11,6 +11,21 @@ Single-page premium dark portfolio for a QA Automation Engineer with AI-oriented
 - Framer Motion
 - GitHub Actions + GitHub Pages
 
+## Testing
+
+- Unit: `npm run test:unit`
+- Component (Vitest + Testing Library): `npm run test:component`
+- E2E (Playwright): `npm run test:e2e`
+- CI bundle: `npm run test:ci`
+
+The test suite follows a data-driven model:
+
+- E2E page objects live in `e2e/pages/*`
+- E2E datasets and contracts live in `e2e/data/*`
+- Component tests live in `tests/component/*`
+- Component test setup lives in `tests/setup/*`
+- Test-specific TypeScript config lives in `tests/tsconfig.json`
+
 ## Project structure
 
 ```txt
@@ -27,6 +42,14 @@ Single-page premium dark portfolio for a QA Automation Engineer with AI-oriented
 |   |-- components
 |   |-- content
 |   `-- types
+|-- e2e
+|   |-- data
+|   |-- pages
+|   `-- tests
+|-- tests
+|   |-- component
+|   |-- setup
+|   `-- unit
 |-- index.html
 |-- package.json
 |-- tailwind.config.ts
@@ -38,7 +61,13 @@ Single-page premium dark portfolio for a QA Automation Engineer with AI-oriented
 1. `npm install`
 2. `npm run dev`
 3. `npm run build`
-4. `npm test`
+4. `npm run test:ci`
+
+## E2E architecture notes
+
+- `PortfolioPage` is organized by section (Navigation, Contact, Sandbox), separating locators from actions/assertions.
+- E2E data is centralized and validated at import time through lightweight contracts in `e2e/data/contracts.ts`.
+- Mobile navigation assertions are strict (exact item list match), preventing hidden duplicate links from slipping through.
 
 ## Branch naming
 

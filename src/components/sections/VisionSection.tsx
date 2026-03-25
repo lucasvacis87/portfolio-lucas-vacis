@@ -1,76 +1,48 @@
-import { Bot, Gauge, ShieldCheck, Sparkles, Workflow } from "lucide-react";
 import { qaVision } from "../../content/vision";
 import { Section } from "../layout/Section";
 
-const pillarIcons = [ShieldCheck, Bot, Workflow];
-const outcomeIcons = [Gauge, ShieldCheck, Sparkles];
-
 export function VisionSection(): JSX.Element {
   return (
-    <Section id="vision" variant="panel" accent="indigo" headerAlign="center" title="QA + AI" subtitle={qaVision.subtitle}>
-      <div className="relative overflow-hidden rounded-2xl border border-border/45 bg-[radial-gradient(circle_at_0%_0%,rgba(78,128,255,0.2),transparent_34%),radial-gradient(circle_at_100%_100%,rgba(125,99,255,0.17),transparent_40%),linear-gradient(145deg,rgba(16,20,27,0.95),rgba(10,13,19,0.94))] p-4 md:p-6">
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(155,167,180,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(155,167,180,0.06)_1px,transparent_1px)] bg-[size:34px_34px] opacity-45" />
-        <div className="pointer-events-none absolute -left-14 top-12 h-36 w-36 rounded-full bg-accent/15 blur-3xl" />
-        <div className="pointer-events-none absolute -right-16 bottom-10 h-40 w-40 rounded-full bg-accent-2/15 blur-3xl" />
+    <Section id="vision" variant="flow" accent="indigo" headerAlign="center" title="QA + AI" subtitle={qaVision.subtitle}>
+      <div className="relative overflow-hidden py-2.5 md:py-3">
+        <div className="pointer-events-none absolute left-8 top-8 h-56 w-56 rounded-full bg-accent/14 blur-3xl" />
+        <div className="pointer-events-none absolute right-10 top-24 h-52 w-52 rounded-full bg-[#59d1ff]/10 blur-3xl" />
+        <div className="separator-soft pointer-events-none absolute inset-x-0 top-[7.1rem] h-px" />
 
-        <div className="relative grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-          <article className="rounded-2xl border border-border/55 bg-[#111722]/78 p-5">
-            <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-accent/90">Operating Model</p>
-            <h3 className="mt-2 font-heading text-2xl leading-tight text-text">{qaVision.headline}</h3>
-            <p className="muted mt-3 leading-7">{qaVision.body}</p>
-            <p className="mt-4 rounded-lg border border-border/60 bg-bg/45 px-3 py-2 text-sm text-text/90">{qaVision.operatingNote}</p>
-          </article>
+        <div className="relative grid gap-y-7 md:gap-y-9 lg:grid-cols-12">
+          <div className="lg:col-span-9">
+            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent/82">Positioning Statement</p>
+            <h3 className="mt-3.5 max-w-[12ch] font-heading text-[2.02rem] leading-[0.92] tracking-[-0.055em] text-text md:mt-4 md:text-[4.6rem]">
+              {qaVision.headline}
+            </h3>
+          </div>
 
-          <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-            {qaVision.pillars.map((pillar, index) => {
-              const Icon = pillarIcons[index] ?? Sparkles;
+          <aside className="lg:col-span-3 lg:pt-12">
+            <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-text/45">Operating Principle</p>
+            <p className="mt-2.5 max-w-[18ch] text-[13px] leading-6 text-text/82 md:mt-3 md:text-[14px] md:leading-7">{qaVision.operatingNote}</p>
+          </aside>
+
+          <p className="text-[14px] leading-7 text-text/74 md:text-[1.02rem] md:leading-8 lg:col-span-7 lg:col-start-2">{qaVision.body}</p>
+
+          <div className="space-y-5 lg:col-span-12">
+            {qaVision.principles.map((principle, index) => {
+              const rowClass =
+                index === 0
+                  ? "lg:col-span-7"
+                  : index === 1
+                    ? "lg:col-span-8 lg:col-start-4"
+                    : "lg:col-span-6 lg:col-start-7";
 
               return (
-                <article key={pillar.title} className="rounded-xl border border-border/55 bg-[#101723]/80 p-4">
-                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-accent-2/45 bg-accent-2/12 text-accent-2">
-                    <Icon size={15} aria-hidden="true" />
-                  </span>
-                  <h4 className="mt-2 text-sm font-semibold text-text">{pillar.title}</h4>
-                  <p className="muted mt-1 text-xs leading-5">{pillar.description}</p>
+                <article key={principle.title} className={`relative grid gap-1.5 pt-3.5 md:gap-2 md:pt-4 lg:grid-cols-12 ${rowClass}`}>
+                  <span className="separator-soft pointer-events-none absolute inset-x-0 top-0 h-px" aria-hidden="true" />
+                  <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-text/35">{`0${index + 1}`}</span>
+                  <p className="font-heading text-[0.98rem] tracking-[-0.015em] text-text md:text-[1.05rem] lg:col-span-4">{principle.title}</p>
+                  <p className="text-[13px] leading-6 text-text/66 md:text-sm md:leading-7 lg:col-span-7">{principle.description}</p>
                 </article>
               );
             })}
           </div>
-        </div>
-
-        <div className="relative mt-4 grid gap-3 lg:grid-cols-2">
-          {qaVision.tracks.map((track) => (
-            <article key={track.title} className="rounded-xl border border-border/55 bg-[#0f1622]/82 p-4">
-              <h4 className="font-heading text-base text-text">{track.title}</h4>
-              <ul className="mt-3 space-y-2">
-                {track.points.map((point) => (
-                  <li key={point} className="flex items-start gap-2 text-sm text-muted">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent/85" />
-                    <span>{point}</span>
-                  </li>
-                ))}
-              </ul>
-            </article>
-          ))}
-        </div>
-
-        <div className="relative mt-4 grid gap-3 md:grid-cols-3">
-          {qaVision.outcomes.map((outcome, index) => {
-            const Icon = outcomeIcons[index] ?? Sparkles;
-            return (
-              <article key={outcome.label} className="rounded-xl border border-border/55 bg-[#101723]/84 p-4">
-                <div className="flex items-center gap-2">
-                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-accent/40 bg-accent/12 text-accent">
-                    <Icon size={14} aria-hidden="true" />
-                  </span>
-                  <p className="font-mono text-[10px] uppercase tracking-[0.12em] text-accent/85">{outcome.label}</p>
-                </div>
-                <p className="mt-2 text-sm leading-6 text-text/92">
-                  {outcome.value}
-                </p>
-              </article>
-            );
-          })}
         </div>
       </div>
     </Section>

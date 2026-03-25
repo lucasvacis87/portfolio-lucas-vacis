@@ -134,7 +134,8 @@ export function InteractiveQASandbox(): JSX.Element {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className="mx-auto w-full max-w-[34rem] overflow-hidden rounded-2xl bg-[radial-gradient(circle_at_8%_8%,rgba(78,128,255,0.2),transparent_38%),radial-gradient(circle_at_92%_90%,rgba(125,99,255,0.16),transparent_42%),#0f141c] p-[14px] shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_14px_34px_rgba(0,0,0,0.4),0_0_22px_rgba(125,99,255,0.14)] transition-shadow duration-300 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_16px_38px_rgba(0,0,0,0.44),0_0_30px_rgba(125,99,255,0.2)]"
+      data-testid="qa-sandbox"
+      className="mx-auto w-full max-w-[38rem] overflow-hidden rounded-2xl bg-[radial-gradient(circle_at_8%_8%,rgba(78,128,255,0.2),transparent_38%),radial-gradient(circle_at_92%_90%,rgba(125,99,255,0.16),transparent_42%),#0f141c] p-[14px] shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_14px_34px_rgba(0,0,0,0.4),0_0_22px_rgba(125,99,255,0.14)] transition-shadow duration-300 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.03),0_16px_38px_rgba(0,0,0,0.44),0_0_30px_rgba(125,99,255,0.2)] lg:max-w-[48rem] xl:max-w-[52rem]"
     >
       <div className="flex items-start justify-between gap-3">
         <div>
@@ -151,6 +152,7 @@ export function InteractiveQASandbox(): JSX.Element {
           type="button"
           aria-pressed={state.mode === "manual"}
           onClick={() => dispatch({ type: "SET_MODE", mode: "manual" })}
+          data-testid="qa-mode-manual"
           className={`rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] transition ${
             state.mode === "manual"
               ? "bg-surface-2 text-text shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
@@ -163,6 +165,7 @@ export function InteractiveQASandbox(): JSX.Element {
           type="button"
           aria-pressed={state.mode === "automation"}
           onClick={() => dispatch({ type: "SET_MODE", mode: "automation" })}
+          data-testid="qa-mode-automation"
           className={`rounded-full px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] transition ${
             state.mode === "automation"
               ? "bg-gradient-to-r from-accent/28 to-accent-2/25 text-text shadow-[0_0_18px_rgba(55,208,201,0.2)]"
@@ -174,10 +177,18 @@ export function InteractiveQASandbox(): JSX.Element {
       </div>
 
       <div
+        data-testid="qa-playground"
         className="relative mt-4 h-[15.2rem] rounded-xl bg-[radial-gradient(circle_at_70%_12%,rgba(91,140,255,0.22),transparent_35%),radial-gradient(circle_at_8%_92%,rgba(125,99,255,0.16),transparent_40%),linear-gradient(transparent_95%,rgba(155,167,180,0.12)_95%),linear-gradient(90deg,transparent_95%,rgba(155,167,180,0.12)_95%)] bg-[length:100%_100%,100%_100%,20px_20px,20px_20px] sm:h-[16.4rem]"
         onPointerMove={() => dispatch({ type: "REVEAL_MANUAL_BUGS" })}
         onPointerDown={() => dispatch({ type: "REVEAL_MANUAL_BUGS" })}
       >
+        {isComplete && (
+          <div className="pointer-events-none absolute inset-0 z-40 flex items-center justify-center">
+            <p className="rounded-full border border-emerald-300/45 bg-emerald-400/12 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-emerald-200">
+              {sandbox.messageLabels.complete}
+            </p>
+          </div>
+        )}
         {state.mode === "manual" && !state.manualRevealed && (
           <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
             <p className="rounded-full bg-bg/70 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted">
@@ -255,7 +266,7 @@ export function InteractiveQASandbox(): JSX.Element {
                     delay: state.mode === "automation" ? index * 0.08 : 0,
                     ease: "easeOut"
                   }}
-                  className={`absolute z-20 inline-flex h-9 w-9 items-center justify-center rounded-md border transition ${
+                  className={`absolute z-20 inline-flex h-9 w-9 items-center justify-center rounded-md shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_6px_18px_rgba(0,0,0,0.35)] transition ${
                     isActive
                       ? "bg-accent/22 shadow-[0_0_18px_rgba(78,128,255,0.35)]"
                       : "bg-bg/75 hover:bg-surface-2/75"
@@ -293,13 +304,15 @@ export function InteractiveQASandbox(): JSX.Element {
 
       <div className="mt-4 rounded-lg bg-bg/60 px-3 py-2.5 text-xs">
         <div className="flex flex-wrap items-center justify-between gap-2 text-muted/90">
-          <span className="text-text/85">{modeLabel}</span>
-          <span className="text-text/85">
+          <span className="text-text/85" data-testid="qa-mode-label">
+            {modeLabel}
+          </span>
+          <span className="text-text/85" data-testid="qa-counter">
             {foundCount}/{state.bugs.length} bugs detected
           </span>
         </div>
         <div className="mt-2 flex items-center justify-between gap-2">
-          <span className="text-muted/90" aria-live="polite">
+          <span className="text-muted/90" aria-live="polite" data-testid="qa-status">
             <span className={state.statusKey === "complete" ? "text-emerald-300" : "text-text/85"}>
               {state.statusKey === "complete" ? "Complete" : sandbox.statusLabels[state.statusKey]}
             </span>
@@ -307,6 +320,7 @@ export function InteractiveQASandbox(): JSX.Element {
           <button
             type="button"
             onClick={() => dispatch({ type: "RESET" })}
+            data-testid="qa-reset"
             className="inline-flex items-center gap-1 rounded-full bg-surface-2/65 px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.08em] text-muted transition hover:text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           >
             <RotateCcw size={12} aria-hidden="true" />
@@ -317,3 +331,4 @@ export function InteractiveQASandbox(): JSX.Element {
     </motion.div>
   );
 }
+

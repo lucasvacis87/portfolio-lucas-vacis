@@ -1,4 +1,4 @@
-﻿export type NavigationItem = {
+export type NavigationItem = {
   label: string;
   href: `#${string}`;
 };
@@ -7,10 +7,10 @@ export type HeroContent = {
   kicker: string;
   title: string;
   subtitle: string;
+  proofPoints: string[];
   chips: string[];
   primaryCta: { label: string; href: string };
-  secondaryCta: { label: string; href: string };
-  tertiaryCta?: { label: string; href: string; download?: string };
+  secondaryCta: { label: string; href: string; download?: string };
   microLine?: string;
 };
 
@@ -41,6 +41,7 @@ export type SandboxContent = {
   };
   messageLabels: {
     bugReported: string;
+    complete: string;
   };
   metrics: {
     totalBugs: number;
@@ -55,7 +56,7 @@ export type SandboxContent = {
 
 export type EngineeringStackColumn = {
   title: string;
-  accent: "blue" | "indigo" | "teal" | "purple";
+  accent: "blue" | "teal" | "violet" | "amber";
   summary: string;
   items: string[];
 };
@@ -76,26 +77,27 @@ export type ImpactAchievementsContent = {
   items: ImpactAchievementItem[];
 };
 
+export type ExperienceDetails = {
+  impact: string[];
+  responsibilities: string[];
+  systems: string[];
+};
+
 export type ExperienceItem = {
   role: string;
-  context: string;
-  period: string;
-  summary: string;
+  company: string;
+  location: string;
+  start: string;
+  end: string;
+  isCurrent: boolean;
+  impactSummary: string;
+  tech: string[];
+  details: ExperienceDetails;
 };
 
-export type QAVisionPillar = {
+export type QAVisionPrinciple = {
   title: string;
   description: string;
-};
-
-export type QAVisionTrack = {
-  title: string;
-  points: string[];
-};
-
-export type QAVisionOutcome = {
-  label: string;
-  value: string;
 };
 
 export type RepositoryItem = {
@@ -111,3 +113,31 @@ export type RepositoryItem = {
     secondary: { label: string; href: string };
   };
 };
+
+export type ContactAction = {
+  id: string;
+  label: string;
+  href: string;
+  external?: boolean;
+  download?: string;
+  ariaLabel?: string;
+  tone: "primary" | "secondary";
+  icon: "mail" | "linkedin" | "github" | "resume";
+};
+
+export type ContactDetail = {
+  label: string;
+  value: string;
+  href?: string;
+};
+
+export type ContactContent = {
+  title: string;
+  subtitle: string;
+  body: string;
+  availabilityNote: string;
+  closing: string;
+  actions: ContactAction[];
+  details: ContactDetail[];
+};
+

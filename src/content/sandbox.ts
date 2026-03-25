@@ -26,7 +26,8 @@ export const sandbox: SandboxContent = {
     reset: "Reset"
   },
   messageLabels: {
-    bugReported: "Bug reported"
+    bugReported: "Bug reported",
+    complete: "Report complete"
   },
   metrics: {
     totalBugs: 8
