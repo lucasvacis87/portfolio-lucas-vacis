@@ -16,12 +16,12 @@ export const repositories: RepositoryItem[] = [
   },
   {
     name: "portfolio-lucas-vacis",
-    label: "Frontend",
-    tone: "frontend",
+    label: "Automation",
+    tone: "automation",
     priority: "secondary",
-    description: "Content-driven React portfolio with modular sections, motion, and GitHub Pages-safe delivery.",
-    stack: ["React", "TypeScript", "Tailwind", "Motion"],
-    impact: "Demonstrates clean frontend composition and production-safe static deployment discipline.",
+    description: "Portfolio delivered as a quality-engineering project: layered testing, Playwright smoke coverage, CI evidence, and custom reporting on top of a production-ready React frontend.",
+    stack: ["Playwright", "CI", "Reporting", "React"],
+    impact: "Built as an automation-first system with unit, component, and E2E coverage, plus failure triage artifacts and clear observability.",
     links: {
       primary: { label: "View Repository", href: "https://github.com/lucasvacis87/portfolio-lucas-vacis" },
       secondary: { label: "Live Site", href: "https://lucasvacis87.github.io/portfolio-lucas-vacis/" }

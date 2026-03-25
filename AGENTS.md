@@ -12,7 +12,7 @@ The site is production-facing and must communicate technical depth, credibility,
 ## Core Goals
 
 - Maintain a premium modern single-page experience
-- Keep content concise, senior, and interview-defensible
+- Keep content concise, senior, and professionally defensible
 - Preserve scalable frontend architecture
 - Keep static deployment compatibility with GitHub Pages
 - Balance visual richness with performance and accessibility

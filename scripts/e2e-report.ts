@@ -61,6 +61,7 @@ const resultsPath = path.join(rootDir, "artifacts", "playwright", "results.json"
 const reportDir = path.join(rootDir, "report");
 const customReportDir = path.join(rootDir, "artifacts", "playwright", "custom");
 const evidenceDir = path.join(reportDir, "evidence");
+const ansiPattern = /\u001b\[[0-9;]*m/g;
 
 function ensureDir(directoryPath: string): void {
   fs.mkdirSync(directoryPath, { recursive: true });
@@ -187,6 +188,8 @@ function getEvidenceKind(contentType?: string, filePath?: string): EvidenceLink[
 }
 
 function getEvidenceLabel(kind: EvidenceLink["kind"], itemPath: string): string {
+  const fileName = itemPath.split("/").pop()?.toLowerCase() ?? "";
+
   switch (kind) {
     case "screenshot":
       return "Open Screenshot";
@@ -195,7 +198,11 @@ function getEvidenceLabel(kind: EvidenceLink["kind"], itemPath: string): string 
     case "trace":
       return "Play Trace";
     default:
-      return itemPath.split("/").pop() ?? "Open Attachment";
+      if (fileName.endsWith(".md")) {
+        return "Open Error Context";
+      }
+
+      return "Open Attachment";
   }
 }
 
@@ -240,6 +247,29 @@ function formatDuration(durationMs: number): string {
   return `${seconds}s`;
 }
 
+function stripAnsi(value: string): string {
+  return value.replace(ansiPattern, "");
+}
+
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function normalizeTextForHtml(value: string): string {
+  return escapeHtml(
+    stripAnsi(value)
+      .replace(/\r\n/g, "\n")
+      .replace(/×/g, "x")
+      .replace(/[^\x09\x0A\x0D\x20-\x7E]/g, "")
+      .trim()
+  );
+}
+
 function buildEvidenceMarkup(links: EvidenceLink[]): string {
   if (!links.length) {
     return "No evidence files";
@@ -247,8 +277,8 @@ function buildEvidenceMarkup(links: EvidenceLink[]): string {
 
   return links
     .map((link) => {
-      const hintMarkup = link.hint ? `<span class="evidence-hint">${link.hint}</span>` : "";
-      return `<span class="evidence-item"><a class="evidence-button evidence-${link.kind}" href="${link.href}" target="_blank" rel="noreferrer">${link.label}</a>${hintMarkup}</span>`;
+      const hintMarkup = link.hint ? `<span class="evidence-hint">${escapeHtml(link.hint)}</span>` : "";
+      return `<span class="evidence-item"><a class="evidence-button evidence-${link.kind}" href="${link.href}" target="_blank" rel="noreferrer">${escapeHtml(link.label)}</a>${hintMarkup}</span>`;
     })
     .join(" ");
 }
@@ -268,16 +298,16 @@ function buildHtml(tests: FlattenedTest[], evidenceLinks: Map<string, EvidenceLi
       const links = evidenceLinks.get(testCase.fullTitle) ?? [];
       const linksMarkup = buildEvidenceMarkup(links);
       const shortError = testCase.errorMessage
-        ? testCase.errorMessage.replace(/\s+/g, " ").slice(0, 220)
+        ? normalizeTextForHtml(testCase.errorMessage).slice(0, 420)
         : "No explicit error message available.";
 
       return `
         <tr>
-          <td>${testCase.projectName}</td>
-          <td>${testCase.fullTitle}</td>
-          <td>${testCase.outcome}</td>
-          <td>${shortError}</td>
-          <td>${linksMarkup}</td>
+          <td class="cell-project">${escapeHtml(testCase.projectName)}</td>
+          <td class="cell-scenario">${escapeHtml(testCase.fullTitle)}</td>
+          <td class="cell-outcome"><span class="outcome-pill outcome-${escapeHtml(testCase.outcome)}">${escapeHtml(testCase.outcome)}</span></td>
+          <td class="cell-error"><pre class="error-snippet">${shortError}</pre></td>
+          <td class="cell-evidence">${linksMarkup}</td>
         </tr>
       `;
     })
@@ -287,10 +317,10 @@ function buildHtml(tests: FlattenedTest[], evidenceLinks: Map<string, EvidenceLi
     .map((testCase) => {
       return `
         <tr>
-          <td>${testCase.projectName}</td>
-          <td>${testCase.suiteTitle}</td>
-          <td>${testCase.testTitle}</td>
-          <td>${testCase.outcome}</td>
+          <td class="cell-project">${escapeHtml(testCase.projectName)}</td>
+          <td class="cell-suite">${escapeHtml(testCase.suiteTitle)}</td>
+          <td class="cell-scenario">${escapeHtml(testCase.testTitle)}</td>
+          <td class="cell-outcome"><span class="outcome-pill outcome-${escapeHtml(testCase.outcome)}">${escapeHtml(testCase.outcome)}</span></td>
           <td>${testCase.retries}</td>
           <td>${formatDuration(testCase.durationMs)}</td>
         </tr>
@@ -377,19 +407,63 @@ function buildHtml(tests: FlattenedTest[], evidenceLinks: Map<string, EvidenceLi
         width: 100%;
         border-collapse: collapse;
         font-size: 13px;
+        table-layout: fixed;
       }
       th, td {
         border-bottom: 1px solid rgba(255,255,255,.08);
         text-align: left;
         padding: 8px;
         vertical-align: top;
+        overflow-wrap: anywhere;
       }
       th { color: #cbd5e1; font-weight: 600; }
+      .cell-project { width: 92px; }
+      .cell-suite { width: 180px; }
+      .cell-scenario { width: 230px; }
+      .cell-outcome { width: 104px; }
+      .cell-error { width: 320px; }
+      .cell-evidence { width: 250px; }
+      .outcome-pill {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        border: 1px solid rgba(255,255,255,.08);
+        text-transform: capitalize;
+        font-weight: 600;
+      }
+      .outcome-expected { background: rgba(52,211,153,.12); color: var(--ok); }
+      .outcome-unexpected { background: rgba(248,113,113,.12); color: var(--bad); }
+      .outcome-flaky { background: rgba(251,191,36,.12); color: var(--warn); }
+      .outcome-skipped, .outcome-interrupted {
+        background: rgba(255,255,255,.06);
+        color: var(--muted);
+      }
+      .error-snippet {
+        margin: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
+        font-family: Consolas, "Courier New", monospace;
+        font-size: 12px;
+        line-height: 1.45;
+        color: #dbe4f5;
+      }
       code {
         color: #93c5fd;
         background: rgba(147,197,253,.1);
         border-radius: 6px;
         padding: 1px 6px;
+      }
+      @media (max-width: 960px) {
+        .container { padding: 16px; }
+        table { table-layout: auto; }
+        .cell-project,
+        .cell-suite,
+        .cell-scenario,
+        .cell-outcome,
+        .cell-error,
+        .cell-evidence { width: auto; }
       }
     </style>
   </head>
@@ -411,7 +485,7 @@ function buildHtml(tests: FlattenedTest[], evidenceLinks: Map<string, EvidenceLi
       </section>
 
       <section class="panel">
-        <h2>Interview Highlights</h2>
+        <h2>Reporting Highlights</h2>
         <p>1) Parallel smoke execution with deterministic CI evidence collection.</p>
         <p>2) Multi-layer reporting: HTML, JSON, JUnit, plus this custom executive report.</p>
         <p>3) Failure triage package with videos, screenshots, and traces linked per test.</p>

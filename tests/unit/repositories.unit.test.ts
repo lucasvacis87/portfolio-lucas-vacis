@@ -8,7 +8,7 @@ describe("repositories content contracts", () => {
     expect(featured[0]?.name).toBe("playwright-repo");
   });
 
-  it("includes positioning repositories for interviews", () => {
+  it("includes key positioning repositories", () => {
     const names = repositories.map((repo) => repo.name);
     expect(names).toEqual(expect.arrayContaining(["playwright-repo", "portfolio-lucas-vacis", "sweetly"]));
   });
