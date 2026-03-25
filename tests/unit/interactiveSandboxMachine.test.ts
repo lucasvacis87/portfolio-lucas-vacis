@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { SandboxState } from "./interactiveSandboxMachine";
-import { createInitialSandboxState, sandboxReducer } from "./interactiveSandboxMachine";
+import type { SandboxState } from "../../src/components/sections/interactiveSandboxMachine";
+import { createInitialSandboxState, sandboxReducer } from "../../src/components/sections/interactiveSandboxMachine";
 
 function createState(overrides: Partial<SandboxState> = {}): SandboxState {
   const base = createInitialSandboxState();
