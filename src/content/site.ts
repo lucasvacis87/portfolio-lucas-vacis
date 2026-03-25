@@ -2,7 +2,7 @@
 
 export const navigationItems: NavigationItem[] = [
   { label: "Home", href: "#hero" },
-  { label: "About", href: "#about" },
+  { label: "Impact", href: "#impact" },
   { label: "Capabilities", href: "#engineering-capabilities" },
   { label: "Repositories", href: "#repositories" },
   { label: "Experience", href: "#experience" },

@@ -63,6 +63,17 @@ export type EngineeringStackColumn = {
 export type Service = {
   title: string;
   description: string;
+  managerLens: string;
+};
+
+export type ImpactAchievementItem = {
+  metric: string;
+  description: string;
+};
+
+export type ImpactAchievementsContent = {
+  title: string;
+  items: ImpactAchievementItem[];
 };
 
 export type ExperienceItem = {

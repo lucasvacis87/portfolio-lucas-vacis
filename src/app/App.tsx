@@ -19,10 +19,10 @@ export function App(): JSX.Element {
         <HeroSection />
         <Container className="space-y-28 pb-28 pt-10 md:space-y-36 md:pt-14">
           <AboutSection />
+          <ExperienceSection />
           <SkillsSection />
           <ServicesSection />
           <RepositoriesSection />
-          <ExperienceSection />
           <VisionSection />
           <ContactSection />
         </Container>
