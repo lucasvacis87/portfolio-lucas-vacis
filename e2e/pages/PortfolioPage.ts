@@ -21,9 +21,60 @@ export class PortfolioPage {
     await this.page.goto("/");
   }
 
+  async prepareForVisualChecks(): Promise<void> {
+    await this.page.addStyleTag({
+      content: `
+        *, *::before, *::after {
+          animation: none !important;
+          transition: none !important;
+          caret-color: transparent !important;
+        }
+
+        #repositories {
+          height: 875px !important;
+          min-height: 875px !important;
+          max-height: 875px !important;
+          overflow: hidden !important;
+        }
+      `
+    });
+  }
+
   // =========================
   // Shared Locators
   // =========================
+  get hero(): Locator {
+    return this.section("#hero");
+  }
+
+  get repositoriesSection(): Locator {
+    return this.section("#repositories");
+  }
+
+  get mobileNavPanel(): Locator {
+    return this.mobileNavRoot();
+  }
+
+  get engineeringCta(): Locator {
+    return this.hero.getByRole("link", { name: /view engineering work/i });
+  }
+
+  get resumeCta(): Locator {
+    return this.hero.getByRole("link", { name: /download lucas vacis resume pdf/i });
+  }
+
+  get linkedInLink(): Locator {
+    return this.contactSection().getByRole("link", { name: "LinkedIn" });
+  }
+
+  get githubLink(): Locator {
+    return this.contactSection().getByRole("link", { name: "GitHub" });
+  }
+
+  get repositoryLinks(): Locator {
+    return this.repositoriesSection.getByRole("link", { name: "View Repository" });
+  }
+
   private section(anchor: SectionAnchor): Locator {
     return this.page.locator(anchor);
   }
