@@ -6,13 +6,18 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "typecheck": "tsc -b --pretty false",
     "preview": "vite preview",
-    "test:e2e": "playwright test",
     "test": "npm run test:unit",
+    "test:watch": "vitest --config vitest.unit.config.ts",
     "test:unit": "vitest run --config vitest.unit.config.ts",
     "test:component": "vitest run --config vitest.component.config.ts",
-    "test:ci": "npm run test:unit && npm run test:component",
-    "test:watch": "vitest"
+    "test:e2e": "playwright test --config playwright.config.ts",
+    "test:e2e:ci": "playwright test --config playwright.config.ts",
+    "report:e2e": "tsx scripts/e2e-report.ts",
+    "report:e2e:open": "playwright show-report artifacts/playwright/html",
+    "report:e2e:custom:open": "npm run report:e2e && start report\\index.html",
+    "test:ci": "npm run test:unit && npm run test:component"
   },
   "dependencies": {
     "framer-motion": "^11.18.2",
@@ -33,6 +38,7 @@
     "jsdom": "^29.0.1",
     "postcss": "^8.5.3",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.21.0",
     "typescript": "^5.7.3",
     "vite": "^6.1.0",
     "vitest": "^2.1.8"

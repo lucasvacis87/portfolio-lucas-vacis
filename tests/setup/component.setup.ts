@@ -20,6 +20,11 @@ class MockIntersectionObserver implements IntersectionObserver {
   unobserve(): void {}
 }
 
+class MockResizeObserver {
+  disconnect(): void {}
+  observe(): void {}
+  unobserve(): void {}
+}
 if (!globalThis.IntersectionObserver) {
   Object.defineProperty(globalThis, "IntersectionObserver", {
     writable: true,
@@ -27,6 +32,36 @@ if (!globalThis.IntersectionObserver) {
   });
 }
 
+if (!globalThis.ResizeObserver) {
+  Object.defineProperty(globalThis, "ResizeObserver", {
+    writable: true,
+    value: MockResizeObserver
+  });
+}
+
+if (!window.matchMedia) {
+  Object.defineProperty(window, "matchMedia", {
+    writable: true,
+    value: vi.fn().mockImplementation((query: string) => ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn()
+    }))
+  });
+}
+
+if (!document.execCommand) {
+  Object.defineProperty(document, "execCommand", {
+    configurable: true,
+    writable: true,
+    value: vi.fn().mockReturnValue(true)
+  });
+}
 vi.mock("framer-motion", async () => {
   const motionProps = new Set([
     "initial",
@@ -46,11 +81,12 @@ vi.mock("framer-motion", async () => {
     new Proxy(
       {},
       {
-        get: (_, tag: string) =>
-          React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(({ children, ...props }, ref) => {
+        get: (_, tag: string) => {
+          return React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(({ children, ...props }, ref) => {
             const cleanProps = Object.fromEntries(Object.entries(props).filter(([key]) => !motionProps.has(key)));
             return React.createElement(tag, { ...cleanProps, ref }, children);
-          })
+          });
+        }
       }
     );
 
