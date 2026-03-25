@@ -83,12 +83,6 @@ export type ExperienceDetails = {
   systems: string[];
 };
 
-export type ExperienceDetails = {
-  impact: string[];
-  responsibilities: string[];
-  systems: string[];
-};
-
 export type ExperienceItem = {
   role: string;
   company: string;
