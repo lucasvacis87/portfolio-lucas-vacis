@@ -25,7 +25,6 @@ class MockResizeObserver {
   observe(): void {}
   unobserve(): void {}
 }
-
 if (!globalThis.IntersectionObserver) {
   Object.defineProperty(globalThis, "IntersectionObserver", {
     writable: true,
@@ -58,11 +57,11 @@ if (!window.matchMedia) {
 
 if (!document.execCommand) {
   Object.defineProperty(document, "execCommand", {
+    configurable: true,
     writable: true,
     value: vi.fn().mockReturnValue(true)
   });
 }
-
 vi.mock("framer-motion", async () => {
   const motionProps = new Set([
     "initial",

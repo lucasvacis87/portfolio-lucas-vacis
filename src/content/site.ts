@@ -2,10 +2,11 @@
 
 export const navigationItems: NavigationItem[] = [
   { label: "Home", href: "#hero" },
-  { label: "About", href: "#about" },
-  { label: "Capabilities", href: "#engineering-capabilities" },
-  { label: "Repositories", href: "#repositories" },
+  { label: "Impact", href: "#impact" },
   { label: "Experience", href: "#experience" },
+  { label: "Engineering Stack", href: "#engineering-capabilities" },
+  { label: "What I Bring", href: "#services" },
+  { label: "Repositories", href: "#repositories" },
   { label: "QA + AI", href: "#vision" },
   { label: "Contact", href: "#contact" }
 ];

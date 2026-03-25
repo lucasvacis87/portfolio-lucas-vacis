@@ -1,8 +1,23 @@
-export const about = {
-  title: "Automation-First Quality Engineering",
-  subtitle: "Quality designed as an engineering system, not an afterthought.",
-  paragraphs: [
-    "I build quality workflows where architecture, CI signals, and automation patterns reinforce each other.",
-    "The goal is simple: faster releases with stronger confidence and lower maintenance overhead."
+import type { ImpactAchievementsContent } from "../types/content";
+
+export const about: ImpactAchievementsContent = {
+  title: "Impact & Achievements",
+  items: [
+    {
+      metric: "40min \u2192 5min",
+      description: "Reduced end-to-end execution time by implementing parallel Cypress runs in CI."
+    },
+    {
+      metric: "Reliable PR Signal",
+      description: "Stabilized PR automation to be used as a trusted quality gate."
+    },
+    {
+      metric: "Test Stability",
+      description: "Reduced CI flakiness and intermittent failures."
+    },
+    {
+      metric: "CI Quality Gates",
+      description: "Automation integrated into CI/CD as a release control point."
+    }
   ]
 };

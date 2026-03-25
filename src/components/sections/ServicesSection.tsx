@@ -9,17 +9,20 @@ export function ServicesSection(): JSX.Element {
       accent="aqua"
       headerAlign="center"
       title="What I Bring"
-      subtitle="Technical execution backed by strategy, maintainability, and delivery impact."
+      subtitle="Leadership capabilities to run quality as an operating system across teams."
     >
       <div className="grid gap-4 md:grid-cols-2">
-        {services.map((service, index) => (
-          <article
-            key={service.title}
-            className="surface-card rounded-xl bg-[#111722]/84 p-3.5 transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(0,0,0,0.28),0_0_18px_rgba(55,208,201,0.07)] md:p-4"
-          >
-            <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-accent/85">Capability {String(index + 1).padStart(2, "0")}</p>
-            <h3 className="mt-2 font-heading text-[1.02rem] sm:text-lg">{service.title}</h3>
-            <p className="muted mt-1.5 text-[13px] leading-6 sm:mt-2 sm:text-sm">{service.description}</p>
+        {services.map((service) => (
+          <article key={service.title} className="capability-card rounded-xl p-3.5 md:p-4">
+            <h3 className="font-heading text-[1.02rem] tracking-[-0.015em] text-text sm:text-[1.08rem]">
+              {service.title}
+            </h3>
+            <p className="mt-1.5 text-[13px] leading-5 text-[#c8d2e3] sm:mt-2 sm:text-sm sm:leading-6">
+              {service.description}
+            </p>
+            <p className="mt-2.5 border-t border-white/8 pt-2.5 font-mono text-[11px] leading-5 text-muted sm:mt-3 sm:pt-3">
+              {service.managerLens}
+            </p>
           </article>
         ))}
       </div>
