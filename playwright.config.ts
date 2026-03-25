@@ -4,6 +4,8 @@ const isCI = process.env.CI === "true";
 
 export default defineConfig({
   testDir: "./e2e/tests",
+  snapshotDir: "./e2e/snapshots",
+  snapshotPathTemplate: "{snapshotDir}/{testFileDir}/{testFileName}-snapshots/{arg}{-projectName}{-snapshotSuffix}{ext}",
   fullyParallel: true,
   forbidOnly: isCI,
   retries: isCI ? 1 : 0,
