@@ -7,6 +7,7 @@ import { ServicesSection } from "../components/sections/ServicesSection";
 import { RepositoriesSection } from "../components/sections/RepositoriesSection";
 import { ExperienceSection } from "../components/sections/ExperienceSection";
 import { VisionSection } from "../components/sections/VisionSection";
+import { CredentialsSection } from "../components/sections/CredentialsSection";
 import { ContactSection } from "../components/sections/ContactSection";
 import { Footer } from "../components/layout/Footer";
 
@@ -24,6 +25,7 @@ export function App(): JSX.Element {
           <ServicesSection />
           <RepositoriesSection />
           <VisionSection />
+          <CredentialsSection />
           <ContactSection />
         </Container>
       </main>

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { about } from "../../src/content/about";
 import { services } from "../../src/content/services";
+import { credentials } from "../../src/content/credentials";
 
 describe("impact vs what-i-bring positioning", () => {
   it("keeps impact section concise and evidence-oriented", () => {
@@ -9,7 +10,7 @@ describe("impact vs what-i-bring positioning", () => {
 
     const metrics = about.items.map((item) => item.metric);
     expect(metrics).toEqual(
-      expect.arrayContaining(["40min \u2192 5min", "Reliable PR Signal", "Test Stability", "CI Quality Gates"])
+      expect.arrayContaining(["Cypress \u2192 Playwright", "Release Quality", "Parallel CI", "API Confidence"])
     );
   });
 
@@ -22,7 +23,7 @@ describe("impact vs what-i-bring positioning", () => {
         "Quality Strategy & Prioritization",
         "Release Risk Governance",
         "Test Architecture Stewardship",
-        "Team Enablement & Standards"
+        "Technical Enablement & Standards"
       ])
     );
 
@@ -30,5 +31,12 @@ describe("impact vs what-i-bring positioning", () => {
       expect(service.managerLens.trim().length).toBeGreaterThan(0);
       expect(service.description).not.toMatch(/\d+\s*(min|ms|%)/i);
     }
+  });
+
+  it("keeps credentials concise and CV-aligned", () => {
+    expect(credentials.groups).toHaveLength(3);
+    expect(credentials.groups.flatMap((group) => group.items.map((item) => item.label))).toEqual(
+      expect.arrayContaining(["AI Engineering", "Information Technology studies", "English"])
+    );
   });
 });

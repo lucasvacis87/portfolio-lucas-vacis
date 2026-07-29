@@ -4,20 +4,20 @@ export const about: ImpactAchievementsContent = {
   title: "Impact & Achievements",
   items: [
     {
-      metric: "40min \u2192 5min",
-      description: "Reduced end-to-end execution time by implementing parallel Cypress runs in CI."
+      metric: "Cypress \u2192 Playwright",
+      description: "Leading migration of critical end-to-end coverage with TypeScript framework conventions and reusable test patterns."
     },
     {
-      metric: "Reliable PR Signal",
-      description: "Stabilized PR automation to be used as a trusted quality gate."
+      metric: "Release Quality",
+      description: "Owns risk-based validation and evidence-backed release recommendations across distributed product teams."
     },
     {
-      metric: "Test Stability",
-      description: "Reduced CI flakiness and intermittent failures."
+      metric: "Parallel CI",
+      description: "Architects parallel execution and quality gates for pull requests, preview environments, and staging."
     },
     {
-      metric: "CI Quality Gates",
-      description: "Automation integrated into CI/CD as a release control point."
+      metric: "API Confidence",
+      description: "Validates REST and GraphQL services across UI, API, and integrated product workflows."
     }
   ]
 };
