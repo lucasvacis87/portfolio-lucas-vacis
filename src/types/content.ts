@@ -77,6 +77,21 @@ export type ImpactAchievementsContent = {
   items: ImpactAchievementItem[];
 };
 
+export type CredentialItem = {
+  label: string;
+  value: string;
+  detail?: string;
+};
+
+export type CredentialsContent = {
+  title: string;
+  subtitle: string;
+  groups: {
+    title: string;
+    items: CredentialItem[];
+  }[];
+};
+
 export type ExperienceDetails = {
   impact: string[];
   responsibilities: string[];

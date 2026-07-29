@@ -12,16 +12,16 @@ export const navigationItems: NavigationItem[] = [
 ];
 
 export const hero: HeroContent = {
-  kicker: "Senior QA Automation Engineer · AI-Assisted Quality Engineering",
-  title: "Automation is easy to write. Reliable systems are hard to build.",
+  kicker: "QA Automation Lead · Quality Engineering · Test Architecture",
+  title: "Quality systems that make delivery faster and release decisions clearer.",
   subtitle:
-    "Senior QA Automation Engineer (SDET) designing scalable UI & API testing systems, CI pipelines, and production-ready quality engineering workflows.",
+    "Quality Engineering leader with 8+ years building automation across web, APIs, and integrated services—combining hands-on TypeScript engineering, CI/CD quality gates, and AI-augmented delivery workflows.",
   proofPoints: [
-    "Reduced flakiness and stabilized CI pipelines at scale",
-    "Built automation frameworks used across multiple teams",
-    "Focused on reliability, speed, and real engineering impact"
+    "Leading critical Cypress-to-Playwright migration and test architecture",
+    "Building parallel CI execution and reliable release-quality signals",
+    "Validating REST and GraphQL services through evidence-based risk assessment"
   ],
-  chips: ["Playwright", "TypeScript", "API Testing", "CI/CD", "Quality Engineering"],
+  chips: ["Playwright", "TypeScript", "REST / GraphQL", "CI/CD", "AI-Augmented QA"],
   primaryCta: { label: "View Engineering Work", href: "#repositories" },
   secondaryCta: { label: "Download Resume", href: "resume.pdf", download: "Lucas-Vacis-Resume.pdf" },
   microLine: undefined

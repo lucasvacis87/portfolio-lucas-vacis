@@ -7,22 +7,22 @@ export const qaVision: {
   operatingNote: string;
   principles: QAVisionPrinciple[];
 } = {
-  subtitle: "Quality strategy for AI-accelerated delivery.",
-  headline: "Velocity is easy to fake. Trust is engineered.",
-  body: "I use AI to compress execution time, but production confidence comes from deterministic quality systems, explicit release criteria, and repeatable engineering decisions.",
-  operatingNote: "AI increases throughput. QA protects truth.",
+  subtitle: "AI-augmented workflows with engineering controls that teams can trust.",
+  headline: "AI accelerates execution. Evidence protects the release.",
+  body: "I use Codex and Copilot for repository analysis, test implementation, code review, CI diagnostics, staging validation, and pull-request delivery—then validate changes through review, automated tests, staging, and CI.",
+  operatingNote: "Acceleration is useful when quality signals stay explicit and repeatable.",
   principles: [
     {
-      title: "Control Before Speed",
-      description: "Acceleration is useful only when outcomes remain predictable."
+      title: "Guardrails Before Scale",
+      description: "Reusable architecture and review standards keep AI-assisted changes maintainable and aligned with the test system."
     },
     {
-      title: "Evidence Over Confidence",
-      description: "Quality is proven by signals, gates, and reproducibility."
+      title: "Evidence Over Assumption",
+      description: "Code review, automated tests, staging validation, and CI diagnostics turn accelerated work into release evidence."
     },
     {
-      title: "Systems Over Heroics",
-      description: "Scalable workflows outperform one-off prompt wins."
+      title: "Systems Over One-Offs",
+      description: "Agentic workflows, quality gates, and evidence-driven reporting make the practice reusable across teams."
     }
   ]
 };

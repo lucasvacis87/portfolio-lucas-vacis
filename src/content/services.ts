@@ -3,22 +3,22 @@ import type { Service } from "../types/content";
 export const services: Service[] = [
   {
     title: "Quality Strategy & Prioritization",
-    description: "Define quality goals by product risk and release impact.",
-    managerLens: "Align teams on what to test first and why it matters."
+    description: "Set automation strategy and risk-based validation around product and release impact.",
+    managerLens: "Align teams on critical coverage, evidence, and release confidence."
   },
   {
     title: "Release Risk Governance",
-    description: "Establish clear quality gates, ownership, and escalation paths.",
-    managerLens: "Turn release decisions into a reliable engineering process."
+    description: "Design CI/CD quality gates across pull requests, preview environments, and staging.",
+    managerLens: "Turn release readiness into a reliable engineering signal."
   },
   {
     title: "Test Architecture Stewardship",
-    description: "Guide UI and API automation toward maintainable long-term design.",
-    managerLens: "Reduce maintenance cost while preserving delivery speed."
+    description: "Build maintainable UI and API test architecture with reusable fixtures, page objects, and conventions.",
+    managerLens: "Preserve delivery speed without sacrificing long-term suite health."
   },
   {
-    title: "Team Enablement & Standards",
-    description: "Raise execution consistency with coaching, patterns, and QA playbooks.",
-    managerLens: "Scale quality outcomes across teams, not just individual contributors."
+    title: "Technical Enablement & Standards",
+    description: "Establish engineering standards, mentoring, and AI-assisted workflows with practical guardrails.",
+    managerLens: "Scale quality outcomes across teams while keeping review and validation explicit."
   }
 ];
